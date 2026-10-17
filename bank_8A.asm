@@ -457,8 +457,8 @@
                        STZ.W $01B7                          ;8A8560|9CB701  |8701B7;
                        STZ.W BG1HOFS                        ;8A8563|9C0D21  |87210D;
                        STZ.W BG1HOFS                        ;8A8566|9C0D21  |87210D;
-                       STZ.W _BG1VOFS                       ;8A8569|9C0E21  |87210E;
-                       STZ.W _BG1VOFS                       ;8A856C|9C0E21  |87210E;
+                       STZ.W BG1VOFS                        ;8A8569|9C0E21  |87210E;
+                       STZ.W BG1VOFS                        ;8A856C|9C0E21  |87210E;
                        STZ.W BG2HOFS                        ;8A856F|9C0F21  |87210F;
                        STZ.W BG2HOFS                        ;8A8572|9C0F21  |87210F;
                        STZ.W BG2VOFS                        ;8A8575|9C1021  |872110;
@@ -2742,7 +2742,7 @@
                        AND.W #$00FF                         ;8AA735|29FF00  |      ;
                        CMP.W #$000F                         ;8AA738|C90F00  |      ;
                        BNE CODE_8AA76D                      ;8AA73B|D030    |8AA76D;
-                       LDA.L $7ED1E2                        ;8AA73D|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8AA73D|AFE2D17E|7ED1E2;
                        ASL A                                ;8AA741|0A      |      ;
                        TAX                                  ;8AA742|AA      |      ;
                        LDA.L $0000B7                        ;8AA743|AFB70000|0000B7;
@@ -2750,7 +2750,7 @@
                        AND.L DATA8_8AA799,X                 ;8AA74B|3F99A78A|8AA799;
                        BEQ CODE_8AA76D                      ;8AA74F|F01C    |8AA76D;
                        JSL.L CODE_FL_8AA715                 ;8AA751|2215A78A|8AA715;
-                       LDA.L $7ED1E2                        ;8AA755|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8AA755|AFE2D17E|7ED1E2;
                        CMP.W #$0004                         ;8AA759|C90400  |      ;
                        BCC ++                               ;8AA75C|9004    |8AA762;
                        JSL.L CODE_FL_8BF151                 ;8AA75E|2251F18B|8BF151;
@@ -2768,7 +2768,7 @@
                        BNE +                                ;8AA775|D011    |8AA788;
                        REP #$20                             ;8AA777|C220    |      ;
                        JSL.L CODE_FL_809CF7                 ;8AA779|22F79C80|809CF7;
-                       LDA.L $7ED1E2                        ;8AA77D|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8AA77D|AFE2D17E|7ED1E2;
                        ASL A                                ;8AA781|0A      |      ;
                        TAX                                  ;8AA782|AA      |      ;
                        JSR.W (DATA8_8AA7A9,X)               ;8AA783|FCA9A7  |8AA7A9;
@@ -3488,7 +3488,7 @@
                        LDA.L DATA8_8AAE4C,X                 ;8AAE7C|BF4CAE8A|8AAE4C;
                        STA.L $7E9341                        ;8AAE80|8F41937E|7E9341;
                        LDA.L DATA8_8AAE4E,X                 ;8AAE84|BF4EAE8A|8AAE4E;
-                       STA.L $7ED1E2                        ;8AAE88|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;8AAE88|8FE2D17E|7ED1E2;
                        LDA.L DATA8_8AAE50,X                 ;8AAE8C|BF50AE8A|8AAE50;
                        STA.L $7ED1E0                        ;8AAE90|8FE0D17E|7ED1E0;
                        LDA.W #$0008                         ;8AAE94|A90800  |      ;
@@ -3721,8 +3721,8 @@
                        STZ.W $01B7                          ;8AB0E7|9CB701  |8A01B7;
                        STZ.W BG1HOFS                        ;8AB0EA|9C0D21  |8A210D;
                        STZ.W BG1HOFS                        ;8AB0ED|9C0D21  |8A210D;
-                       STZ.W _BG1VOFS                       ;8AB0F0|9C0E21  |8A210E;
-                       STZ.W _BG1VOFS                       ;8AB0F3|9C0E21  |8A210E;
+                       STZ.W BG1VOFS                        ;8AB0F0|9C0E21  |8A210E;
+                       STZ.W BG1VOFS                        ;8AB0F3|9C0E21  |8A210E;
                        STZ.W BG2HOFS                        ;8AB0F6|9C0F21  |8A210F;
                        STZ.W BG2HOFS                        ;8AB0F9|9C0F21  |8A210F;
                        STZ.W BG2VOFS                        ;8AB0FC|9C1021  |8A2110;
@@ -4767,8 +4767,8 @@
                        STZ.W $01B7                          ;8ABB99|9CB701  |8A01B7;
                        STZ.W BG1HOFS                        ;8ABB9C|9C0D21  |8A210D;
                        STZ.W BG1HOFS                        ;8ABB9F|9C0D21  |8A210D;
-                       STZ.W _BG1VOFS                       ;8ABBA2|9C0E21  |8A210E;
-                       STZ.W _BG1VOFS                       ;8ABBA5|9C0E21  |8A210E;
+                       STZ.W BG1VOFS                        ;8ABBA2|9C0E21  |8A210E;
+                       STZ.W BG1VOFS                        ;8ABBA5|9C0E21  |8A210E;
                        STZ.W BG2HOFS                        ;8ABBA8|9C0F21  |8A210F;
                        STZ.W BG2HOFS                        ;8ABBAB|9C0F21  |8A210F;
                        STZ.W BG2VOFS                        ;8ABBAE|9C1021  |8A2110;

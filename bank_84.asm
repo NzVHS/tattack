@@ -4994,7 +4994,7 @@ TitleScreen_LittleYoshiBob:
                        LDA.W #$0000                         ;84B5B5|A90000  |      ;
                        STA.W $1A7E                          ;84B5B8|8D7E1A  |841A7E;
                        LDA.W #$0000                         ;84B5BB|A90000  |      ;
-                       STA.W $1A80                          ;84B5BE|8D801A  |841A80;
+                       STA.W VS_Difficulty                  ;84B5BE|8D801A  |841A80;
                        PLB                                  ;84B5C1|AB      |      ;
                        PLP                                  ;84B5C2|28      |      ;
                        RTL                                  ;84B5C3|6B      |      ;
@@ -5082,7 +5082,7 @@ TitleScreen_LittleYoshiBob:
                        REP #$30                             ;84B664|C230    |      ;
                        PHX                                  ;84B666|DA      |      ;
                        PHY                                  ;84B667|5A      |      ;
-                       LDA.L $001A80                        ;84B668|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;84B668|AF801A00|001A80;
                        AND.W #$0003                         ;84B66C|290300  |      ;
                        TAX                                  ;84B66F|AA      |      ;
                        LDA.L DATA8_84B5A5,X                 ;84B670|BFA5B584|84B5A5;
@@ -5093,7 +5093,7 @@ TitleScreen_LittleYoshiBob:
                        STA.L $001A7C                        ;84B67D|8F7C1A00|001A7C;
                        PLA                                  ;84B681|68      |      ;
                        CLC                                  ;84B682|18      |      ;
-                       ADC.L $0002BC                        ;84B683|6FBC0200|0002BC;
+                       ADC.L Character_2P-$7E0000           ;84B683|6FBC0200|0002BC;
                        STA.L $001A7E                        ;84B687|8F7E1A00|001A7E;
                        PLY                                  ;84B68B|7A      |      ;
                        PLX                                  ;84B68C|FA      |      ;
@@ -12070,7 +12070,7 @@ TitleScreen_LittleYoshiBob:
                        LDA.W #$0015                         ;84F153|A91500  |      ;
                        STA.L Game_State-$7E0000             ;84F156|8FA00200|0002A0;
                        LDA.W #$0001                         ;84F15A|A90100  |      ;
-                       STA.L $7ED1E2                        ;84F15D|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;84F15D|8FE2D17E|7ED1E2;
                        PLP                                  ;84F161|28      |      ;
                        RTL                                  ;84F162|6B      |      ;
  
@@ -12080,7 +12080,7 @@ TitleScreen_LittleYoshiBob:
                        LDA.W #$0015                         ;84F166|A91500  |      ;
                        STA.L Game_State-$7E0000             ;84F169|8FA00200|0002A0;
                        LDA.W #$0002                         ;84F16D|A90200  |      ;
-                       STA.L $7ED1E2                        ;84F170|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;84F170|8FE2D17E|7ED1E2;
                        PLP                                  ;84F174|28      |      ;
                        RTL                                  ;84F175|6B      |      ;
                        db $08,$C2,$30,$8B,$4B,$AB,$20,$8E   ;84F176|        |      ;
@@ -12166,7 +12166,7 @@ TitleScreen_LittleYoshiBob:
                        JSR.W CODE_FN_84F434                 ;84F255|2034F4  |84F434;
                        JSR.W CODE_FN_84F1F5                 ;84F258|20F5F1  |84F1F5;
                        RTS                                  ;84F25B|60      |      ;
-                       LDA.L $7ED1E2                        ;84F25C|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;84F25C|AFE2D17E|7ED1E2;
                        BNE +                                ;84F260|D005    |84F267;
                        db $22,$AE,$D8,$86,$60               ;84F262|        |86D8AE;
  
@@ -12287,8 +12287,8 @@ TitleScreen_LittleYoshiBob:
                        SEP #$20                             ;84F355|E220    |      ;
                        STZ.W BG1HOFS                        ;84F357|9C0D21  |00210D;
                        STZ.W BG1HOFS                        ;84F35A|9C0D21  |00210D;
-                       STZ.W _BG1VOFS                       ;84F35D|9C0E21  |00210E;
-                       STZ.W _BG1VOFS                       ;84F360|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;84F35D|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;84F360|9C0E21  |00210E;
                        STZ.W BG2HOFS                        ;84F363|9C0F21  |00210F;
                        STZ.W BG2HOFS                        ;84F366|9C0F21  |00210F;
                        STZ.W BG2VOFS                        ;84F369|9C1021  |002110;
@@ -12612,7 +12612,7 @@ TitleScreen_LittleYoshiBob:
                        db $3F,$D9,$99,$00,$00,$00,$00,$00   ;84F6B4|        |0099D9;
                        db $00                               ;84F6BC|        |      ;
                        RTL                                  ;84F6BD|6B      |      ;
-                       LDA.L $001A80                        ;84F6BE|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;84F6BE|AF801A00|001A80;
                        CMP.W #$0003                         ;84F6C2|C90300  |      ;
                        BEQ UNREACH_84F6E1                   ;84F6C5|F01A    |84F6E1;
                        LDA.L $7ED202                        ;84F6C7|AF02D27E|7ED202;
@@ -12632,7 +12632,7 @@ TitleScreen_LittleYoshiBob:
                        db $00,$6B,$22,$77,$AE,$84,$BB,$D3   ;84F6F9|        |      ;
                        db $99,$96,$DC,$99,$00,$00,$00,$00   ;84F701|        |00DC96;
                        db $00,$00,$6B                       ;84F709|        |      ;
-                       LDA.L $001A80                        ;84F70C|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;84F70C|AF801A00|001A80;
                        CMP.W #$0003                         ;84F710|C90300  |      ;
                        BNE +                                ;84F713|D010    |84F725;
                        db $AF,$02,$D2,$7E,$29,$FF,$00,$D0   ;84F715|        |7ED202;

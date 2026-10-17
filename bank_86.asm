@@ -10164,8 +10164,8 @@
                        STZ.W $01D2                          ;86E0E1|9CD201  |0001D2;
                        STZ.W BG1HOFS                        ;86E0E4|9C0D21  |00210D;
                        STZ.W BG1HOFS                        ;86E0E7|9C0D21  |00210D;
-                       STZ.W _BG1VOFS                       ;86E0EA|9C0E21  |00210E;
-                       STZ.W _BG1VOFS                       ;86E0ED|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;86E0EA|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;86E0ED|9C0E21  |00210E;
                        STZ.W BG2HOFS                        ;86E0F0|9C0F21  |00210F;
                        STZ.W BG2HOFS                        ;86E0F3|9C0F21  |00210F;
                        STZ.W BG2VOFS                        ;86E0F6|9C1021  |002110;
@@ -10820,13 +10820,13 @@
                        LDA.L $7E944E                        ;86EFFB|AF4E947E|7E944E;
                        AND.W #$007F                         ;86EFFF|297F00  |      ;
                        STA.L $7E943E                        ;86F002|8F3E947E|7E943E;
-                       LDA.L $7ED1E2                        ;86F006|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;86F006|AFE2D17E|7ED1E2;
                        AND.W #$000F                         ;86F00A|290F00  |      ;
                        XBA                                  ;86F00D|EB      |      ;
                        LSR A                                ;86F00E|4A      |      ;
                        ORA.L $7E943E                        ;86F00F|0F3E947E|7E943E;
                        STA.L $7E943E                        ;86F013|8F3E947E|7E943E;
-                       LDA.L $001A80                        ;86F017|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;86F017|AF801A00|001A80;
                        AND.W #$0003                         ;86F01B|290300  |      ;
                        XBA                                  ;86F01E|EB      |      ;
                        ASL A                                ;86F01F|0A      |      ;
@@ -10939,10 +10939,10 @@
                        LDA.L $7E944E                        ;86F0F7|AF4E947E|7E944E;
                        AND.W #$007F                         ;86F0FB|297F00  |      ;
                        STA.B $00                            ;86F0FE|8500    |000000;
-                       LDA.L $7ED1E2                        ;86F100|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;86F100|AFE2D17E|7ED1E2;
                        AND.W #$000F                         ;86F104|290F00  |      ;
                        STA.B $02                            ;86F107|8502    |000002;
-                       LDA.L $001A80                        ;86F109|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;86F109|AF801A00|001A80;
                        AND.W #$0003                         ;86F10D|290300  |      ;
                        STA.B $04                            ;86F110|8504    |000004;
                        LDA.L $7ED202                        ;86F112|AF02D27E|7ED202;
@@ -11041,8 +11041,8 @@
                        AND.W #$0780                         ;86F1DF|298007  |      ;
                        ASL A                                ;86F1E2|0A      |      ;
                        XBA                                  ;86F1E3|EB      |      ;
-                       STA.L $7ED1E2                        ;86F1E4|8FE2D17E|7ED1E2;
-                       LDA.L $001A80                        ;86F1E8|AF801A00|001A80;
+                       STA.L VS_Stage                       ;86F1E4|8FE2D17E|7ED1E2;
+                       LDA.L VS_Difficulty-$7E0000          ;86F1E8|AF801A00|001A80;
                        STA.L $7E66CA                        ;86F1EC|8FCA667E|7E66CA;
                        LDA.L $7E943E                        ;86F1F0|AF3E947E|7E943E;
                        AND.W #$1800                         ;86F1F4|290018  |      ;
@@ -11050,7 +11050,7 @@
                        LSR A                                ;86F1F8|4A      |      ;
                        LSR A                                ;86F1F9|4A      |      ;
                        XBA                                  ;86F1FA|EB      |      ;
-                       STA.L $001A80                        ;86F1FB|8F801A00|001A80;
+                       STA.L VS_Difficulty-$7E0000          ;86F1FB|8F801A00|001A80;
                        LDA.L $7E943E                        ;86F1FF|AF3E947E|7E943E;
                        AND.W #$2000                         ;86F203|290020  |      ;
                        XBA                                  ;86F206|EB      |      ;
@@ -11174,10 +11174,10 @@
                        LDA.L $7E944E                        ;86F2F7|AF4E947E|7E944E;
                        AND.W #$007F                         ;86F2FB|297F00  |      ;
                        STA.B $02                            ;86F2FE|8502    |000002;
-                       LDA.L $7ED1E2                        ;86F300|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;86F300|AFE2D17E|7ED1E2;
                        AND.W #$000F                         ;86F304|290F00  |      ;
                        STA.B $04                            ;86F307|8504    |000004;
-                       LDA.L $001A80                        ;86F309|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;86F309|AF801A00|001A80;
                        AND.W #$0003                         ;86F30D|290300  |      ;
                        STA.B $06                            ;86F310|8506    |000006;
                        LDA.L $7ED202                        ;86F312|AF02D27E|7ED202;
@@ -11209,7 +11209,7 @@
                      + LDA.W #$0001                         ;86F348|A90100  |      ;
                        STA.W $0338                          ;86F34B|8D3803  |000338;
                        LDA.L $7E66CA                        ;86F34E|AFCA667E|7E66CA;
-                       STA.L $001A80                        ;86F352|8F801A00|001A80;
+                       STA.L VS_Difficulty-$7E0000          ;86F352|8F801A00|001A80;
                        RTL                                  ;86F356|6B      |      ;
  
        CODE_FN_86F357:
@@ -11232,7 +11232,7 @@
                      + LDA.W #$0001                         ;86F379|A90100  |      ;
                        STA.W $0338                          ;86F37C|8D3803  |000338;
                        LDA.L $7E66CA                        ;86F37F|AFCA667E|7E66CA;
-                       STA.L $001A80                        ;86F383|8F801A00|001A80;
+                       STA.L VS_Difficulty-$7E0000          ;86F383|8F801A00|001A80;
                        RTL                                  ;86F387|6B      |      ;
                        db $D5,$00,$00,$F8,$01,$02,$0A,$05   ;86F388|        |      ;
                        db $FC,$0A,$FB,$0C,$C2,$9D,$F3,$A2   ;86F390|        |      ;

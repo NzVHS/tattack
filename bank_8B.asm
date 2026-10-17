@@ -47,9 +47,9 @@
                        LDA.W #$4000                         ;8B8072|A90040  |      ;
                        STA.L $7ED1E4                        ;8B8075|8FE4D17E|7ED1E4;
                        LDA.W #$FFFF                         ;8B8079|A9FFFF  |      ;
-                       STA.L $7ED1E2                        ;8B807C|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;8B807C|8FE2D17E|7ED1E2;
                        LDA.W #$000C                         ;8B8080|A90C00  |      ;
-                       STA.L $7ED21A                        ;8B8083|8F1AD27E|7ED21A;
+                       STA.L VS_Character                   ;8B8083|8F1AD27E|7ED21A;
                        LDA.W #$0000                         ;8B8087|A90000  |      ;
                        STA.L $7E9450                        ;8B808A|8F50947E|7E9450;
                        JSR.W CODE_FN_8B809C                 ;8B808E|209C80  |8B809C;
@@ -77,7 +77,7 @@
                        PHK                                  ;8B80B7|4B      |      ;
                        PLB                                  ;8B80B8|AB      |      ;
                        LDA.W #$0000                         ;8B80B9|A90000  |      ;
-                       STA.L $7ED1E2                        ;8B80BC|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;8B80BC|8FE2D17E|7ED1E2;
                        LDA.W #$0004                         ;8B80C0|A90400  |      ;
                        STA.L $7ED216                        ;8B80C3|8F16D27E|7ED216;
                        LDA.W #$0000                         ;8B80C7|A90000  |      ;
@@ -146,7 +146,7 @@
                        BEQ +                                ;8B816A|F020    |8B818C;
                        LDA.L $001A82                        ;8B816C|AF821A00|001A82;
                        BNE +                                ;8B8170|D01A    |8B818C;
-                       LDA.L $7ED1E2                        ;8B8172|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8172|AFE2D17E|7ED1E2;
                        CMP.W #$0000                         ;8B8176|C90000  |      ;
                        BMI ++                               ;8B8179|3005    |8B8180;
                        CMP.W #$000C                         ;8B817B|C90C00  |      ;
@@ -157,7 +157,7 @@
  
                    +++ INC A                                ;8B8185|1A      |      ;
  
-                    ++ STA.L $7ED1E2                        ;8B8186|8FE2D17E|7ED1E2;
+                    ++ STA.L VS_Stage                       ;8B8186|8FE2D17E|7ED1E2;
                        BRA ++                               ;8B818A|8027    |8B81B3;
  
                      + LDA.L $0000B3                        ;8B818C|AFB30000|0000B3;
@@ -166,7 +166,7 @@
                        BEQ ++                               ;8B8196|F01B    |8B81B3;
                        LDA.L $001A82                        ;8B8198|AF821A00|001A82;
                        BNE ++                               ;8B819C|D015    |8B81B3;
-                       LDA.L $7ED1E2                        ;8B819E|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B819E|AFE2D17E|7ED1E2;
                        TAX                                  ;8B81A2|AA      |      ;
                        LDA.L DATA8_8B8524,X                 ;8B81A3|BF24858B|8B8524;
                        AND.W #$00FF                         ;8B81A7|29FF00  |      ;
@@ -211,7 +211,7 @@
                      + JSL.L CODE_FL_80A1CF                 ;8B8205|22CFA180|80A1CF;
                        JSL.L CODE_FL_80A1E0                 ;8B8209|22E0A180|80A1E0;
                        JSL.L CODE_FL_80A1F1                 ;8B820D|22F1A180|80A1F1;
-                       LDA.L $7ED1E2                        ;8B8211|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8211|AFE2D17E|7ED1E2;
                        BEQ +                                ;8B8215|F003    |8B821A;
                        JMP.W CODE_JP_8B82C3                 ;8B8217|4CC382  |8B82C3;
  
@@ -252,7 +252,7 @@
                        JSL.L CODE_FL_80BB2D                 ;8B828E|222DBB80|80BB2D;
                        db $B0,$80,$93,$00,$20,$7E           ;8B8292|        |      ;
                        JSL.L CODE_FL_8B9E81                 ;8B8298|22819E8B|8B9E81;
-                       LDA.L $001A80                        ;8B829C|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8B829C|AF801A00|001A80;
                        JSL.L CODE_FL_8B955D                 ;8B82A0|225D958B|8B955D;
                        PHB                                  ;8B82A4|8B      |      ;
                        PHK                                  ;8B82A5|4B      |      ;
@@ -338,7 +338,7 @@
                        JMP.W CODE_JP_8B8385                 ;8B8382|4C8583  |8B8385;
  
        CODE_JP_8B8385:
-                       LDA.W $1A80                          ;8B8385|AD801A  |7E1A80;
+                       LDA.W VS_Difficulty                  ;8B8385|AD801A  |7E1A80;
                        JSL.L CODE_FL_8B950C                 ;8B8388|220C958B|8B950C;
                        JSL.L CODE_FL_80BB2D                 ;8B838C|222DBB80|80BB2D;
                        db $D5,$FB,$92,$80,$60,$7F           ;8B8390|        |      ;
@@ -431,7 +431,7 @@
                        BNE ++                               ;8B847A|D011    |8B848D;
                        BIT.W #$4000                         ;8B847C|890040  |      ;
                        BNE +++                              ;8B847F|D015    |8B8496;
-                       LDA.L $7ED1E2                        ;8B8481|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8481|AFE2D17E|7ED1E2;
                        JSL.L CODE_FL_89A663                 ;8B8485|2263A689|89A663;
                        db $D6,$84                           ;8B8489|        |      ;
                        BRA ++++                             ;8B848B|8021    |8B84AE;
@@ -440,12 +440,12 @@
                        db $34,$AE,$8B                       ;8B8491|        |      ;
                        BRA ++++                             ;8B8494|8018    |8B84AE;
  
-                   +++ LDA.L $7ED1E2                        ;8B8496|AFE2D17E|7ED1E2;
+                   +++ LDA.L VS_Stage                       ;8B8496|AFE2D17E|7ED1E2;
                        JSL.L CODE_FL_89A663                 ;8B849A|2263A689|89A663;
                        db $AF,$84                           ;8B849E|        |      ;
                        BRA ++++                             ;8B84A0|800C    |8B84AE;
  
-                     + LDA.L $7ED1E2                        ;8B84A2|AFE2D17E|7ED1E2;
+                     + LDA.L VS_Stage                       ;8B84A2|AFE2D17E|7ED1E2;
                        JSL.L CODE_FL_89A663                 ;8B84A6|2263A689|89A663;
                        db $FD,$84                           ;8B84AA|        |      ;
                        BRA ++++                             ;8B84AC|8000    |8B84AE;
@@ -484,7 +484,7 @@
                        BEQ +                                ;8B8538|F003    |8B853D;
                        JMP.W CODE_JP_8B87B7                 ;8B853A|4CB787  |8B87B7;
  
-                     + LDA.L $7ED1E2                        ;8B853D|AFE2D17E|7ED1E2;
+                     + LDA.L VS_Stage                       ;8B853D|AFE2D17E|7ED1E2;
                        BNE +                                ;8B8541|D01A    |8B855D;
                        JSL.L CODE_FL_80BB2D                 ;8B8543|222DBB80|80BB2D;
                        db $70,$EC,$92,$F6,$86,$7E           ;8B8547|        |      ;
@@ -560,7 +560,7 @@
                        db $F8,$EE,$92,$00,$28,$7E           ;8B8620|        |      ;
                        JSL.L CODE_FL_8BA318                 ;8B8626|2218A38B|8BA318;
                        JSL.L CODE_FL_8BA371                 ;8B862A|2271A38B|8BA371;
-                       LDA.L $7ED1E2                        ;8B862E|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B862E|AFE2D17E|7ED1E2;
                        BNE +                                ;8B8632|D011    |8B8645;
                        LDA.L $7ED1E4                        ;8B8634|AFE4D17E|7ED1E4;
                        BIT.W #$4000                         ;8B8638|890040  |      ;
@@ -636,7 +636,7 @@
                        AND.W #$003F                         ;8B8708|293F00  |      ;
                        DEX                                  ;8B870B|CA      |      ;
                        BNE -                                ;8B870C|D0F5    |8B8703;
-                       LDA.L $7ED1E2                        ;8B870E|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B870E|AFE2D17E|7ED1E2;
                        BEQ +                                ;8B8712|F011    |8B8725;
                        LDA.W #$001B                         ;8B8714|A91B00  |      ;
                        LDX.W #$0005                         ;8B8717|A20500  |      ;
@@ -677,7 +677,7 @@
                        STA.W $D354                          ;8B8784|8D54D3  |7ED354;
                        LDA.W #$0800                         ;8B8787|A90008  |      ;
                        STA.W $D356                          ;8B878A|8D56D3  |7ED356;
-                       LDA.L $7ED1E2                        ;8B878D|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B878D|AFE2D17E|7ED1E2;
                        BEQ +                                ;8B8791|F00C    |8B879F;
                        LDA.W #$00D0                         ;8B8793|A9D000  |      ;
                        STA.W $D5E1                          ;8B8796|8DE1D5  |7ED5E1;
@@ -818,7 +818,7 @@
                        RTL                                  ;8B8900|6B      |      ;
  
        CODE_FL_8B8901:
-                       LDA.L $7ED1E2                        ;8B8901|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8901|AFE2D17E|7ED1E2;
                        ASL A                                ;8B8905|0A      |      ;
                        TAX                                  ;8B8906|AA      |      ;
                        LDA.L $001A82                        ;8B8907|AF821A00|001A82;
@@ -1056,7 +1056,7 @@
                        LDA.W #$0021                         ;8B8B86|A92100  |      ;
                        STA.W $199C                          ;8B8B89|8D9C19  |7E199C;
                        JSL.L CODE_FL_8091B2                 ;8B8B8C|22B29180|8091B2;
-                       LDA.L $7ED1E2                        ;8B8B90|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8B90|AFE2D17E|7ED1E2;
                        ASL A                                ;8B8B94|0A      |      ;
                        TAX                                  ;8B8B95|AA      |      ;
                        JMP.W (DATA8_8B8BD3,X)               ;8B8B96|7CD38B  |8B8BD3;
@@ -1090,7 +1090,7 @@
                        db $C6,$8B                           ;8B8BEB|        |      ;
  
        CODE_FL_8B8BED:
-                       LDA.L $7ED1E2                        ;8B8BED|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8B8BED|AFE2D17E|7ED1E2;
                        ASL A                                ;8B8BF1|0A      |      ;
                        TAX                                  ;8B8BF2|AA      |      ;
                        LDA.L DATA8_8B8C3C,X                 ;8B8BF3|BF3C8C8B|8B8C3C;
@@ -1894,8 +1894,8 @@
                        SEP #$20                             ;8B9407|E220    |      ;
                        STZ.W BG1HOFS                        ;8B9409|9C0D21  |80210D;
                        STZ.W BG1HOFS                        ;8B940C|9C0D21  |80210D;
-                       STZ.W _BG1VOFS                       ;8B940F|9C0E21  |80210E;
-                       STZ.W _BG1VOFS                       ;8B9412|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;8B940F|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;8B9412|9C0E21  |80210E;
                        STZ.W BG2HOFS                        ;8B9415|9C0F21  |80210F;
                        STZ.W BG2HOFS                        ;8B9418|9C0F21  |80210F;
                        STZ.W BG2VOFS                        ;8B941B|9C1021  |802110;
@@ -4144,6 +4144,8 @@
                        STA.L $7ED32B                        ;8BA882|8F2BD37E|7ED32B;
  
                      + RTL                                  ;8BA886|6B      |      ;
+ 
+         VS_InitMatch:
                        SEP #$20                             ;8BA887|E220    |      ;
                        LDA.B #$81                           ;8BA889|A981    |      ;
                        STA.L NMITIMEN                       ;8BA88B|8F004200|004200;
@@ -4175,16 +4177,16 @@
                        STA.L Game_State-$7E0000             ;8BA8DD|8FA00200|0002A0;
                        BRA ++                               ;8BA8E1|8044    |8BA927;
  
-                     + LDA.L $7ED21A                        ;8BA8E3|AF1AD27E|7ED21A;
+                     + LDA.L VS_Character                   ;8BA8E3|AF1AD27E|7ED21A;
                        TAX                                  ;8BA8E7|AA      |      ;
-                       LDA.L DATA8_8BA928,X                 ;8BA8E8|BF28A98B|8BA928;
+                       LDA.L VS_Characters1P,X              ;8BA8E8|BF28A98B|8BA928;
                        AND.W #$00FF                         ;8BA8EC|29FF00  |      ;
                        STA.L Character_1P-$7E0000           ;8BA8EF|8FBA0200|0002BA;
-                       LDA.L $7ED1E2                        ;8BA8F3|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8BA8F3|AFE2D17E|7ED1E2;
                        TAX                                  ;8BA8F7|AA      |      ;
-                       LDA.L DATA8_8BA935,X                 ;8BA8F8|BF35A98B|8BA935;
+                       LDA.L VS_Characters2P,X              ;8BA8F8|BF35A98B|8BA935;
                        AND.W #$00FF                         ;8BA8FC|29FF00  |      ;
-                       STA.L $0002BC                        ;8BA8FF|8FBC0200|0002BC;
+                       STA.L Character_2P-$7E0000           ;8BA8FF|8FBC0200|0002BC;
                        LDA.W #$0003                         ;8BA903|A90300  |      ;
                        STA.L Game_State-$7E0000             ;8BA906|8FA00200|0002A0;
                        LDA.W #$0001                         ;8BA90A|A90100  |      ;
@@ -4198,14 +4200,12 @@
  
                     ++ RTS                                  ;8BA927|60      |      ;
  
-         DATA8_8BA928:
+      VS_Characters1P:
                        db $00,$01,$02,$03,$04,$05,$06,$07   ;8BA928|        |      ;
-                       db $08                               ;8BA930|        |      ;
-                       db $09,$0A,$0B                       ;8BA931|        |      ;
-                       db $0C                               ;8BA934|        |      ;
+                       db $08,$09,$0A,$0B,$0C               ;8BA930|        |      ;
  
-         DATA8_8BA935:
-                       db $00,$01,$02,$03,$04,$05,$06,$07   ;8BA935|        |      ;
+      VS_Characters2P:
+                       db $00,$01,$02,$03,$04,$05,$06,$07   ;8BA935|        |      ; note 0B duplicated at the end; any vs Yoshi matches become vs Bowser
                        db $08,$09,$0A,$0B,$0B               ;8BA93D|        |      ;
  
        CODE_FL_8BA942:
@@ -4219,14 +4219,14 @@
                        STA.L $7ED1E4                        ;8BA956|8FE4D17E|7ED1E4;
                        LDA.W #$0007                         ;8BA95A|A90700  |      ;
                        STA.L Game_State-$7E0000             ;8BA95D|8FA00200|0002A0;
-                       LDA.L $7ED21A                        ;8BA961|AF1AD27E|7ED21A;
+                       LDA.L VS_Character                   ;8BA961|AF1AD27E|7ED21A;
                        TAX                                  ;8BA965|AA      |      ;
                        SEP #$20                             ;8BA966|E220    |      ;
                        LDA.L $7ED1F6,X                      ;8BA968|BFF6D17E|7ED1F6;
                        INC A                                ;8BA96C|1A      |      ;
                        STA.L $7ED1F6,X                      ;8BA96D|9FF6D17E|7ED1F6;
                        REP #$20                             ;8BA971|C220    |      ;
-                       LDA.L $7ED21A                        ;8BA973|AF1AD27E|7ED21A;
+                       LDA.L VS_Character                   ;8BA973|AF1AD27E|7ED21A;
                        CMP.W #$000C                         ;8BA977|C90C00  |      ;
                        BEQ +                                ;8BA97A|F011    |8BA98D;
                        SEP #$20                             ;8BA97C|E220    |      ;
@@ -4234,7 +4234,7 @@
                        STA.L $7ED1E6,X                      ;8BA980|9FE6D17E|7ED1E6;
                        REP #$20                             ;8BA984|C220    |      ;
                        LDA.W #$000C                         ;8BA986|A90C00  |      ;
-                       STA.L $7ED21A                        ;8BA989|8F1AD27E|7ED21A;
+                       STA.L VS_Character                   ;8BA989|8F1AD27E|7ED21A;
  
                      + PLP                                  ;8BA98D|28      |      ;
                        RTL                                  ;8BA98E|6B      |      ;
@@ -4250,35 +4250,35 @@
                        STA.L $7ED1E4                        ;8BA9A3|8FE4D17E|7ED1E4;
                        LDA.W #$0007                         ;8BA9A7|A90700  |      ;
                        STA.L Game_State-$7E0000             ;8BA9AA|8FA00200|0002A0;
-                       LDA.L $0002BC                        ;8BA9AE|AFBC0200|0002BC;
+                       LDA.L Character_2P-$7E0000           ;8BA9AE|AFBC0200|0002BC;
                        TAX                                  ;8BA9B2|AA      |      ;
                        LDA.L Character_1P-$7E0000           ;8BA9B3|AFBA0200|0002BA;
                        STA.L $7ED206,X                      ;8BA9B7|9F06D27E|7ED206;
-                       JSR.W CODE_FN_8BA9C0                 ;8BA9BB|20C0A9  |8BA9C0;
+                       JSR.W VS_LimitStages                 ;8BA9BB|20C0A9  |8BA9C0;
                        PLP                                  ;8BA9BE|28      |      ;
                        RTL                                  ;8BA9BF|6B      |      ;
  
-       CODE_FN_8BA9C0:
-                       LDA.L $001A80                        ;8BA9C0|AF801A00|001A80;
+       VS_LimitStages:
+                       LDA.L VS_Difficulty-$7E0000          ;8BA9C0|AF801A00|001A80; check difficulty
                        AND.W #$0003                         ;8BA9C4|290300  |      ;
-                       TAX                                  ;8BA9C7|AA      |      ;
-                       LDA.L DATA8_8BA9E1,X                 ;8BA9C8|BFE1A98B|8BA9E1;
+                       TAX                                  ;8BA9C7|AA      |      ; save it to X
+                       LDA.L VS_LastStages,X                ;8BA9C8|BFE1A98B|8BA9E1;
                        AND.W #$00FF                         ;8BA9CC|29FF00  |      ;
-                       CMP.L $0002BC                        ;8BA9CF|CFBC0200|0002BC;
-                       BNE +                                ;8BA9D3|D00B    |8BA9E0;
+                       CMP.L Character_2P-$7E0000           ;8BA9CF|CFBC0200|0002BC; are we on Last Stage?
+                       BNE +                                ;8BA9D3|D00B    |8BA9E0; branch if not
                        LDA.L $7ED1E4                        ;8BA9D5|AFE4D17E|7ED1E4;
                        ORA.W #$0800                         ;8BA9D9|090008  |      ;
                        STA.L $7ED1E4                        ;8BA9DC|8FE4D17E|7ED1E4;
  
                      + RTS                                  ;8BA9E0|60      |      ;
  
-         DATA8_8BA9E1:
-                       db $09,$0A,$0B,$0B                   ;8BA9E1|        |      ;
+        VS_LastStages:
+                       db $09,$0A,$0B,$0B                   ;8BA9E1|        |      ; Easy, Normal, Hard and Super Hard respectively
  
        CODE_FL_8BA9E5:
                        PHP                                  ;8BA9E5|08      |      ;
                        REP #$30                             ;8BA9E6|C230    |      ;
-                       LDA.L $001A80                        ;8BA9E8|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BA9E8|AF801A00|001A80;
                        BNE +                                ;8BA9EC|D006    |8BA9F4;
                        JSL.L CODE_FL_86D898                 ;8BA9EE|2298D886|86D898;
                        PLP                                  ;8BA9F2|28      |      ;
@@ -4878,11 +4878,11 @@
                        BEQ +                                ;8BB5AB|F019    |8BB5C6;
                        BIT.W #$0020                         ;8BB5AD|892000  |      ;
                        BEQ +                                ;8BB5B0|F014    |8BB5C6;
-                       LDA.L $001A80                        ;8BB5B2|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BB5B2|AF801A00|001A80;
                        CMP.W #$0002                         ;8BB5B6|C90200  |      ;
                        BNE +                                ;8BB5B9|D00B    |8BB5C6;
                        LDA.W #$0003                         ;8BB5BB|A90300  |      ;
-                       STA.L $001A80                        ;8BB5BE|8F801A00|001A80;
+                       STA.L VS_Difficulty-$7E0000          ;8BB5BE|8F801A00|001A80;
                        JSL.L CODE_FL_8B950C                 ;8BB5C2|220C958B|8B950C;
  
                      + RTS                                  ;8BB5C6|60      |      ;
@@ -4936,7 +4936,7 @@
                        DEX                                  ;8BB63F|CA      |      ;
                        DEX                                  ;8BB640|CA      |      ;
                        BPL -                                ;8BB641|10F4    |8BB637;
-                       LDA.L $001A80                        ;8BB643|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BB643|AF801A00|001A80;
                        JSL.L CODE_FL_8B950C                 ;8BB647|220C958B|8B950C;
                        RTL                                  ;8BB64B|6B      |      ;
                        LDY.W #$0440                         ;8BB64C|A04004  |      ;
@@ -5318,7 +5318,7 @@
                        LDA.B $B7                            ;8BB9FB|A5B7    |0000B7;
                        BIT.W #$1080                         ;8BB9FD|898010  |      ;
                        BEQ +                                ;8BBA00|F017    |8BBA19;
-                       LDA.L $7ED21A                        ;8BBA02|AF1AD27E|7ED21A;
+                       LDA.L VS_Character                   ;8BBA02|AF1AD27E|7ED21A;
                        TAX                                  ;8BBA06|AA      |      ;
                        LDA.L $7ED1E6,X                      ;8BBA07|BFE6D17E|7ED1E6;
                        AND.W #$00FF                         ;8BBA0B|29FF00  |      ;
@@ -5361,7 +5361,7 @@
                     ++ REP #$20                             ;8BBA4D|C220    |      ;
                        LDA.L DATA8_8BBA5D,X                 ;8BBA4F|BF5DBA8B|8BBA5D;
                        AND.W #$00FF                         ;8BBA53|29FF00  |      ;
-                       STA.L $7ED21A                        ;8BBA56|8F1AD27E|7ED21A;
+                       STA.L VS_Character                   ;8BBA56|8F1AD27E|7ED21A;
                        RTL                                  ;8BBA5A|6B      |      ;
  
          DATA8_8BBA5B:
@@ -5515,7 +5515,7 @@
                        db $FF,$E9,$A4,$89                   ;8BBC29|        |      ;
                        LDA.W #$0000                         ;8BBC2D|A90000  |      ;
                        STA.L $7ED254                        ;8BBC30|8F54D27E|7ED254;
-                       LDA.L $7ED1E2                        ;8BBC34|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;8BBC34|AFE2D17E|7ED1E2;
                        CMP.W #$000C                         ;8BBC38|C90C00  |      ;
                        BNE +                                ;8BBC3B|D007    |8BBC44;
                        JSL.L CODE_FL_89A62C                 ;8BBC3D|222CA689|89A62C;
@@ -6156,11 +6156,11 @@
                        BEQ +++                              ;8BC3F2|F00A    |8BC3FE;
                        BRA ++++                             ;8BC3F4|801B    |8BC411;
  
-                    ++ LDA.L $001A80                        ;8BC3F6|AF801A00|001A80;
+                    ++ LDA.L VS_Difficulty-$7E0000          ;8BC3F6|AF801A00|001A80;
                        BEQ ++                               ;8BC3FA|F010    |8BC40C;
                        BRA +++++                            ;8BC3FC|800B    |8BC409;
  
-                   +++ LDA.L $001A80                        ;8BC3FE|AF801A00|001A80;
+                   +++ LDA.L VS_Difficulty-$7E0000          ;8BC3FE|AF801A00|001A80;
                        CMP.W #$0001                         ;8BC402|C90100  |      ;
                        BEQ ++                               ;8BC405|F005    |8BC40C;
                        BRA +++++                            ;8BC407|8000    |8BC409;
@@ -6214,7 +6214,7 @@
                        BIT.W #$0200                         ;8BC46F|890002  |      ;
                        BEQ +                                ;8BC472|F023    |8BC497;
                        JSL.L CODE_FL_8BF14A                 ;8BC474|224AF18B|8BF14A;
-                       LDA.L $001A80                        ;8BC478|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BC478|AF801A00|001A80;
                        CMP.W #$0002                         ;8BC47C|C90200  |      ;
                        BEQ ++                               ;8BC47F|F002    |8BC483;
                        BPL +++                              ;8BC481|1007    |8BC48A;
@@ -6228,14 +6228,14 @@
  
                     ++ DEC A                                ;8BC48F|3A      |      ;
  
-                   +++ STA.L $001A80                        ;8BC490|8F801A00|001A80;
+                   +++ STA.L VS_Difficulty-$7E0000          ;8BC490|8F801A00|001A80;
                        JSR.W CODE_FN_8BC4F1                 ;8BC494|20F1C4  |8BC4F1;
  
                      + LDA.B $BB                            ;8BC497|A5BB    |0000BB;
                        BIT.W #$0100                         ;8BC499|890001  |      ;
                        BEQ +                                ;8BC49C|F01F    |8BC4BD;
                        JSL.L CODE_FL_8BF14A                 ;8BC49E|224AF18B|8BF14A;
-                       LDA.L $001A80                        ;8BC4A2|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BC4A2|AF801A00|001A80;
                        CMP.W #$0000                         ;8BC4A6|C90000  |      ;
                        BMI ++                               ;8BC4A9|3005    |8BC4B0;
                        CMP.W #$0002                         ;8BC4AB|C90200  |      ;
@@ -6246,10 +6246,10 @@
  
                    +++ INC A                                ;8BC4B5|1A      |      ;
  
-                    ++ STA.L $001A80                        ;8BC4B6|8F801A00|001A80;
+                    ++ STA.L VS_Difficulty-$7E0000          ;8BC4B6|8F801A00|001A80;
                        JSR.W CODE_FN_8BC4F1                 ;8BC4BA|20F1C4  |8BC4F1;
  
-                     + LDA.L $001A80                        ;8BC4BD|AF801A00|001A80;
+                     + LDA.L VS_Difficulty-$7E0000          ;8BC4BD|AF801A00|001A80;
                        TAX                                  ;8BC4C1|AA      |      ;
                        LDA.L DATA8_8BC4ED,X                 ;8BC4C2|BFEDC48B|8BC4ED;
                        AND.W #$00FF                         ;8BC4C6|29FF00  |      ;
@@ -6275,7 +6275,7 @@
                        db $48,$80,$B8,$B8                   ;8BC4ED|        |      ;
  
        CODE_FN_8BC4F1:
-                       LDA.L $001A80                        ;8BC4F1|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BC4F1|AF801A00|001A80;
                        JSL.L CODE_FL_8B955D                 ;8BC4F5|225D958B|8B955D;
                        PHB                                  ;8BC4F9|8B      |      ;
                        PHK                                  ;8BC4FA|4B      |      ;
@@ -6286,7 +6286,7 @@
                        BRA +                                ;8BC504|8008    |8BC50E;
                        db $C0,$23,$7E,$40,$04,$80,$E0,$79   ;8BC506|        |      ;
  
-                     + LDA.L $001A80                        ;8BC50E|AF801A00|001A80;
+                     + LDA.L VS_Difficulty-$7E0000          ;8BC50E|AF801A00|001A80;
                        JSL.L CODE_FL_8B950C                 ;8BC512|220C958B|8B950C;
                        RTS                                  ;8BC516|60      |      ;
                        LDA.L $0000A9                        ;8BC517|AFA90000|0000A9;
@@ -10464,12 +10464,12 @@
                        JSL.L CODE_FL_809115                 ;8BF47E|22159180|809115;
                        JSL.L CODE_FL_8B93B4                 ;8BF482|22B4938B|8B93B4;
                        JSL.L CODE_FL_80A1CF                 ;8BF486|22CFA180|80A1CF;
-                       LDA.L $001A80                        ;8BF48A|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BF48A|AF801A00|001A80;
                        CMP.W #$0001                         ;8BF48E|C90100  |      ;
                        BNE +                                ;8BF491|D005    |8BF498;
                        db $22,$97,$F7,$8B,$60               ;8BF493|        |8BF797;
  
-                     + LDA.L $001A80                        ;8BF498|AF801A00|001A80;
+                     + LDA.L VS_Difficulty-$7E0000          ;8BF498|AF801A00|001A80;
                        CMP.W #$0002                         ;8BF49C|C90200  |      ;
                        BNE UNREACH_8BF4A6                   ;8BF49F|D005    |8BF4A6;
                        JSL.L CODE_FL_86D8C6                 ;8BF4A1|22C6D886|86D8C6;
@@ -10647,7 +10647,7 @@
                        INC A                                ;8BF774|1A      |      ;
                        STA.L $7ED1E0                        ;8BF775|8FE0D17E|7ED1E0;
                        RTL                                  ;8BF779|6B      |      ;
-                       LDA.L $001A80                        ;8BF77A|AF801A00|001A80;
+                       LDA.L VS_Difficulty-$7E0000          ;8BF77A|AF801A00|001A80;
                        CMP.W #$0001                         ;8BF77E|C90100  |      ;
                        BEQ UNREACH_8BF788                   ;8BF781|F005    |8BF788;
                        JSL.L CODE_FL_89A509                 ;8BF783|2209A589|89A509;

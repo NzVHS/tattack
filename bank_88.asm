@@ -3132,7 +3132,7 @@
                        LDA.W #$9067                         ;88A110|A96790  |      ;
                        STA.B $96                            ;88A113|8596    |000096;
                        JSL.L CODE_FL_89A450                 ;88A115|2250A489|89A450;
-                       LDA.W $02BC                          ;88A119|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;88A119|ADBC02  |8702BC;
                        JSL.L CODE_FL_89A663                 ;88A11C|2263A689|89A663;
                        db $23,$A1                           ;88A120|        |      ;
                        RTL                                  ;88A122|6B      |      ;
@@ -3159,7 +3159,7 @@
                        LDA.W #$9089                         ;88A167|A98990  |      ;
                        STA.B $96                            ;88A16A|8596    |000096;
                        JSL.L CODE_FL_89A450                 ;88A16C|2250A489|89A450;
-                       LDA.W $02BC                          ;88A170|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;88A170|ADBC02  |8702BC;
                        JSL.L CODE_FL_89A663                 ;88A173|2263A689|89A663;
                        db $7A,$A1                           ;88A177|        |      ;
                        RTL                                  ;88A179|6B      |      ;
@@ -3347,7 +3347,7 @@
                        BRA CODE_88A32F                      ;88A323|800A    |88A32F;
  
        CODE_FN_88A325:
-                       LDA.W $02BC                          ;88A325|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A325|ADBC02  |8802BC;
                        ASL A                                ;88A328|0A      |      ;
                        TAX                                  ;88A329|AA      |      ;
                        LDA.W DATA8_88A38C,X                 ;88A32A|BD8CA3  |88A38C;
@@ -3473,14 +3473,14 @@
                        LDA.W $0358                          ;88A45C|AD5803  |880358;
                        BEQ +                                ;88A45F|F00D    |88A46E;
                        JSR.W CODE_FN_88A3DE                 ;88A461|20DEA3  |88A3DE;
-                       LDA.W $02BC                          ;88A464|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A464|ADBC02  |8802BC;
                        JSL.L CODE_FL_89A663                 ;88A467|2263A689|89A663;
                        db $5A,$A5                           ;88A46B|        |      ;
                        RTS                                  ;88A46D|60      |      ;
  
                      + LDA.W $04D4                          ;88A46E|ADD404  |8804D4;
                        BEQ +                                ;88A471|F011    |88A484;
-                       LDA.W $02BC                          ;88A473|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A473|ADBC02  |8802BC;
                        JSL.L CODE_FL_89A663                 ;88A476|2263A689|89A663;
                        db $0C,$A5                           ;88A47A|        |      ;
                        LDA.W #$0001                         ;88A47C|A90100  |      ;
@@ -3489,7 +3489,7 @@
  
                      + LDA.W $04D2                          ;88A484|ADD204  |8804D2;
                        BEQ +                                ;88A487|F011    |88A49A;
-                       LDA.W $02BC                          ;88A489|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A489|ADBC02  |8802BC;
                        JSL.L CODE_FL_89A663                 ;88A48C|2263A689|89A663;
                        db $E5,$A4                           ;88A490|        |      ;
                        LDA.W #$0001                         ;88A492|A90100  |      ;
@@ -3498,7 +3498,7 @@
  
                      + LDA.W $0416                          ;88A49A|AD1604  |880416;
                        BEQ +                                ;88A49D|F00A    |88A4A9;
-                       LDA.W $02BC                          ;88A49F|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A49F|ADBC02  |8802BC;
                        JSL.L CODE_FL_89A663                 ;88A4A2|2263A689|89A663;
                        db $33,$A5                           ;88A4A6|        |      ;
                        RTS                                  ;88A4A8|60      |      ;
@@ -3507,7 +3507,7 @@
                        BEQ +                                ;88A4AD|F00E    |88A4BD;
                        DEC A                                ;88A4AF|3A      |      ;
                        STA.L $7E8EDE                        ;88A4B0|8FDE8E7E|7E8EDE;
-                       LDA.W $02BC                          ;88A4B4|ADBC02  |8802BC;
+                       LDA.W Character_2P                   ;88A4B4|ADBC02  |8802BC;
                        JSL.L CODE_FL_89A663                 ;88A4B7|2263A689|89A663;
                        db $BE,$A4                           ;88A4BB|        |      ;
  

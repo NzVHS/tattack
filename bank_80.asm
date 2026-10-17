@@ -2,14 +2,14 @@
                        ORG $808000
  
  
-          CODE_808000:
-                       BRA CODE_808000                      ;808000|80FE    |808000;
+         InfiniteLoop:
+                       BRA InfiniteLoop                     ;808000|80FE    |808000; trap in case BRK ever hits
  
  
                 Reset:
-                       SEI                                  ;808002|78      |      ;
+                       SEI                                  ;808002|78      |      ; disable interrupts
                        CLC                                  ;808003|18      |      ;
-                       XCE                                  ;808004|FB      |      ;
+                       XCE                                  ;808004|FB      |      ; enter native 65c816 mode
                        BCC CODE_JL_808018                   ;808005|9011    |808018;
                        REP #$30                             ;808007|C230    |      ;
                        TDC                                  ;808009|7B      |      ;
@@ -30,7 +30,7 @@
                        STA.W MEMSEL                         ;808024|8D0D42  |00420D;
                        LDA.B #$80                           ;808027|A980    |      ;
                        STA.W $01B6                          ;808029|8DB601  |0001B6;
-                       STA.W INIDISP                        ;80802C|8D0021  |002100;
+                       STA.W INIDISP                        ;80802C|8D0021  |002100; blanks the screen
                        STZ.W $01EC                          ;80802F|9CEC01  |0001EC;
                        STZ.W NMITIMEN                       ;808032|9C0042  |004200;
                        STZ.W MDMAEN                         ;808035|9C0B42  |00420B;
@@ -145,7 +145,7 @@
                     ++ LDX.W #$0000                         ;808127|A20000  |      ;
                        LDA.W #$0000                         ;80812A|A90000  |      ;
  
-                     - STA.L $7F0000,X                      ;80812D|9F00007F|7F0000;
+                     - STA.L $7F0000,X                      ;80812D|9F00007F|7F0000; clears the second half of RAM
                        INX                                  ;808131|E8      |      ;
                        INX                                  ;808132|E8      |      ;
                        BNE -                                ;808133|D0F8    |80812D;
@@ -216,8 +216,8 @@
  
                      + REP #$20                             ;8081B9|C220    |      ;
                        JSL.L CODE_FL_809125                 ;8081BB|22259180|809125;
-                       JSR.W CODE_FN_808333                 ;8081BF|203383  |808333;
-                       JSR.W CODE_FN_808217                 ;8081C2|201782  |808217;
+                       JSR.W InitRegisters                  ;8081BF|203383  |808333;
+                       JSR.W InitDMA                        ;8081C2|201782  |808217;
                        JSR.W CODE_FN_80A1A9                 ;8081C5|20A9A1  |80A1A9;
                        JSL.L CODE_FL_809C8A                 ;8081C8|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;8081CC|22389E80|809E38;
@@ -248,7 +248,7 @@
                        STA.B $A3                            ;808212|85A3    |0000A3;
                        JMP.W CODE_JP_80A6F0                 ;808214|4CF0A6  |80A6F0;
  
-       CODE_FN_808217:
+              InitDMA:
                        PHP                                  ;808217|08      |      ;
                        REP #$10                             ;808218|C210    |      ;
                        SEP #$20                             ;80821A|E220    |      ;
@@ -369,7 +369,7 @@
                        RTS                                  ;808331|60      |      ;
                        db $00                               ;808332|        |      ;
  
-       CODE_FN_808333:
+        InitRegisters:
                        PHP                                  ;808333|08      |      ;
                        SEP #$30                             ;808334|E230    |      ;
                        LDA.B #$01                           ;808336|A901    |      ;
@@ -433,8 +433,8 @@
                        STZ.W $01C1                          ;8083E0|9CC101  |0001C1;
                        STZ.W BG1HOFS                        ;8083E3|9C0D21  |00210D;
                        STZ.W BG1HOFS                        ;8083E6|9C0D21  |00210D;
-                       STZ.W _BG1VOFS                       ;8083E9|9C0E21  |00210E;
-                       STZ.W _BG1VOFS                       ;8083EC|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;8083E9|9C0E21  |00210E;
+                       STZ.W BG1VOFS                        ;8083EC|9C0E21  |00210E;
                        STZ.W $01CB                          ;8083EF|9CCB01  |0001CB;
                        STZ.W $01CC                          ;8083F2|9CCC01  |0001CC;
                        STZ.W $01CD                          ;8083F5|9CCD01  |0001CD;
@@ -670,9 +670,13 @@
                        LDA.L $700000                        ;8086A3|AF000070|700000; legit cart has no SRAM, so if successful, indicates copier
                        CMP.W #$5555                         ;8086A7|C95555  |      ;
                        BNE +                                ;8086AA|D017    |8086C3;
-                       db $A9,$AA,$AA,$8F,$00,$00,$70,$AF   ;8086AC|        |      ;
-                       db $00,$00,$70,$C9,$AA,$AA,$D0,$07   ;8086B4|        |      ;
-                       db $A9,$01,$00,$8F,$00,$39,$7E       ;8086BC|        |      ;
+                       LDA.W #$AAAA                         ;8086AC|A9AAAA  |      ;
+                       STA.L $700000                        ;8086AF|8F000070|700000;
+                       LDA.L $700000                        ;8086B3|AF000070|700000;
+                       CMP.W #$AAAA                         ;8086B7|C9AAAA  |      ;
+                       BNE +                                ;8086BA|D007    |8086C3;
+                       LDA.W #$0001                         ;8086BC|A90100  |      ;
+                       STA.L $7E3900                        ;8086BF|8F00397E|7E3900;
  
                      + PLP                                  ;8086C3|28      |      ;
                        RTS                                  ;8086C4|60      |      ;
@@ -1362,9 +1366,9 @@
                        LDA.L $7ED223                        ;808F1D|AF23D27E|7ED223;
                        STA.W BG1HOFS                        ;808F21|8D0D21  |80210D;
                        LDA.L $7ED224                        ;808F24|AF24D27E|7ED224;
-                       STA.W _BG1VOFS                       ;808F28|8D0E21  |80210E;
+                       STA.W BG1VOFS                        ;808F28|8D0E21  |80210E;
                        LDA.L $7ED225                        ;808F2B|AF25D27E|7ED225;
-                       STA.W _BG1VOFS                       ;808F2F|8D0E21  |80210E;
+                       STA.W BG1VOFS                        ;808F2F|8D0E21  |80210E;
                        LDA.L $7ED226                        ;808F32|AF26D27E|7ED226;
                        STA.W BG2HOFS                        ;808F36|8D0F21  |80210F;
                        LDA.L $7ED227                        ;808F39|AF27D27E|7ED227;
@@ -1422,9 +1426,9 @@
                        LDA.L $7ED233                        ;808FCF|AF33D27E|7ED233;
                        STA.W BG1HOFS                        ;808FD3|8D0D21  |80210D;
                        LDA.L $7ED234                        ;808FD6|AF34D27E|7ED234;
-                       STA.W _BG1VOFS                       ;808FDA|8D0E21  |80210E;
+                       STA.W BG1VOFS                        ;808FDA|8D0E21  |80210E;
                        LDA.L $7ED235                        ;808FDD|AF35D27E|7ED235;
-                       STA.W _BG1VOFS                       ;808FE1|8D0E21  |80210E;
+                       STA.W BG1VOFS                        ;808FE1|8D0E21  |80210E;
                        LDA.L $7ED236                        ;808FE4|AF36D27E|7ED236;
                        STA.W BG2HOFS                        ;808FE8|8D0F21  |80210F;
                        LDA.L $7ED237                        ;808FEB|AF37D27E|7ED237;
@@ -4691,7 +4695,7 @@ Audio_CommandHandlers:
                        STA.L BALL_Counter                   ;80AE3B|8F02397E|7E3902;
                        RTS                                  ;80AE3F|60      |      ;
  
-                     + JMP.W CODE_JP_80AE88                 ;80AE40|4C88AE  |80AE88;
+                     + JMP.W BALL_InputCheck                ;80AE40|4C88AE  |80AE88;
                        LDA.B $B7                            ;80AE43|A5B7    |0000B7;
                        AND.W #!JOY_A                        ;80AE45|298000  |      ; !!o !JOY_A ; check for A input
                        BEQ +                                ;80AE48|F00A    |80AE54;
@@ -4700,7 +4704,7 @@ Audio_CommandHandlers:
                        STA.L BALL_Counter                   ;80AE4F|8F02397E|7E3902;
                        RTS                                  ;80AE53|60      |      ;
  
-                     + JMP.W CODE_JP_80AE88                 ;80AE54|4C88AE  |80AE88;
+                     + JMP.W BALL_InputCheck                ;80AE54|4C88AE  |80AE88;
                        LDA.B $B7                            ;80AE57|A5B7    |0000B7;
                        AND.W #!JOY_L                        ;80AE59|292000  |      ; !!o !JOY_L ; check for L input
                        BEQ +                                ;80AE5C|F00A    |80AE68;
@@ -4709,25 +4713,25 @@ Audio_CommandHandlers:
                        STA.L BALL_Counter                   ;80AE63|8F02397E|7E3902;
                        RTS                                  ;80AE67|60      |      ;
  
-                     + JMP.W CODE_JP_80AE88                 ;80AE68|4C88AE  |80AE88;
+                     + JMP.W BALL_InputCheck                ;80AE68|4C88AE  |80AE88;
                        LDA.B $B7                            ;80AE6B|A5B7    |0000B7;
                        AND.W #!JOY_L                        ;80AE6D|292000  |      ; !!o !JOY_L ; check for L input
                        BEQ +                                ;80AE70|F013    |80AE85;
                        TDC                                  ;80AE72|7B      |      ;
-                       STA.L BALL_Counter                   ;80AE73|8F02397E|7E3902;
+                       STA.L BALL_Counter                   ;80AE73|8F02397E|7E3902; clear counter
                        LDA.W #$0001                         ;80AE77|A90100  |      ;
                        STA.L BALL_Active                    ;80AE7A|8F60947E|7E9460; we BALL
                        LDA.W #$0005                         ;80AE7E|A90500  |      ;
                        STA.W $1988                          ;80AE81|8D8819  |801988;
                        RTS                                  ;80AE84|60      |      ;
  
-                     + JMP.W CODE_JP_80AE88                 ;80AE85|4C88AE  |80AE88;
+                     + JMP.W BALL_InputCheck                ;80AE85|4C88AE  |80AE88;
  
-       CODE_JP_80AE88:
-                       LDA.B $B7                            ;80AE88|A5B7    |0000B7;
+      BALL_InputCheck:
+                       LDA.B $B7                            ;80AE88|A5B7    |0000B7; checks for input
                        BEQ +                                ;80AE8A|F005    |80AE91;
                        TDC                                  ;80AE8C|7B      |      ;
-                       STA.L BALL_Counter                   ;80AE8D|8F02397E|7E3902;
+                       STA.L BALL_Counter                   ;80AE8D|8F02397E|7E3902; reset the couter
  
                      + RTS                                  ;80AE91|60      |      ;
  
@@ -5743,8 +5747,8 @@ Audio_CommandHandlers:
                        STZ.W $01B7                          ;80B7F8|9CB701  |8001B7;
                        STZ.W BG1HOFS                        ;80B7FB|9C0D21  |80210D;
                        STZ.W BG1HOFS                        ;80B7FE|9C0D21  |80210D;
-                       STZ.W _BG1VOFS                       ;80B801|9C0E21  |80210E;
-                       STZ.W _BG1VOFS                       ;80B804|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;80B801|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;80B804|9C0E21  |80210E;
                        STZ.W BG2HOFS                        ;80B807|9C0F21  |80210F;
                        STZ.W BG2HOFS                        ;80B80A|9C0F21  |80210F;
                        STZ.W BG2VOFS                        ;80B80D|9C1021  |802110;
@@ -5999,8 +6003,8 @@ Audio_CommandHandlers:
                        STZ.W $01B7                          ;80BA83|9CB701  |8001B7;
                        STZ.W BG1HOFS                        ;80BA86|9C0D21  |80210D;
                        STZ.W BG1HOFS                        ;80BA89|9C0D21  |80210D;
-                       STZ.W _BG1VOFS                       ;80BA8C|9C0E21  |80210E;
-                       STZ.W _BG1VOFS                       ;80BA8F|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;80BA8C|9C0E21  |80210E;
+                       STZ.W BG1VOFS                        ;80BA8F|9C0E21  |80210E;
                        STZ.W BG2HOFS                        ;80BA92|9C0F21  |80210F;
                        STZ.W BG2HOFS                        ;80BA95|9C0F21  |80210F;
                        STZ.W BG2VOFS                        ;80BA98|9C1021  |802110;
@@ -10467,34 +10471,34 @@ Header_ChecksumComplement:
       Header_Checksum:
                        dw $2CF3                             ;80FFDE|        |      ;
 Native_Reserved1__ignored:
-                       dw CODE_808000                       ;80FFE0|        |808000;
+                       dw InfiniteLoop                      ;80FFE0|        |808000;
 Native_Reserved2__ignored:
-                       dw CODE_808000                       ;80FFE2|        |808000;
+                       dw InfiniteLoop                      ;80FFE2|        |808000;
            Native_COP:
-                       dw CODE_808000                       ;80FFE4|        |808000;
+                       dw InfiniteLoop                      ;80FFE4|        |808000;
            Native_BRK:
-                       dw CODE_808000                       ;80FFE6|        |808000;
+                       dw InfiniteLoop                      ;80FFE6|        |808000;
 Native_ABORT__ignored:
-                       dw CODE_808000                       ;80FFE8|        |808000;
+                       dw InfiniteLoop                      ;80FFE8|        |808000;
            Native_NMI:
                        dw CODE_808E21                       ;80FFEA|        |808E21;
 Native_RESET__ignored:
-                       dw CODE_808000                       ;80FFEC|        |808000;
+                       dw InfiniteLoop                      ;80FFEC|        |808000;
            Native_IRQ:
                        dw CODE_808EB9                       ;80FFEE|        |808EB9;
 Emulation_Reserved1__ignored:
-                       dw CODE_808000                       ;80FFF0|        |808000;
+                       dw InfiniteLoop                      ;80FFF0|        |808000;
 Emulation_Reserved2__ignored:
-                       dw CODE_808000                       ;80FFF2|        |808000;
+                       dw InfiniteLoop                      ;80FFF2|        |808000;
         Emulation_COP:
-                       dw CODE_808000                       ;80FFF4|        |808000;
+                       dw InfiniteLoop                      ;80FFF4|        |808000;
 Emulation_Reserved3__ignored:
-                       dw CODE_808000                       ;80FFF6|        |808000;
+                       dw InfiniteLoop                      ;80FFF6|        |808000;
 Emulation_ABORT__ignored:
-                       dw CODE_808000                       ;80FFF8|        |808000;
+                       dw InfiniteLoop                      ;80FFF8|        |808000;
         Emulation_NMI:
-                       dw CODE_808000                       ;80FFFA|        |808000;
+                       dw InfiniteLoop                      ;80FFFA|        |808000;
       Emulation_RESET:
                        dw Reset                             ;80FFFC|        |808002;
      Emulation_IRQBRK:
-                       dw CODE_808000                       ;80FFFE|        |808000;
+                       dw InfiniteLoop                      ;80FFFE|        |808000;

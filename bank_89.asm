@@ -4551,7 +4551,7 @@ LittleGuy_ChangeAnimation:
  
        CODE_FL_89BDE3:
                        PHX                                  ;89BDE3|DA      |      ;
-                       LDA.L $0002BC                        ;89BDE4|AFBC0200|0002BC;
+                       LDA.L Character_2P-$7E0000           ;89BDE4|AFBC0200|0002BC;
                        ASL A                                ;89BDE8|0A      |      ;
                        ASL A                                ;89BDE9|0A      |      ;
                        TAX                                  ;89BDEA|AA      |      ;
@@ -6507,7 +6507,7 @@ LittleGuy_ChangeAnimation:
                        CLC                                  ;89DC1A|18      |      ;
                        ADC.W #$00C7                         ;89DC1B|69C700  |      ;
                        STA.B $D1                            ;89DC1E|85D1    |0000D1;
-                       LDA.L $7ED1E2                        ;89DC20|AFE2D17E|7ED1E2;
+                       LDA.L VS_Stage                       ;89DC20|AFE2D17E|7ED1E2;
                        CMP.W #$0004                         ;89DC24|C90400  |      ;
                        BCS +                                ;89DC27|B011    |89DC3A;
                        LDA.W #$032F                         ;89DC29|A92F03  |      ;
@@ -7227,8 +7227,8 @@ LittleGuy_ChangeAnimation:
                        STZ.W $01D2                          ;89E46F|9CD201  |8901D2;
                        STZ.W BG1HOFS                        ;89E472|9C0D21  |89210D;
                        STZ.W BG1HOFS                        ;89E475|9C0D21  |89210D;
-                       STZ.W _BG1VOFS                       ;89E478|9C0E21  |89210E;
-                       STZ.W _BG1VOFS                       ;89E47B|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89E478|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89E47B|9C0E21  |89210E;
                        STZ.W BG2HOFS                        ;89E47E|9C0F21  |89210F;
                        STZ.W BG2HOFS                        ;89E481|9C0F21  |89210F;
                        STZ.W BG2VOFS                        ;89E484|9C1021  |892110;
@@ -7347,7 +7347,7 @@ LittleGuy_ChangeAnimation:
                        TAX                                  ;89E5BF|AA      |      ;
                        LDA.W DATA8_89E5F2,X                 ;89E5C0|BDF2E5  |89E5F2;
                        AND.W #$00FF                         ;89E5C3|29FF00  |      ;
-                       STA.W $02BC                          ;89E5C6|8DBC02  |8902BC;
+                       STA.W Character_2P                   ;89E5C6|8DBC02  |8902BC;
                        JSR.W CODE_FN_89E5FD                 ;89E5C9|20FDE5  |89E5FD;
                        STA.L $7E9353                        ;89E5CC|8F53937E|7E9353;
                        JSR.W CODE_FN_89E5FD                 ;89E5D0|20FDE5  |89E5FD;
@@ -7500,7 +7500,7 @@ LittleGuy_ChangeAnimation:
                        JSR.W CODE_FN_89E418                 ;89E72C|2018E4  |89E418;
                        JSR.W CODE_FN_89EB93                 ;89E72F|2093EB  |89EB93;
                        JSL.L CODE_FL_80A145                 ;89E732|2245A180|80A145;
-                       STZ.W $02BC                          ;89E736|9CBC02  |8902BC;
+                       STZ.W Character_2P                   ;89E736|9CBC02  |8902BC;
                        LDA.L Options_Character_Selection    ;89E739|AF45937E|7E9345;
                        TAX                                  ;89E73D|AA      |      ;
                        LDA.W DATA8_89E9CD,X                 ;89E73E|BDCDE9  |89E9CD;
@@ -7883,8 +7883,8 @@ LittleGuy_ChangeAnimation:
                        STZ.W $01D2                          ;89EBDC|9CD201  |8901D2;
                        STZ.W BG1HOFS                        ;89EBDF|9C0D21  |89210D;
                        STZ.W BG1HOFS                        ;89EBE2|9C0D21  |89210D;
-                       STZ.W _BG1VOFS                       ;89EBE5|9C0E21  |89210E;
-                       STZ.W _BG1VOFS                       ;89EBE8|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89EBE5|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89EBE8|9C0E21  |89210E;
                        STZ.W BG2HOFS                        ;89EBEB|9C0F21  |89210F;
                        STZ.W BG2HOFS                        ;89EBEE|9C0F21  |89210F;
                        STZ.W BG2VOFS                        ;89EBF1|9C1021  |892110;
@@ -8055,9 +8055,9 @@ LittleGuy_ChangeAnimation:
                        BNE +                                ;89EDA0|D01C    |89EDBE;
                        SEP #$20                             ;89EDA2|E220    |      ;
                        LDA.W $01CD                          ;89EDA4|ADCD01  |8901CD;
-                       STA.W _BG1VOFS                       ;89EDA7|8D0E21  |89210E;
+                       STA.W BG1VOFS                        ;89EDA7|8D0E21  |89210E;
                        LDA.W $01CE                          ;89EDAA|ADCE01  |8901CE;
-                       STA.W _BG1VOFS                       ;89EDAD|8D0E21  |89210E;
+                       STA.W BG1VOFS                        ;89EDAD|8D0E21  |89210E;
                        INC.W $01CD                          ;89EDB0|EECD01  |8901CD;
                        INC.W $01CD                          ;89EDB3|EECD01  |8901CD;
                        INC.W $01CD                          ;89EDB6|EECD01  |8901CD;
@@ -8429,8 +8429,8 @@ LittleGuy_ChangeAnimation:
                        STZ.W $01B7                          ;89F181|9CB701  |8901B7;
                        STZ.W BG1HOFS                        ;89F184|9C0D21  |89210D;
                        STZ.W BG1HOFS                        ;89F187|9C0D21  |89210D;
-                       STZ.W _BG1VOFS                       ;89F18A|9C0E21  |89210E;
-                       STZ.W _BG1VOFS                       ;89F18D|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89F18A|9C0E21  |89210E;
+                       STZ.W BG1VOFS                        ;89F18D|9C0E21  |89210E;
                        STZ.W BG2HOFS                        ;89F190|9C0F21  |89210F;
                        STZ.W BG2HOFS                        ;89F193|9C0F21  |89210F;
                        STZ.W BG2VOFS                        ;89F196|9C1021  |892110;

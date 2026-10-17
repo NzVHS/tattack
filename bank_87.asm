@@ -268,8 +268,8 @@
                        STZ.W $01B7                          ;8782AC|9CB701  |8701B7;
                        STZ.W BG1HOFS                        ;8782AF|9C0D21  |87210D;
                        STZ.W BG1HOFS                        ;8782B2|9C0D21  |87210D;
-                       STZ.W _BG1VOFS                       ;8782B5|9C0E21  |87210E;
-                       STZ.W _BG1VOFS                       ;8782B8|9C0E21  |87210E;
+                       STZ.W BG1VOFS                        ;8782B5|9C0E21  |87210E;
+                       STZ.W BG1VOFS                        ;8782B8|9C0E21  |87210E;
                        STZ.W BG2HOFS                        ;8782BB|9C0F21  |87210F;
                        STZ.W BG2HOFS                        ;8782BE|9C0F21  |87210F;
                        STZ.W BG2VOFS                        ;8782C1|9C1021  |872110;
@@ -4081,12 +4081,12 @@
                        db $00,$5D,$7F,$00,$10,$80,$00,$70   ;87AB8E|        |      ;
  
                      + JSL.L CODE_FL_85A391                 ;87AB96|2291A385|85A391;
-                       LDA.W $02BC                          ;87AB9A|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87AB9A|ADBC02  |8702BC;
                        STA.W $02BE                          ;87AB9D|8DBE02  |8702BE;
                        JSL.L CODE_FL_85A590                 ;87ABA0|2290A585|85A590;
                        JSL.L CODE_FL_85A009                 ;87ABA4|2209A085|85A009;
                        JSL.L CODE_FL_859F99                 ;87ABA8|22999F85|859F99;
-                       LDA.W $02BC                          ;87ABAC|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87ABAC|ADBC02  |8702BC;
                        STA.W $02C0                          ;87ABAF|8DC002  |8702C0;
                        JSL.L CODE_FL_85AA1B                 ;87ABB2|221BAA85|85AA1B;
                        JSL.L CODE_FL_85AAAC                 ;87ABB6|22ACAA85|85AAAC;
@@ -4186,7 +4186,7 @@
                        db $02                               ;87ACBA|        |      ;
  
        CODE_FN_87ACBB:
-                       LDX.W $1A80                          ;87ACBB|AE801A  |871A80;
+                       LDX.W VS_Difficulty                  ;87ACBB|AE801A  |871A80;
                        BNE +                                ;87ACBE|D039    |87ACF9;
                        LDA.W #$0C50                         ;87ACC0|A9500C  |      ;
                        STA.L $7E245C                        ;87ACC3|8F5C247E|7E245C;
@@ -4256,7 +4256,7 @@
                        REP #$30                             ;87AD8A|C230    |      ;
                        JSL.L CODE_FL_80BB2D                 ;87AD8C|222DBB80|80BB2D;
                        db $C5,$EE,$8C,$00,$5D,$7F           ;87AD90|        |      ;
-                       LDA.W $02BC                          ;87AD96|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87AD96|ADBC02  |8702BC;
                        ASL A                                ;87AD99|0A      |      ;
                        TAX                                  ;87AD9A|AA      |      ;
                        JSR.W (DATA8_87AD9F,X)               ;87AD9B|FC9FAD  |87AD9F;
@@ -4465,7 +4465,7 @@
                        PLB                                  ;87AFB4|AB      |      ;
                        LDA.W #$0001                         ;87AFB5|A90100  |      ;
                        STA.W $02E6                          ;87AFB8|8DE602  |8202E6;
-                       LDA.W $1A80                          ;87AFBB|AD801A  |821A80;
+                       LDA.W VS_Difficulty                  ;87AFBB|AD801A  |821A80;
                        ASL A                                ;87AFBE|0A      |      ;
                        TAX                                  ;87AFBF|AA      |      ;
                        LDA.L VSLevelAdj_Easy_Selection,X    ;87AFC0|BF70947E|7E9470;
@@ -4477,7 +4477,7 @@
                        JSR.W CODE_FN_87BA42                 ;87AFCF|2042BA  |87BA42;
                        LDA.W #$0001                         ;87AFD2|A90100  |      ;
                        STA.W $02E8                          ;87AFD5|8DE802  |8202E8;
-                       LDA.W $1A80                          ;87AFD8|AD801A  |821A80;
+                       LDA.W VS_Difficulty                  ;87AFD8|AD801A  |821A80;
                        ASL A                                ;87AFDB|0A      |      ;
                        TAX                                  ;87AFDC|AA      |      ;
                        LDA.L VSLevelAdj_Easy_Selection,X    ;87AFDD|BF70947E|7E9470;
@@ -10679,7 +10679,7 @@
                      + LDA.W $02A8                          ;87F0B1|ADA802  |8702A8;
                        CMP.W #$0001                         ;87F0B4|C90100  |      ;
                        BNE +                                ;87F0B7|D00D    |87F0C6;
-                       LDA.W $02BC                          ;87F0B9|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87F0B9|ADBC02  |8702BC;
                        CMP.W #$000B                         ;87F0BC|C90B00  |      ;
                        BNE +                                ;87F0BF|D005    |87F0C6;
                        LDA.W $04D2                          ;87F0C1|ADD204  |0004D2;
@@ -10748,7 +10748,7 @@
                        CMP.W #$0001                         ;87F14D|C90100  |      ;
                        BNE +                                ;87F150|D022    |87F174;
                        JSR.W CODE_FN_87F176                 ;87F152|2076F1  |87F176;
-                       LDA.W $02BC                          ;87F155|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87F155|ADBC02  |8702BC;
                        CMP.W #$0008                         ;87F158|C90800  |      ;
                        BEQ ++                               ;87F15B|F00F    |87F16C;
                        CMP.W #$0009                         ;87F15D|C90900  |      ;
@@ -10810,18 +10810,18 @@
                     ++ REP #$20                             ;87F1E6|C220    |      ;
                        BRA ++                               ;87F1E8|804F    |87F239;
  
-                     + LDA.L $7ED1E2                        ;87F1EA|AFE2D17E|7ED1E2;
+                     + LDA.L VS_Stage                       ;87F1EA|AFE2D17E|7ED1E2;
                        STA.W $0394                          ;87F1EE|8D9403  |870394;
-                       LDX.W $1A80                          ;87F1F1|AE801A  |871A80;
+                       LDX.W VS_Difficulty                  ;87F1F1|AE801A  |871A80;
                        LDA.W DATA8_87F23A,X                 ;87F1F4|BD3AF2  |87F23A;
                        AND.W #$00FF                         ;87F1F7|29FF00  |      ;
-                       CMP.L $7ED1E2                        ;87F1FA|CFE2D17E|7ED1E2;
+                       CMP.L VS_Stage                       ;87F1FA|CFE2D17E|7ED1E2;
                        BEQ +                                ;87F1FE|F008    |87F208;
                        LDA.W $0394                          ;87F200|AD9403  |870394;
                        INC A                                ;87F203|1A      |      ;
-                       STA.L $7ED1E2                        ;87F204|8FE2D17E|7ED1E2;
+                       STA.L VS_Stage                       ;87F204|8FE2D17E|7ED1E2;
  
-                     + LDX.W $02BC                          ;87F208|AEBC02  |8702BC;
+                     + LDX.W Character_2P                   ;87F208|AEBC02  |8702BC;
                        SEP #$20                             ;87F20B|E220    |      ;
                        LDA.L $7ED1E6,X                      ;87F20D|BFE6D17E|7ED1E6;
                        STA.W $0396                          ;87F211|8D9603  |870396;
@@ -10831,8 +10831,8 @@
                        JSL.L CODE_FL_86EFEA                 ;87F21C|22EAEF86|86EFEA;
                        JSL.L CODE_FL_838312                 ;87F220|22128383|838312;
                        LDA.W $0394                          ;87F224|AD9403  |870394;
-                       STA.L $7ED1E2                        ;87F227|8FE2D17E|7ED1E2;
-                       LDX.W $02BC                          ;87F22B|AEBC02  |8702BC;
+                       STA.L VS_Stage                       ;87F227|8FE2D17E|7ED1E2;
+                       LDX.W Character_2P                   ;87F22B|AEBC02  |8702BC;
                        SEP #$20                             ;87F22E|E220    |      ;
                        LDA.W $0396                          ;87F230|AD9603  |870396;
                        STA.L $7ED1E6,X                      ;87F233|9FE6D17E|7ED1E6;
@@ -11642,7 +11642,7 @@
                        LDA.L $7E6541                        ;87FB5A|AF41657E|7E6541;
                        CMP.W #$0003                         ;87FB5E|C90300  |      ;
                        BNE ++                               ;87FB61|D00F    |87FB72;
-                       LDA.W $02BC                          ;87FB63|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87FB63|ADBC02  |8702BC;
                        SEC                                  ;87FB66|38      |      ;
                        SBC.W #$0008                         ;87FB67|E90800  |      ;
                        ASL A                                ;87FB6A|0A      |      ;
@@ -11650,7 +11650,7 @@
                        LDA.W DATA8_87FC11,X                 ;87FB6C|BD11FC  |87FC11;
                        STA.W $198A                          ;87FB6F|8D8A19  |87198A;
  
-                    ++ LDA.W $02BC                          ;87FB72|ADBC02  |8702BC;
+                    ++ LDA.W Character_2P                   ;87FB72|ADBC02  |8702BC;
                        CMP.W #$000B                         ;87FB75|C90B00  |      ;
                        BNE ++                               ;87FB78|D006    |87FB80;
                        LDA.W #$00EF                         ;87FB7A|A9EF00  |      ;
@@ -11689,9 +11689,9 @@
                        STA.L $7E6539                        ;87FBCC|8F39657E|7E6539;
                        LDA.W $04D2                          ;87FBD0|ADD204  |8704D2;
                        BNE ++                               ;87FBD3|D034    |87FC09;
-                       LDX.W $1A80                          ;87FBD5|AE801A  |871A80;
+                       LDX.W VS_Difficulty                  ;87FBD5|AE801A  |871A80;
                        BNE +++                              ;87FBD8|D009    |87FBE3;
-                       LDA.W $02BC                          ;87FBDA|ADBC02  |8702BC;
+                       LDA.W Character_2P                   ;87FBDA|ADBC02  |8702BC;
                        CMP.W #$0009                         ;87FBDD|C90900  |      ;
                        BEQ ++++                             ;87FBE0|F015    |87FBF7;
                        RTS                                  ;87FBE2|60      |      ;
@@ -11701,7 +11701,7 @@
                        db $AD,$BC,$02,$C9,$0A,$00,$F0,$09   ;87FBE6|        |0002BC;
                        db $60                               ;87FBEE|        |      ;
  
-                   +++ LDA.W $02BC                          ;87FBEF|ADBC02  |0002BC;
+                   +++ LDA.W Character_2P                   ;87FBEF|ADBC02  |0002BC;
                        CMP.W #$000B                         ;87FBF2|C90B00  |      ;
                        BNE ++                               ;87FBF5|D012    |87FC09;
  

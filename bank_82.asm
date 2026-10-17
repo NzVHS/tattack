@@ -3011,7 +3011,7 @@
                      + RTS                                  ;82A71F|60      |      ;
  
        CODE_FN_82A720:
-                       LDA.W $02BC                          ;82A720|ADBC02  |8202BC;
+                       LDA.W Character_2P                   ;82A720|ADBC02  |8202BC;
                        BNE +                                ;82A723|D007    |82A72C;
                        LDA.L $7E944E                        ;82A725|AF4E947E|7E944E;
                        BNE +                                ;82A729|D001    |82A72C;
@@ -10935,7 +10935,7 @@
                        JSL.L CODE_FL_89B18A                 ;82F1BA|228AB189|89B18A;
                        LDA.W #$000C                         ;82F1BE|A90C00  |      ;
                        STA.W Character_1P                   ;82F1C1|8DBA02  |8902BA;
-                       STA.W $02BC                          ;82F1C4|8DBC02  |8902BC;
+                       STA.W Character_2P                   ;82F1C4|8DBC02  |8902BC;
                        LDA.W #$0002                         ;82F1C7|A90200  |      ;
                        STA.W $02A8                          ;82F1CA|8DA802  |8902A8;
                        LDA.W #$0000                         ;82F1CD|A90000  |      ;

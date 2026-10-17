@@ -2879,7 +2879,7 @@
                        db $00,$5F,$7F,$C0,$00,$80,$20,$01   ;85A139|        |      ;
  
        CODE_JP_85A141:
-                       LDA.W $02BC                          ;85A141|ADBC02  |8502BC;
+                       LDA.W Character_2P                   ;85A141|ADBC02  |8502BC;
                        ASL A                                ;85A144|0A      |      ;
                        TAX                                  ;85A145|AA      |      ;
                        LDA.W DATA8_85A166,X                 ;85A146|BD66A1  |85A166;
@@ -2889,7 +2889,7 @@
                        PLB                                  ;85A14C|AB      |      ;
                        JSL.L CODE_FL_80A0CA                 ;85A14D|22CAA080|80A0CA;
                        PLB                                  ;85A151|AB      |      ;
-                       LDA.W $02BC                          ;85A152|ADBC02  |8502BC;
+                       LDA.W Character_2P                   ;85A152|ADBC02  |8502BC;
                        ASL A                                ;85A155|0A      |      ;
                        TAX                                  ;85A156|AA      |      ;
                        LDA.W DATA8_85A180,X                 ;85A157|BD80A1  |85A180;
@@ -2959,10 +2959,10 @@
                        STA.L $7E8800                        ;85A299|8F00887E|7E8800;
                        LDA.L DATA8_85A2FF,X                 ;85A29D|BFFFA285|85A2FF;
                        STA.L $7E8802                        ;85A2A1|8F02887E|7E8802;
-                       LDA.W $02BC                          ;85A2A5|ADBC02  |8502BC;
+                       LDA.W Character_2P                   ;85A2A5|ADBC02  |8502BC;
                        ASL A                                ;85A2A8|0A      |      ;
                        CLC                                  ;85A2A9|18      |      ;
-                       ADC.W $02BC                          ;85A2AA|6DBC02  |8502BC;
+                       ADC.W Character_2P                   ;85A2AA|6DBC02  |8502BC;
                        ASL A                                ;85A2AD|0A      |      ;
                        ASL A                                ;85A2AE|0A      |      ;
                        TAX                                  ;85A2AF|AA      |      ;
@@ -3545,7 +3545,7 @@
                        STA.W $199C                          ;85AA3D|8D9C19  |85199C;
                        JSL.L CODE_FL_8091B2                 ;85AA40|22B29180|8091B2;
                        JSL.L CODE_FL_809CCA                 ;85AA44|22CA9C80|809CCA;
-                       LDA.W $02BC                          ;85AA48|ADBC02  |8502BC;
+                       LDA.W Character_2P                   ;85AA48|ADBC02  |8502BC;
                        ASL A                                ;85AA4B|0A      |      ;
                        TAX                                  ;85AA4C|AA      |      ;
                        LDA.L DATA8_85AA92,X                 ;85AA4D|BF92AA85|85AA92;
