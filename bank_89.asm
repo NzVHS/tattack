@@ -6389,6 +6389,8 @@ LittleGuy_ChangeAnimation:
  
        UNREACH_89DB17:
                        db $A9,$01,$00,$8D,$38,$03,$6B       ;89DB17|        |      ;
+ 
+  GameState_HowtoPlay:
                        PHP                                  ;89DB1E|08      |      ;
                        PHK                                  ;89DB1F|4B      |      ;
                        PLB                                  ;89DB20|AB      |      ;
@@ -6397,12 +6399,16 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7E9341                        ;89DB26|AF41937E|7E9341;
                        ASL A                                ;89DB2A|0A      |      ;
                        TAX                                  ;89DB2B|AA      |      ;
-                       JSR.W (DATA8_89DB31,X)               ;89DB2C|FC31DB  |89DB31;
+                       JSR.W (HowtoPlay_Pointers,X)         ;89DB2C|FC31DB  |89DB31;
                        PLP                                  ;89DB2F|28      |      ;
                        RTL                                  ;89DB30|6B      |      ;
+   HowtoPlay_Pointers:
+                       dw CODE_89DB39                       ;89DB31|        |89DB39;
+                       dw CODE_89DB39                       ;89DB33|        |89DB39;
+                       dw CODE_89DB4F                       ;89DB35|        |89DB4F;
+                       dw CODE_89DB4F                       ;89DB37|        |89DB4F;
  
-         DATA8_89DB31:
-                       db $39,$DB,$39,$DB,$4F,$DB,$4F,$DB   ;89DB31|        |      ;
+          CODE_89DB39:
                        LDA.L $7E9357                        ;89DB39|AF57937E|7E9357;
                        ASL A                                ;89DB3D|0A      |      ;
                        TAX                                  ;89DB3E|AA      |      ;
@@ -6413,6 +6419,8 @@ LittleGuy_ChangeAnimation:
          DATA8_89DB46:
                        db $54,$DC,$23,$DF,$A7,$DB           ;89DB46|        |      ;
                        db $4E,$DB,$60                       ;89DB4C|        |0060DB;
+ 
+          CODE_89DB4F:
                        LDA.L $7E9357                        ;89DB4F|AF57937E|7E9357;
                        ASL A                                ;89DB53|0A      |      ;
                        TAX                                  ;89DB54|AA      |      ;
@@ -6429,7 +6437,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DB66|4B      |      ;
                        PLB                                  ;89DB67|AB      |      ;
                        LDY.W #$DB72                         ;89DB68|A072DB  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DB6B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DB6B|22CAA080|80A0CA;
                        PLB                                  ;89DB6F|AB      |      ;
                        BRA +                                ;89DB70|8008    |89DB7A;
                        db $08,$51,$7E,$80,$01,$80,$00,$60   ;89DB72|        |      ;
@@ -6438,7 +6446,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DB7B|4B      |      ;
                        PLB                                  ;89DB7C|AB      |      ;
                        LDY.W #$DB87                         ;89DB7D|A087DB  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89DB80|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89DB80|227FA080|80A07F;
                        PLB                                  ;89DB84|AB      |      ;
                        BRA +                                ;89DB85|8006    |89DB8D;
                        db $F6,$86,$7E,$00,$02,$00           ;89DB87|        |      ;
@@ -6448,7 +6456,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DB92|4B      |      ;
                        PLB                                  ;89DB93|AB      |      ;
                        LDY.W #$DB9E                         ;89DB94|A09EDB  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DB97|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DB97|22CAA080|80A0CA;
                        PLB                                  ;89DB9B|AB      |      ;
                        BRA +                                ;89DB9C|8008    |89DBA6;
                        db $00,$20,$7E,$C0,$07,$80,$00,$70   ;89DB9E|        |      ;
@@ -6546,7 +6554,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DC7E|4B      |      ;
                        PLB                                  ;89DC7F|AB      |      ;
                        LDY.W #$DC8A                         ;89DC80|A08ADC  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DC83|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DC83|22CAA080|80A0CA;
                        PLB                                  ;89DC87|AB      |      ;
                        BRA +                                ;89DC88|8008    |89DC92;
                        db $00,$5D,$7F,$00,$40,$80,$00,$20   ;89DC8A|        |      ;
@@ -6557,7 +6565,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DC9D|4B      |      ;
                        PLB                                  ;89DC9E|AB      |      ;
                        LDY.W #$DCA9                         ;89DC9F|A0A9DC  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DCA2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DCA2|22CAA080|80A0CA;
                        PLB                                  ;89DCA6|AB      |      ;
                        BRA +                                ;89DCA7|8008    |89DCB1;
                        db $00,$5D,$7F,$00,$08,$80,$00,$44   ;89DCA9|        |      ;
@@ -6568,7 +6576,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DCBC|4B      |      ;
                        PLB                                  ;89DCBD|AB      |      ;
                        LDY.W #$DCC8                         ;89DCBE|A0C8DC  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DCC1|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DCC1|22CAA080|80A0CA;
                        PLB                                  ;89DCC5|AB      |      ;
                        BRA +                                ;89DCC6|8008    |89DCD0;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89DCC8|        |      ;
@@ -6579,7 +6587,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DCDB|4B      |      ;
                        PLB                                  ;89DCDC|AB      |      ;
                        LDY.W #$DCE7                         ;89DCDD|A0E7DC  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DCE0|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DCE0|22CAA080|80A0CA;
                        PLB                                  ;89DCE4|AB      |      ;
                        BRA +                                ;89DCE5|8008    |89DCEF;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89DCE7|        |      ;
@@ -6590,7 +6598,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DCFA|4B      |      ;
                        PLB                                  ;89DCFB|AB      |      ;
                        LDY.W #$DD06                         ;89DCFC|A006DD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DCFF|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DCFF|22CAA080|80A0CA;
                        PLB                                  ;89DD03|AB      |      ;
                        BRA +                                ;89DD04|8008    |89DD0E;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;89DD06|        |      ;
@@ -6601,7 +6609,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DD19|4B      |      ;
                        PLB                                  ;89DD1A|AB      |      ;
                        LDY.W #$DD25                         ;89DD1B|A025DD  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89DD1E|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89DD1E|227FA080|80A07F;
                        PLB                                  ;89DD22|AB      |      ;
                        BRA +                                ;89DD23|8006    |89DD2B;
                        db $F6,$86,$7E,$00,$02,$00           ;89DD25|        |      ;
@@ -6622,7 +6630,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DD4A|4B      |      ;
                        PLB                                  ;89DD4B|AB      |      ;
                        LDY.W #$DD56                         ;89DD4C|A056DD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DD4F|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DD4F|22CAA080|80A0CA;
                        PLB                                  ;89DD53|AB      |      ;
                        BRA +                                ;89DD54|8008    |89DD5E;
                        db $00,$5D,$7F,$00,$10,$80,$00,$70   ;89DD56|        |      ;
@@ -6633,7 +6641,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DD69|4B      |      ;
                        PLB                                  ;89DD6A|AB      |      ;
                        LDY.W #$DD75                         ;89DD6B|A075DD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DD6E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DD6E|22CAA080|80A0CA;
                        PLB                                  ;89DD72|AB      |      ;
                        BRA +                                ;89DD73|8008    |89DD7D;
                        db $00,$28,$7E,$00,$08,$80,$00,$78   ;89DD75|        |      ;
@@ -6681,7 +6689,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DDFE|4B      |      ;
                        PLB                                  ;89DDFF|AB      |      ;
                        LDY.W #$DE0A                         ;89DE00|A00ADE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DE03|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DE03|22CAA080|80A0CA;
                        PLB                                  ;89DE07|AB      |      ;
                        BRA +                                ;89DE08|8008    |89DE12;
                        db $00,$5D,$7F,$00,$40,$80,$00,$20   ;89DE0A|        |      ;
@@ -6692,7 +6700,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DE1D|4B      |      ;
                        PLB                                  ;89DE1E|AB      |      ;
                        LDY.W #$DE29                         ;89DE1F|A029DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DE22|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DE22|22CAA080|80A0CA;
                        PLB                                  ;89DE26|AB      |      ;
                        BRA +                                ;89DE27|8008    |89DE31;
                        db $00,$5D,$7F,$00,$08,$80,$00,$44   ;89DE29|        |      ;
@@ -6703,7 +6711,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DE3C|4B      |      ;
                        PLB                                  ;89DE3D|AB      |      ;
                        LDY.W #$DE48                         ;89DE3E|A048DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DE41|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DE41|22CAA080|80A0CA;
                        PLB                                  ;89DE45|AB      |      ;
                        BRA +                                ;89DE46|8008    |89DE50;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89DE48|        |      ;
@@ -6714,7 +6722,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DE5B|4B      |      ;
                        PLB                                  ;89DE5C|AB      |      ;
                        LDY.W #$DE67                         ;89DE5D|A067DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DE60|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DE60|22CAA080|80A0CA;
                        PLB                                  ;89DE64|AB      |      ;
                        BRA +                                ;89DE65|8008    |89DE6F;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89DE67|        |      ;
@@ -6725,7 +6733,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DE7A|4B      |      ;
                        PLB                                  ;89DE7B|AB      |      ;
                        LDY.W #$DE86                         ;89DE7C|A086DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DE7F|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DE7F|22CAA080|80A0CA;
                        PLB                                  ;89DE83|AB      |      ;
                        BRA +                                ;89DE84|8008    |89DE8E;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;89DE86|        |      ;
@@ -6736,7 +6744,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DE99|4B      |      ;
                        PLB                                  ;89DE9A|AB      |      ;
                        LDY.W #$DEA5                         ;89DE9B|A0A5DE  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89DE9E|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89DE9E|227FA080|80A07F;
                        PLB                                  ;89DEA2|AB      |      ;
                        BRA +                                ;89DEA3|8006    |89DEAB;
                        db $F6,$86,$7E,$00,$02,$00           ;89DEA5|        |      ;
@@ -6757,7 +6765,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DECA|4B      |      ;
                        PLB                                  ;89DECB|AB      |      ;
                        LDY.W #$DED6                         ;89DECC|A0D6DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DECF|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DECF|22CAA080|80A0CA;
                        PLB                                  ;89DED3|AB      |      ;
                        BRA +                                ;89DED4|8008    |89DEDE;
                        db $00,$5D,$7F,$00,$10,$80,$00,$70   ;89DED6|        |      ;
@@ -6768,7 +6776,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89DEE9|4B      |      ;
                        PLB                                  ;89DEEA|AB      |      ;
                        LDY.W #$DEF5                         ;89DEEB|A0F5DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89DEEE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89DEEE|22CAA080|80A0CA;
                        PLB                                  ;89DEF2|AB      |      ;
                        BRA +                                ;89DEF3|8008    |89DEFD;
                        db $00,$28,$7E,$00,$08,$80,$00,$78   ;89DEF5|        |      ;
@@ -7283,6 +7291,8 @@ LittleGuy_ChangeAnimation:
                        JSL.L CODE_FL_80A145                 ;89E50D|2245A180|80A145;
                        REP #$20                             ;89E511|C220    |      ;
                        RTS                                  ;89E513|60      |      ;
+ 
+   GameState_InitDemo:
                        PHP                                  ;89E514|08      |      ;
                        PHK                                  ;89E515|4B      |      ;
                        PLB                                  ;89E516|AB      |      ;
@@ -7290,12 +7300,14 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7E9357                        ;89E519|AF57937E|7E9357;
                        ASL A                                ;89E51D|0A      |      ;
                        TAX                                  ;89E51E|AA      |      ;
-                       JSR.W (DATA8_89E524,X)               ;89E51F|FC24E5  |89E524;
+                       JSR.W (InitDemo_Pointers,X)          ;89E51F|FC24E5  |89E524;
                        PLP                                  ;89E522|28      |      ;
                        RTL                                  ;89E523|6B      |      ;
+    InitDemo_Pointers:
+                       dw CODE_89E528                       ;89E524|        |89E528;
+                       dw CODE_89E638                       ;89E526|        |89E638;
  
-         DATA8_89E524:
-                       db $28,$E5,$38,$E6                   ;89E524|        |      ;
+          CODE_89E528:
                        JSL.L CODE_FL_809CF7                 ;89E528|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;89E52C|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;89E530|22389E80|809E38;
@@ -7400,6 +7412,8 @@ LittleGuy_ChangeAnimation:
                        CMP.W #$0009                         ;89E632|C90900  |      ;
                        BCS -                                ;89E635|B0F2    |89E629;
                        RTS                                  ;89E637|60      |      ;
+ 
+          CODE_89E638:
                        LDY.W #$0001                         ;89E638|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;89E63B|2218AF80|80AF18;
                        BCC +                                ;89E63F|9043    |89E684;
@@ -7431,6 +7445,8 @@ LittleGuy_ChangeAnimation:
  
                      + REP #$20                             ;89E684|C220    |      ;
                        RTS                                  ;89E686|60      |      ;
+ 
+GameState_CharacterBio:
                        PHP                                  ;89E687|08      |      ;
                        PHK                                  ;89E688|4B      |      ;
                        PLB                                  ;89E689|AB      |      ;
@@ -7438,14 +7454,16 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7E9357                        ;89E68C|AF57937E|7E9357;
                        ASL A                                ;89E690|0A      |      ;
                        TAX                                  ;89E691|AA      |      ;
-                       JSR.W (DATA8_89E69A,X)               ;89E692|FC9AE6  |89E69A;
+                       JSR.W (CharacterBio_Pointers,X)      ;89E692|FC9AE6  |89E69A;
                        JSR.W CODE_FN_89E6A4                 ;89E695|20A4E6  |89E6A4;
                        PLP                                  ;89E698|28      |      ;
                        RTL                                  ;89E699|6B      |      ;
- 
-         DATA8_89E69A:
-                       db $20,$E7,$88,$EC,$A3,$EC,$BA,$EC   ;89E69A|        |      ;
-                       db $F8,$EC                           ;89E6A2|        |      ;
+CharacterBio_Pointers:
+                       dw CODE_89E720                       ;89E69A|        |89E720;
+                       dw CODE_89EC88                       ;89E69C|        |89EC88;
+                       dw CODE_89ECA3                       ;89E69E|        |89ECA3;
+                       dw CODE_89ECBA                       ;89E6A0|        |89ECBA;
+                       dw CODE_89ECF8                       ;89E6A2|        |89ECF8;
  
        CODE_FN_89E6A4:
                        LDA.L $7E935B                        ;89E6A4|AF5B937E|7E935B;
@@ -7494,6 +7512,8 @@ LittleGuy_ChangeAnimation:
  
                      + JSL.L CODE_FL_88A2D1                 ;89E71B|22D1A288|88A2D1;
                        RTS                                  ;89E71F|60      |      ;
+ 
+          CODE_89E720:
                        JSL.L CODE_FL_809CF7                 ;89E720|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;89E724|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;89E728|22389E80|809E38;
@@ -7512,7 +7532,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E753|4B      |      ;
                        PLB                                  ;89E754|AB      |      ;
                        LDY.W #$E75F                         ;89E755|A05FE7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E758|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E758|22CAA080|80A0CA;
                        PLB                                  ;89E75C|AB      |      ;
                        BRA +                                ;89E75D|8008    |89E767;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89E75F|        |      ;
@@ -7523,7 +7543,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E772|4B      |      ;
                        PLB                                  ;89E773|AB      |      ;
                        LDY.W #$E77E                         ;89E774|A07EE7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E777|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E777|22CAA080|80A0CA;
                        PLB                                  ;89E77B|AB      |      ;
                        BRA +                                ;89E77C|8008    |89E786;
                        db $00,$5D,$7F,$00,$08,$80,$00,$02   ;89E77E|        |      ;
@@ -7534,7 +7554,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E791|4B      |      ;
                        PLB                                  ;89E792|AB      |      ;
                        LDY.W #$E79D                         ;89E793|A09DE7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E796|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E796|22CAA080|80A0CA;
                        PLB                                  ;89E79A|AB      |      ;
                        BRA +                                ;89E79B|8008    |89E7A5;
                        db $00,$5D,$7F,$00,$08,$80,$00,$20   ;89E79D|        |      ;
@@ -7545,7 +7565,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E7B0|4B      |      ;
                        PLB                                  ;89E7B1|AB      |      ;
                        LDY.W #$E7BC                         ;89E7B2|A0BCE7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E7B5|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E7B5|22CAA080|80A0CA;
                        PLB                                  ;89E7B9|AB      |      ;
                        BRA +                                ;89E7BA|8008    |89E7C4;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89E7BC|        |      ;
@@ -7558,7 +7578,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E7D9|4B      |      ;
                        PLB                                  ;89E7DA|AB      |      ;
                        LDY.W #$E7E5                         ;89E7DB|A0E5E7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E7DE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E7DE|22CAA080|80A0CA;
                        PLB                                  ;89E7E2|AB      |      ;
                        BRA +                                ;89E7E3|8008    |89E7ED;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$60   ;89E7E5|        |      ;
@@ -7569,7 +7589,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E7F8|4B      |      ;
                        PLB                                  ;89E7F9|AB      |      ;
                        LDY.W #$E804                         ;89E7FA|A004E8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E7FD|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E7FD|22CAA080|80A0CA;
                        PLB                                  ;89E801|AB      |      ;
                        BRA +                                ;89E802|8008    |89E80C;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;89E804|        |      ;
@@ -7580,7 +7600,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E817|4B      |      ;
                        PLB                                  ;89E818|AB      |      ;
                        LDY.W #$E823                         ;89E819|A023E8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E81C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E81C|22CAA080|80A0CA;
                        PLB                                  ;89E820|AB      |      ;
                        BRA +                                ;89E821|8008    |89E82B;
                        db $00,$28,$7E,$00,$08,$80,$00,$70   ;89E823|        |      ;
@@ -7591,7 +7611,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E836|4B      |      ;
                        PLB                                  ;89E837|AB      |      ;
                        LDY.W #$E842                         ;89E838|A042E8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E83B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E83B|22CAA080|80A0CA;
                        PLB                                  ;89E83F|AB      |      ;
                        BRA +                                ;89E840|8008    |89E84A;
                        db $00,$30,$7E,$00,$08,$80,$00,$78   ;89E842|        |      ;
@@ -7600,7 +7620,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E84B|4B      |      ;
                        PLB                                  ;89E84C|AB      |      ;
                        LDY.W #$E857                         ;89E84D|A057E8  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89E850|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89E850|227FA080|80A07F;
                        PLB                                  ;89E854|AB      |      ;
                        BRA +                                ;89E855|8006    |89E85D;
                        db $F6,$86,$7E,$00,$02,$00           ;89E857|        |      ;
@@ -7617,7 +7637,7 @@ LittleGuy_ChangeAnimation:
                        PHB                                  ;89E87B|8B      |      ;
                        PHK                                  ;89E87C|4B      |      ;
                        PLB                                  ;89E87D|AB      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E87E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E87E|22CAA080|80A0CA;
                        PLB                                  ;89E882|AB      |      ;
                        JSL.L CODE_FL_80BB2D                 ;89E883|222DBB80|80BB2D;
                        db $D5,$FB,$92,$00,$5D,$7F           ;89E887|        |      ;
@@ -7652,7 +7672,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E8C8|4B      |      ;
                        PLB                                  ;89E8C9|AB      |      ;
                        LDY.W #$E8D4                         ;89E8CA|A0D4E8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E8CD|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E8CD|22CAA080|80A0CA;
                        PLB                                  ;89E8D1|AB      |      ;
                        BRA +                                ;89E8D2|8008    |89E8DC;
                        db $00,$5D,$7F,$00,$20,$80,$00,$50   ;89E8D4|        |      ;
@@ -7674,7 +7694,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E8FE|4B      |      ;
                        PLB                                  ;89E8FF|AB      |      ;
                        LDY.W #$E90A                         ;89E900|A00AE9  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89E903|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89E903|227FA080|80A07F;
                        PLB                                  ;89E907|AB      |      ;
                        BRA +                                ;89E908|8006    |89E910;
                        db $F6,$86,$7E,$00,$02,$00           ;89E90A|        |      ;
@@ -7718,7 +7738,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89E95E|4B      |      ;
                        PLB                                  ;89E95F|AB      |      ;
                        LDY.W #$E96A                         ;89E960|A06AE9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89E963|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89E963|22CAA080|80A0CA;
                        PLB                                  ;89E967|AB      |      ;
                        BRA +                                ;89E968|8008    |89E972;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;89E96A|        |      ;
@@ -7941,6 +7961,8 @@ LittleGuy_ChangeAnimation:
                        STZ.W HDMAEN                         ;89EC82|9C0C42  |89420C;
                        REP #$20                             ;89EC85|C220    |      ;
                        RTS                                  ;89EC87|60      |      ;
+ 
+          CODE_89EC88:
                        LDY.W #$0001                         ;89EC88|A00100  |      ;
                        JSL.L CODE_FL_80AECB                 ;89EC8B|22CBAE80|80AECB;
                        BCC +                                ;89EC8F|900F    |89ECA0;
@@ -7953,6 +7975,8 @@ LittleGuy_ChangeAnimation:
  
                      + REP #$20                             ;89ECA0|C220    |      ;
                        RTS                                  ;89ECA2|60      |      ;
+ 
+          CODE_89ECA3:
                        LDA.L $7E9347                        ;89ECA3|AF47937E|7E9347;
                        BNE +                                ;89ECA7|D010    |89ECB9;
                        LDA.B $AD                            ;89ECA9|A5AD    |0000AD;
@@ -7963,6 +7987,8 @@ LittleGuy_ChangeAnimation:
                        STA.L $7E9357                        ;89ECB5|8F57937E|7E9357;
  
                      + RTS                                  ;89ECB9|60      |      ;
+ 
+          CODE_89ECBA:
                        LDY.W #$0001                         ;89ECBA|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;89ECBD|2218AF80|80AF18;
                        BCC +                                ;89ECC1|9032    |89ECF5;
@@ -7984,6 +8010,8 @@ LittleGuy_ChangeAnimation:
  
                      + REP #$20                             ;89ECF5|C220    |      ;
                        RTS                                  ;89ECF7|60      |      ;
+ 
+          CODE_89ECF8:
                        LDY.W #$0001                         ;89ECF8|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;89ECFB|2218AF80|80AF18;
                        BCC +                                ;89ECFF|9036    |89ED37;
@@ -8008,6 +8036,8 @@ LittleGuy_ChangeAnimation:
  
                      + REP #$20                             ;89ED37|C220    |      ;
                        RTS                                  ;89ED39|60      |      ;
+ 
+GameState_StageClearIntro:
                        PHP                                  ;89ED3A|08      |      ;
                        PHK                                  ;89ED3B|4B      |      ;
                        PLB                                  ;89ED3C|AB      |      ;
@@ -8015,14 +8045,16 @@ LittleGuy_ChangeAnimation:
                        LDA.W Game_State_State               ;89ED3F|ADA202  |8902A2;
                        ASL A                                ;89ED42|0A      |      ;
                        TAX                                  ;89ED43|AA      |      ;
-                       JSR.W (DATA8_89ED4C,X)               ;89ED44|FC4CED  |89ED4C;
+                       JSR.W (StageClearIntro_Pointers,X)   ;89ED44|FC4CED  |89ED4C;
                        JSR.W CODE_FN_89ED56                 ;89ED47|2056ED  |89ED56;
                        PLP                                  ;89ED4A|28      |      ;
                        RTL                                  ;89ED4B|6B      |      ;
- 
-         DATA8_89ED4C:
-                       db $FE,$ED,$D7,$F5,$EC,$F5,$0F,$F6   ;89ED4C|        |      ;
-                       db $3C,$F6                           ;89ED54|        |      ;
+StageClearIntro_Pointers:
+                       dw CODE_89EDFE                       ;89ED4C|        |89EDFE;
+                       dw CODE_89F5D7                       ;89ED4E|        |89F5D7;
+                       dw CODE_89F5EC                       ;89ED50|        |89F5EC;
+                       dw CODE_89F60F                       ;89ED52|        |89F60F;
+                       dw CODE_89F63C                       ;89ED54|        |89F63C;
  
        CODE_FN_89ED56:
                        LDA.L $7E935B                        ;89ED56|AF5B937E|7E935B;
@@ -8088,6 +8120,8 @@ LittleGuy_ChangeAnimation:
                        JSL.L CODE_FL_88ECC3                 ;89EDF9|22C3EC88|88ECC3;
  
                      + RTS                                  ;89EDFD|60      |      ;
+ 
+          CODE_89EDFE:
                        JSL.L CODE_FL_809CF7                 ;89EDFE|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;89EE02|228A9C80|809C8A;
                        JSL.L CODE_FL_89F147                 ;89EE06|2247F189|89F147;
@@ -8105,7 +8139,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89EE2B|4B      |      ;
                        PLB                                  ;89EE2C|AB      |      ;
                        LDY.W #$EE37                         ;89EE2D|A037EE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89EE30|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89EE30|22CAA080|80A0CA;
                        PLB                                  ;89EE34|AB      |      ;
                        BRA +                                ;89EE35|8008    |89EE3F;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$34   ;89EE37|        |      ;
@@ -8116,7 +8150,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89EE4A|4B      |      ;
                        PLB                                  ;89EE4B|AB      |      ;
                        LDY.W #$EE56                         ;89EE4C|A056EE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89EE4F|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89EE4F|22CAA080|80A0CA;
                        PLB                                  ;89EE53|AB      |      ;
                        BRA +                                ;89EE54|8008    |89EE5E;
                        db $00,$5D,$7F,$00,$08,$80,$00,$30   ;89EE56|        |      ;
@@ -8128,7 +8162,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89EE6D|4B      |      ;
                        PLB                                  ;89EE6E|AB      |      ;
                        LDY.W #$EE79                         ;89EE6F|A079EE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89EE72|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89EE72|22CAA080|80A0CA;
                        PLB                                  ;89EE76|AB      |      ;
                        BRA +                                ;89EE77|8008    |89EE81;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89EE79|        |      ;
@@ -8140,7 +8174,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89EE90|4B      |      ;
                        PLB                                  ;89EE91|AB      |      ;
                        LDY.W #$EE9C                         ;89EE92|A09CEE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89EE95|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89EE95|22CAA080|80A0CA;
                        PLB                                  ;89EE99|AB      |      ;
                        BRA +                                ;89EE9A|8008    |89EEA4;
                        db $00,$5D,$7F,$00,$0C,$80,$00,$06   ;89EE9C|        |      ;
@@ -8152,7 +8186,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89EEB2|4B      |      ;
                        PLB                                  ;89EEB3|AB      |      ;
                        LDY.W #$EEBE                         ;89EEB4|A0BEEE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89EEB7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89EEB7|22CAA080|80A0CA;
                        PLB                                  ;89EEBB|AB      |      ;
                        BRA +                                ;89EEBC|8008    |89EEC6;
                        db $00,$5D,$7F,$00,$05,$80,$00,$60   ;89EEBE|        |      ;
@@ -8288,7 +8322,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F00F|4B      |      ;
                        PLB                                  ;89F010|AB      |      ;
                        LDY.W #$F01B                         ;89F011|A01BF0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F014|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F014|22CAA080|80A0CA;
                        PLB                                  ;89F018|AB      |      ;
                        BRA +                                ;89F019|8008    |89F023;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;89F01B|        |      ;
@@ -8297,7 +8331,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F024|4B      |      ;
                        PLB                                  ;89F025|AB      |      ;
                        LDY.W #$F030                         ;89F026|A030F0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F029|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F029|22CAA080|80A0CA;
                        PLB                                  ;89F02D|AB      |      ;
                        BRA +                                ;89F02E|8008    |89F038;
                        db $00,$28,$7E,$00,$08,$80,$00,$78   ;89F030|        |      ;
@@ -8306,7 +8340,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F039|4B      |      ;
                        PLB                                  ;89F03A|AB      |      ;
                        LDY.W #$F045                         ;89F03B|A045F0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F03E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F03E|22CAA080|80A0CA;
                        PLB                                  ;89F042|AB      |      ;
                        BRA +                                ;89F043|8008    |89F04D;
                        db $00,$30,$7E,$00,$08,$80,$00,$68   ;89F045|        |      ;
@@ -8315,7 +8349,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F04E|4B      |      ;
                        PLB                                  ;89F04F|AB      |      ;
                        LDY.W #$F05A                         ;89F050|A05AF0  |      ;
-                       JSL.L CODE_FL_80A07F                 ;89F053|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;89F053|227FA080|80A07F;
                        PLB                                  ;89F057|AB      |      ;
                        BRA +                                ;89F058|8006    |89F060;
                        db $F6,$86,$7E,$00,$02,$00           ;89F05A|        |      ;
@@ -8603,7 +8637,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F31D|4B      |      ;
                        PLB                                  ;89F31E|AB      |      ;
                        LDY.W #$F329                         ;89F31F|A029F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F322|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F322|22CAA080|80A0CA;
                        PLB                                  ;89F326|AB      |      ;
                        BRA +                                ;89F327|8008    |89F331;
                        db $00,$5E,$7F,$00,$01,$80,$20,$08   ;89F329|        |      ;
@@ -8612,7 +8646,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F332|4B      |      ;
                        PLB                                  ;89F333|AB      |      ;
                        LDY.W #$F33E                         ;89F334|A03EF3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F337|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F337|22CAA080|80A0CA;
                        PLB                                  ;89F33B|AB      |      ;
                        BRA +                                ;89F33C|8008    |89F346;
                        db $00,$60,$7F,$00,$01,$80,$20,$09   ;89F33E|        |      ;
@@ -8621,7 +8655,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F347|4B      |      ;
                        PLB                                  ;89F348|AB      |      ;
                        LDY.W #$F353                         ;89F349|A053F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F34C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F34C|22CAA080|80A0CA;
                        PLB                                  ;89F350|AB      |      ;
                        BRA +                                ;89F351|8008    |89F35B;
                        db $00,$62,$7F,$00,$01,$80,$20,$0A   ;89F353|        |      ;
@@ -8634,7 +8668,7 @@ LittleGuy_ChangeAnimation:
                        PHB                                  ;89F364|8B      |      ;
                        PHK                                  ;89F365|4B      |      ;
                        PLB                                  ;89F366|AB      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F367|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F367|22CAA080|80A0CA;
                        PLB                                  ;89F36B|AB      |      ;
                        LDA.W Character_1P                   ;89F36C|ADBA02  |8902BA;
                        ASL A                                ;89F36F|0A      |      ;
@@ -8644,7 +8678,7 @@ LittleGuy_ChangeAnimation:
                        PHB                                  ;89F375|8B      |      ;
                        PHK                                  ;89F376|4B      |      ;
                        PLB                                  ;89F377|AB      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F378|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F378|22CAA080|80A0CA;
                        PLB                                  ;89F37C|AB      |      ;
                        LDA.W Character_1P                   ;89F37D|ADBA02  |8902BA;
                        ASL A                                ;89F380|0A      |      ;
@@ -8654,7 +8688,7 @@ LittleGuy_ChangeAnimation:
                        PHB                                  ;89F386|8B      |      ;
                        PHK                                  ;89F387|4B      |      ;
                        PLB                                  ;89F388|AB      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F389|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F389|22CAA080|80A0CA;
                        PLB                                  ;89F38D|AB      |      ;
                        LDA.W Character_1P                   ;89F38E|ADBA02  |8902BA;
                        ASL A                                ;89F391|0A      |      ;
@@ -8664,7 +8698,7 @@ LittleGuy_ChangeAnimation:
                        PHB                                  ;89F397|8B      |      ;
                        PHK                                  ;89F398|4B      |      ;
                        PLB                                  ;89F399|AB      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F39A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F39A|22CAA080|80A0CA;
                        PLB                                  ;89F39E|AB      |      ;
                        RTS                                  ;89F39F|60      |      ;
  
@@ -8681,7 +8715,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F3B8|4B      |      ;
                        PLB                                  ;89F3B9|AB      |      ;
                        LDY.W #$F3C4                         ;89F3BA|A0C4F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F3BD|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F3BD|22CAA080|80A0CA;
                        PLB                                  ;89F3C1|AB      |      ;
                        BRA ++                               ;89F3C2|8008    |89F3CC;
                        db $00,$5D,$7F,$00,$01,$80,$30,$08   ;89F3C4|        |      ;
@@ -8690,7 +8724,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F3CD|4B      |      ;
                        PLB                                  ;89F3CE|AB      |      ;
                        LDY.W #$F3D9                         ;89F3CF|A0D9F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F3D2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F3D2|22CAA080|80A0CA;
                        PLB                                  ;89F3D6|AB      |      ;
                        BRA ++                               ;89F3D7|8008    |89F3E1;
                        db $00,$5F,$7F,$00,$01,$80,$30,$09   ;89F3D9|        |      ;
@@ -8699,7 +8733,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F3E2|4B      |      ;
                        PLB                                  ;89F3E3|AB      |      ;
                        LDY.W #$F3EE                         ;89F3E4|A0EEF3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F3E7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F3E7|22CAA080|80A0CA;
                        PLB                                  ;89F3EB|AB      |      ;
                        BRA ++                               ;89F3EC|8008    |89F3F6;
                        db $00,$61,$7F,$00,$01,$80,$30,$0A   ;89F3EE|        |      ;
@@ -8712,7 +8746,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F402|4B      |      ;
                        PLB                                  ;89F403|AB      |      ;
                        LDY.W #$F40E                         ;89F404|A00EF4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F407|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F407|22CAA080|80A0CA;
                        PLB                                  ;89F40B|AB      |      ;
                        BRA +                                ;89F40C|8008    |89F416;
                        db $00,$6B,$7F,$80,$01,$80,$10,$08   ;89F40E|        |      ;
@@ -8721,7 +8755,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F417|4B      |      ;
                        PLB                                  ;89F418|AB      |      ;
                        LDY.W #$F423                         ;89F419|A023F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F41C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F41C|22CAA080|80A0CA;
                        PLB                                  ;89F420|AB      |      ;
                        BRA +                                ;89F421|8008    |89F42B;
                        db $00,$6D,$7F,$80,$01,$80,$10,$09   ;89F423|        |      ;
@@ -8730,7 +8764,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F42C|4B      |      ;
                        PLB                                  ;89F42D|AB      |      ;
                        LDY.W #$F438                         ;89F42E|A038F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F431|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F431|22CAA080|80A0CA;
                        PLB                                  ;89F435|AB      |      ;
                        BRA +                                ;89F436|8008    |89F440;
                        db $00,$6F,$7F,$80,$01,$80,$10,$0A   ;89F438|        |      ;
@@ -8805,7 +8839,7 @@ LittleGuy_ChangeAnimation:
                        PHK                                  ;89F56E|4B      |      ;
                        PLB                                  ;89F56F|AB      |      ;
                        LDY.W #$F57A                         ;89F570|A07AF5  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;89F573|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;89F573|22CAA080|80A0CA;
                        PLB                                  ;89F577|AB      |      ;
                        BRA +                                ;89F578|8008    |89F582;
                        db $00,$28,$7E,$00,$08,$80,$00,$7C   ;89F57A|        |      ;
@@ -8841,6 +8875,8 @@ LittleGuy_ChangeAnimation:
                        DEC.B $00                            ;89F5D2|C600    |000000;
                        BNE -                                ;89F5D4|D0E1    |89F5B7;
                        RTS                                  ;89F5D6|60      |      ;
+ 
+          CODE_89F5D7:
                        LDY.W #$0001                         ;89F5D7|A00100  |      ;
                        JSL.L CODE_FL_80AECB                 ;89F5DA|22CBAE80|80AECB;
                        BCC +                                ;89F5DE|9009    |89F5E9;
@@ -8851,6 +8887,8 @@ LittleGuy_ChangeAnimation:
  
                      + REP #$20                             ;89F5E9|C220    |      ;
                        RTS                                  ;89F5EB|60      |      ;
+ 
+          CODE_89F5EC:
                        LDA.B $B7                            ;89F5EC|A5B7    |0000B7;
                        AND.W #$1000                         ;89F5EE|290010  |      ;
                        BEQ +                                ;89F5F1|F011    |89F604;
@@ -8867,6 +8905,8 @@ LittleGuy_ChangeAnimation:
                        INC.W Game_State_State               ;89F60B|EEA202  |8902A2;
  
                      + RTS                                  ;89F60E|60      |      ;
+ 
+          CODE_89F60F:
                        JSL.L CODE_FL_86D68E                 ;89F60F|228ED686|86D68E;
                        BCS +                                ;89F613|B007    |89F61C;
                        LDA.B $B7                            ;89F615|A5B7    |0000B7;
@@ -8885,6 +8925,8 @@ LittleGuy_ChangeAnimation:
                      + RTS                                  ;89F630|60      |      ;
                        db $A5,$B7,$29,$80,$00,$F0,$03,$EE   ;89F631|        |0000B7;
                        db $A2,$02,$60                       ;89F639|        |      ;
+ 
+          CODE_89F63C:
                        LDY.W #$0001                         ;89F63C|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;89F63F|2218AF80|80AF18;
                        BCC +                                ;89F643|9016    |89F65B;

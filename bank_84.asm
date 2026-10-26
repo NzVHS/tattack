@@ -4798,7 +4798,7 @@ TitleScreen_LittleYoshiBob:
                        CLC                                  ;84B0B4|18      |      ;
                        ADC.W #$0062                         ;84B0B5|696200  |      ;
                        TAY                                  ;84B0B8|A8      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;84B0B9|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;84B0B9|22CAA080|80A0CA;
                        PLY                                  ;84B0BD|7A      |      ;
                        PLX                                  ;84B0BE|FA      |      ;
                        PLP                                  ;84B0BF|28      |      ;
@@ -4813,7 +4813,7 @@ TitleScreen_LittleYoshiBob:
                        CLC                                  ;84B0C7|18      |      ;
                        ADC.W #$006A                         ;84B0C8|696A00  |      ;
                        TAY                                  ;84B0CB|A8      |      ;
-                       JSL.L CODE_FL_80A0CA                 ;84B0CC|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;84B0CC|22CAA080|80A0CA;
                        PLY                                  ;84B0D0|7A      |      ;
                        PLX                                  ;84B0D1|FA      |      ;
                        PLP                                  ;84B0D2|28      |      ;
@@ -12083,8 +12083,20 @@ TitleScreen_LittleYoshiBob:
                        STA.L VS_Stage                       ;84F170|8FE2D17E|7ED1E2;
                        PLP                                  ;84F174|28      |      ;
                        RTL                                  ;84F175|6B      |      ;
-                       db $08,$C2,$30,$8B,$4B,$AB,$20,$8E   ;84F176|        |      ;
-                       db $F1,$AB,$28,$6B                   ;84F17E|        |0000AB;
+ 
+GameState_InitStageClearCredits:
+                       PHP                                  ;84F176|08      |      ;
+                       REP #$30                             ;84F177|C230    |      ;
+                       PHB                                  ;84F179|8B      |      ;
+                       PHK                                  ;84F17A|4B      |      ;
+                       PLB                                  ;84F17B|AB      |      ;
+                       JSR.W CODE_FN_84F18E                 ;84F17C|208EF1  |84F18E;
+                       PLB                                  ;84F17F|AB      |      ;
+                       PLP                                  ;84F180|28      |      ;
+                       RTL                                  ;84F181|6B      |      ;
+ 
+ 
+GameState_InitPuzzleCredits:
                        PHP                                  ;84F182|08      |      ;
                        REP #$30                             ;84F183|C230    |      ;
                        PHB                                  ;84F185|8B      |      ;
@@ -12105,14 +12117,29 @@ TitleScreen_LittleYoshiBob:
                        JSL.L CODE_FL_80A145                 ;84F19C|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;84F1A0|22159180|809115;
                        JSL.L CODE_FL_809CF7                 ;84F1A4|22F79C80|809CF7;
-                       JSL.L CODE_FL_8B94F1                 ;84F1A8|22F1948B|8B94F1;
+                       JSL.L InitVS_ClearMoreRAM            ;84F1A8|22F1948B|8B94F1;
                        LDA.W #$0000                         ;84F1AC|A90000  |      ;
                        STA.L $7ED1E0                        ;84F1AF|8FE0D17E|7ED1E0;
                        INC.W Game_State                     ;84F1B3|EEA002  |0002A0;
                        RTS                                  ;84F1B6|60      |      ;
-                       db $08,$C2,$30,$8B,$4B,$AB,$20,$78   ;84F1B7|        |      ;
-                       db $F2,$AF,$E0,$D1,$7E,$0A,$AA,$FC   ;84F1BF|        |0000AF;
-                       db $E1,$F1,$AB,$28,$6B               ;84F1C7|        |0000F1;
+ 
+GameState_StageClearCredits:
+                       PHP                                  ;84F1B7|08      |      ;
+                       REP #$30                             ;84F1B8|C230    |      ;
+                       PHB                                  ;84F1BA|8B      |      ;
+                       PHK                                  ;84F1BB|4B      |      ;
+                       PLB                                  ;84F1BC|AB      |      ;
+                       JSR.W CODE_FN_84F278                 ;84F1BD|2078F2  |84F278;
+                       LDA.L $7ED1E0                        ;84F1C0|AFE0D17E|7ED1E0;
+                       ASL A                                ;84F1C4|0A      |      ;
+                       TAX                                  ;84F1C5|AA      |      ;
+                       JSR.W (StageClearCredits_Pointers,X) ;84F1C6|FCE1F1  |84F1E1;
+                       PLB                                  ;84F1C9|AB      |      ;
+                       PLP                                  ;84F1CA|28      |      ;
+                       RTL                                  ;84F1CB|6B      |      ;
+ 
+ 
+GameState_PuzzleCredits:
                        PHP                                  ;84F1CC|08      |      ;
                        REP #$30                             ;84F1CD|C230    |      ;
                        PHB                                  ;84F1CF|8B      |      ;
@@ -12122,16 +12149,22 @@ TitleScreen_LittleYoshiBob:
                        LDA.L $7ED1E0                        ;84F1D5|AFE0D17E|7ED1E0;
                        ASL A                                ;84F1D9|0A      |      ;
                        TAX                                  ;84F1DA|AA      |      ;
-                       JSR.W (DATA8_84F1EB,X)               ;84F1DB|FCEBF1  |84F1EB;
+                       JSR.W (PuzzleCredits_Pointers,X)     ;84F1DB|FCEBF1  |84F1EB;
                        PLB                                  ;84F1DE|AB      |      ;
                        PLP                                  ;84F1DF|28      |      ;
                        RTL                                  ;84F1E0|6B      |      ;
-                       db $E4,$F2,$1E,$F2,$F0,$F2,$46,$F2   ;84F1E1|        |0000F2;
-                       db $5C,$F2                           ;84F1E9|        |F2E4F2;
- 
-         DATA8_84F1EB:
-                       db $E4,$F2,$2B,$F2,$F0,$F2,$51,$F2   ;84F1EB|        |      ;
-                       db $5C,$F2                           ;84F1F3|        |      ;
+StageClearCredits_Pointers:
+                       dw CODE_JP_84F2E4                    ;84F1E1|        |84F2E4;
+                       dw UNREACH_84F21E                    ;84F1E3|        |84F21E;
+                       dw CODE_84F2F0                       ;84F1E5|        |84F2F0;
+                       dw UNREACH_84F246                    ;84F1E7|        |84F246;
+                       dw CODE_84F25C                       ;84F1E9|        |84F25C;
+PuzzleCredits_Pointers:
+                       dw CODE_JP_84F2E4                    ;84F1EB|        |84F2E4;
+                       dw CODE_84F22B                       ;84F1ED|        |84F22B;
+                       dw CODE_84F2F0                       ;84F1EF|        |84F2F0;
+                       dw CODE_84F251                       ;84F1F1|        |84F251;
+                       dw CODE_84F25C                       ;84F1F3|        |84F25C;
  
        CODE_FN_84F1F5:
                        LDA.L $7ED2CD                        ;84F1F5|AFCDD27E|7ED2CD;
@@ -12150,8 +12183,12 @@ TitleScreen_LittleYoshiBob:
                        STA.L $7ED220                        ;84F219|8F20D27E|7ED220;
  
                      + RTS                                  ;84F21D|60      |      ;
+ 
+       UNREACH_84F21E:
                        db $20,$FF,$F2,$22,$C6,$DA,$86,$20   ;84F21E|        |84F2FF;
                        db $EC,$F3,$4C,$DA,$F2               ;84F226|        |004CF3;
+ 
+          CODE_84F22B:
                        JSR.W CODE_FN_84F2FF                 ;84F22B|20FFF2  |84F2FF;
                        JSL.L CODE_FL_8ACFA0                 ;84F22E|22A0CF8A|8ACFA0;
                        JSR.W CODE_FN_84F3EC                 ;84F232|20ECF3  |84F3EC;
@@ -12160,12 +12197,18 @@ TitleScreen_LittleYoshiBob:
                        JSL.L CODE_FL_8091B2                 ;84F23B|22B29180|8091B2;
                        JSL.L CODE_FL_8BF119                 ;84F23F|2219F18B|8BF119;
                        JMP.W CODE_JP_84F2DA                 ;84F243|4CDAF2  |84F2DA;
+ 
+       UNREACH_84F246:
                        db $22,$D0,$DD,$86,$20,$34,$F4,$20   ;84F246|        |86DDD0;
                        db $F5,$F1,$60                       ;84F24E|        |0000F1;
+ 
+          CODE_84F251:
                        JSL.L CODE_FL_8AD1B3                 ;84F251|22B3D18A|8AD1B3;
                        JSR.W CODE_FN_84F434                 ;84F255|2034F4  |84F434;
                        JSR.W CODE_FN_84F1F5                 ;84F258|20F5F1  |84F1F5;
                        RTS                                  ;84F25B|60      |      ;
+ 
+          CODE_84F25C:
                        LDA.L VS_Stage                       ;84F25C|AFE2D17E|7ED1E2;
                        BNE +                                ;84F260|D005    |84F267;
                        db $22,$AE,$D8,$86,$60               ;84F262|        |86D8AE;
@@ -12243,6 +12286,8 @@ TitleScreen_LittleYoshiBob:
                        STA.W $01B6                          ;84F2E8|8DB601  |0001B6;
                        REP #$20                             ;84F2EB|C220    |      ;
                        JMP.W CODE_JP_84F2DA                 ;84F2ED|4CDAF2  |84F2DA;
+ 
+          CODE_84F2F0:
                        SEP #$20                             ;84F2F0|E220    |      ;
                        LDA.B #$00                           ;84F2F2|A900    |      ;
                        STA.W $01B6                          ;84F2F4|8DB601  |0001B6;
@@ -12357,7 +12402,7 @@ TitleScreen_LittleYoshiBob:
                        PHK                                  ;84F40F|4B      |      ;
                        PLB                                  ;84F410|AB      |      ;
                        LDY.W #$F41B                         ;84F411|A01BF4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;84F414|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;84F414|22CAA080|80A0CA;
                        PLB                                  ;84F418|AB      |      ;
                        BRA +                                ;84F419|8008    |84F423;
                        db $00,$30,$7E,$00,$08,$80,$00,$74   ;84F41B|        |      ;

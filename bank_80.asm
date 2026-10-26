@@ -14,8 +14,8 @@
                        REP #$30                             ;808007|C230    |      ;
                        TDC                                  ;808009|7B      |      ;
                        BNE CODE_JL_808018                   ;80800A|D00C    |808018;
-                       LDX.W #$8002                         ;80800C|A20280  |      ;
-                       CPX.W PTR16_00FFFC                   ;80800F|ECFCFF  |00FFFC;
+                       LDX.W #$8002                         ;80800C|A20280  |      ; check if the reset vector points to $808002 (Reset)
+                       CPX.W PTR16_00FFFC                   ;80800F|ECFCFF  |00FFFC; presumably another anti-tampering measure?
                        BNE CODE_JL_808018                   ;808012|D004    |808018;
                        JML.L CODE_JL_808018                 ;808014|5C188080|808018;
  
@@ -27,7 +27,7 @@
                        TXS                                  ;80801F|9A      |      ;
                        SEP #$20                             ;808020|E220    |      ;
                        LDA.B #$01                           ;808022|A901    |      ;
-                       STA.W MEMSEL                         ;808024|8D0D42  |00420D;
+                       STA.W MEMSEL                         ;808024|8D0D42  |00420D; enable FastROM
                        LDA.B #$80                           ;808027|A980    |      ;
                        STA.W $01B6                          ;808029|8DB601  |0001B6;
                        STA.W INIDISP                        ;80802C|8D0021  |002100; blanks the screen
@@ -51,7 +51,7 @@
                        LDA.W $0000,Y                        ;80805A|B90000  |000000;
                        INC A                                ;80805D|1A      |      ;
                        CMP.W PTR16_00FFFC                   ;80805E|CDFCFF  |00FFFC;
-                       BEQ UNREACH_808088                   ;808061|F025    |808088;
+                       BEQ CODE_808088                      ;808061|F025    |808088;
                        LDX.W #$0000                         ;808063|A20000  |      ;
  
                     -- LDA.W $0000,X                        ;808066|BD0000  |000000;
@@ -70,15 +70,17 @@
                     ++ PHK                                  ;808081|4B      |      ;
                        PHK                                  ;808082|4B      |      ;
                        PLA                                  ;808083|68      |      ;
-                       BEQ UNREACH_808088                   ;808084|F002    |808088;
+                       BEQ CODE_808088                      ;808084|F002    |808088;
                        BRA ++                               ;808086|8049    |8080D1;
  
-       UNREACH_808088:
-                       db $A9,$00,$00,$5B,$22,$28,$8C,$80   ;808088|        |      ;
+          CODE_808088:
+                       LDA.W #$0000                         ;808088|A90000  |      ;
+                       TCD                                  ;80808B|5B      |      ;
+                       JSL.L CODE_FL_808C28                 ;80808C|22288C80|808C28;
  
                      + LDY.W $0001,X                        ;808090|BC0100  |000001;
                        CPY.W #$FFFC                         ;808093|C0FCFF  |      ;
-                       BEQ UNREACH_808088                   ;808096|F0F0    |808088;
+                       BEQ CODE_808088                      ;808096|F0F0    |808088;
                        CPY.W #$1FFF                         ;808098|C0FF1F  |      ;
                        BCS -                                ;80809B|B0DE    |80807B;
                        db $B9,$00,$00,$C9,$02,$80,$F0,$E3   ;80809D|        |000000;
@@ -86,7 +88,7 @@
  
                    +++ LDY.W $0001,X                        ;8080A7|BC0100  |000001;
                        CPY.W #$8002                         ;8080AA|C00280  |      ;
-                       BEQ UNREACH_808088                   ;8080AD|F0D9    |808088;
+                       BEQ CODE_808088                      ;8080AD|F0D9    |808088;
                        BRA -                                ;8080AF|80CA    |80807B;
  
                   ++++ TXA                                  ;8080B1|8A      |      ;
@@ -1146,11 +1148,22 @@
                        LDA.L DATA8_909090,X                 ;808C17|BF909090|909090;
                        CMP.L $001F24,X                      ;808C1B|DF241F00|001F24;
                        BNE -                                ;808C1F|D0F2    |808C13;
-                       db $E8,$E8,$E0,$10,$00,$D0,$EF,$A9   ;808C21|        |      ;
-                       db $00,$00,$8F,$FC,$1F,$00,$8F,$FE   ;808C29|        |      ;
-                       db $1F,$00,$20,$39,$8C,$80,$FE,$6B   ;808C31|        |392000;
-                       db $E2,$20,$A9,$01,$8D,$EC,$01,$8D   ;808C39|        |      ;
-                       db $00,$42,$C2,$30,$4B               ;808C41|        |      ;
+                       db $E8,$E8,$E0,$10,$00,$D0,$EF       ;808C21|        |      ;
+ 
+       CODE_FL_808C28:
+                       LDA.W #$0000                         ;808C28|A90000  |      ;
+                       STA.L $001FFC                        ;808C2B|8FFC1F00|001FFC;
+                       STA.L $001FFE                        ;808C2F|8FFE1F00|001FFE;
+                       JSR.W CODE_FN_808C39                 ;808C33|20398C  |808C39;
+                       db $80,$FE,$6B                       ;808C36|        |808C36;
+ 
+       CODE_FN_808C39:
+                       SEP #$20                             ;808C39|E220    |      ;
+                       LDA.B #$01                           ;808C3B|A901    |      ;
+                       STA.W $01EC                          ;808C3D|8DEC01  |0001EC;
+                       STA.W NMITIMEN                       ;808C40|8D0042  |004200;
+                       REP #$30                             ;808C43|C230    |      ;
+                       PHK                                  ;808C45|4B      |      ;
                        db $AB,$A2                           ;808C46|        |      ;
                        db $F7,$1F                           ;808C48|        |00001F;
                        db $9A,$A9                           ;808C4A|        |      ;
@@ -1255,7 +1268,7 @@
                        LDA.B $A5                            ;808E3D|A5A5    |0000A5;
                        BEQ +                                ;808E3F|F028    |808E69;
                        JSL.L CODE_FL_809BDE                 ;808E41|22DE9B80|809BDE;
-                       JSL.L CODE_FL_809D94                 ;808E45|22949D80|809D94;
+                       JSL.L DMA_ProcessCommandQueue        ;808E45|22949D80|809D94;
                        JSL.L CODE_FL_80A11C                 ;808E49|221CA180|80A11C;
                        JSL.L CODE_FL_8090F3                 ;808E4D|22F39080|8090F3;
                        JSL.L CODE_FL_809B1F                 ;808E51|221F9B80|809B1F;
@@ -1275,7 +1288,7 @@
                        BEQ +                                ;808E6B|F034    |808EA1;
                        STZ.B $A3                            ;808E6D|64A3    |0000A3;
                        JSL.L CODE_FL_809BDE                 ;808E6F|22DE9B80|809BDE;
-                       JSL.L CODE_FL_809D94                 ;808E73|22949D80|809D94;
+                       JSL.L DMA_ProcessCommandQueue        ;808E73|22949D80|809D94;
                        JSL.L CODE_FL_80A11C                 ;808E77|221CA180|80A11C;
                        JSL.L CODE_FL_8090F3                 ;808E7B|22F39080|8090F3;
                        JSL.L CODE_FL_809B1F                 ;808E7F|221F9B80|809B1F;
@@ -2907,28 +2920,29 @@ Audio_CommandHandlers:
  
                      - RTL                                  ;809D93|6B      |      ;
  
-       CODE_FL_809D94:
-                       LDA.W $01B2                          ;809D94|ADB201  |8001B2;
+DMA_ProcessCommandQueue:
+                       LDA.W DMA_QueuePending               ;809D94|ADB201  |8001B2;
                        BEQ -                                ;809D97|F0FA    |809D93;
-                       STZ.W $01B2                          ;809D99|9CB201  |8001B2;
-                       STZ.W $01B0                          ;809D9C|9CB001  |8001B0;
+                       STZ.W DMA_QueuePending               ;809D99|9CB201  |8001B2;
+                       STZ.W DMA_QueueWriteOffset           ;809D9C|9CB001  |8001B0;
                        STZ.W $01B1                          ;809D9F|9CB101  |8001B1;
                        STZ.W HDMAEN                         ;809DA2|9C0C42  |80420C;
                        STZ.W MDMAEN                         ;809DA5|9C0B42  |80420B;
                        LDY.B #$00                           ;809DA8|A000    |      ;
  
        CODE_JP_809DAA:
-                       LDA.W $00F0,Y                        ;809DAA|B9F000  |8000F0;
+                       LDA.W DMA_CommandQueue,Y             ;809DAA|B9F000  |8000F0;
                        BEQ +                                ;809DAD|F007    |809DB6;
                        DEC A                                ;809DAF|3A      |      ;
-                       BEQ ++                               ;809DB0|F005    |809DB7;
+                       BEQ DMA_ExecuteCommand_CGRAM         ;809DB0|F005    |809DB7;
                        DEC A                                ;809DB2|3A      |      ;
-                       BEQ +++                              ;809DB3|F03B    |809DF0;
+                       BEQ DMA_ExecuteCommand_VRAM          ;809DB3|F03B    |809DF0;
                        db $00                               ;809DB5|        |      ;
  
                      + RTL                                  ;809DB6|6B      |      ;
  
-                    ++ LDA.W $00F1,Y                        ;809DB7|B9F100  |8000F1;
+DMA_ExecuteCommand_CGRAM:
+                       LDA.W $00F1,Y                        ;809DB7|B9F100  |8000F1;
                        STA.W DMA0ADDRL                      ;809DBA|8D0243  |804302;
                        LDA.W $00F2,Y                        ;809DBD|B9F200  |8000F2;
                        STA.W DMA0ADDRM                      ;809DC0|8D0343  |804303;
@@ -2951,7 +2965,8 @@ Audio_CommandHandlers:
                        TAY                                  ;809DEC|A8      |      ;
                        JMP.W CODE_JP_809DAA                 ;809DED|4CAA9D  |809DAA;
  
-                   +++ LDA.W $00F1,Y                        ;809DF0|B9F100  |8000F1;
+DMA_ExecuteCommand_VRAM:
+                       LDA.W $00F1,Y                        ;809DF0|B9F100  |8000F1;
                        STA.W DMA0ADDRL                      ;809DF3|8D0243  |804302;
                        LDA.W $00F2,Y                        ;809DF6|B9F200  |8000F2;
                        STA.W DMA0ADDRM                      ;809DF9|8D0343  |804303;
@@ -3215,14 +3230,14 @@ Audio_CommandHandlers:
                        db $A8,$A5,$16,$E5,$1E,$90,$E3,$85   ;80A06F|        |      ;
                        db $16,$84,$14,$80,$DD,$AB,$28,$6B   ;80A077|        |000084;
  
-       CODE_FL_80A07F:
+DMA_QueueCGRAMCommand:
                        PHP                                  ;80A07F|08      |      ;
                        REP #$30                             ;80A080|C230    |      ;
-                       LDA.L $0001B0                        ;80A082|AFB00100|0001B0;
+                       LDA.L DMA_QueueWriteOffset-$7E0000   ;80A082|AFB00100|0001B0;
                        TAX                                  ;80A086|AA      |      ;
                        CLC                                  ;80A087|18      |      ;
                        ADC.W #$0007                         ;80A088|690700  |      ;
-                       STA.L $0001B0                        ;80A08B|8FB00100|0001B0;
+                       STA.L DMA_QueueWriteOffset-$7E0000   ;80A08B|8FB00100|0001B0;
                        LDA.W $0000,Y                        ;80A08F|B90000  |830000;
                        STA.L $0000F1,X                      ;80A092|9FF10000|0000F1;
                        LDA.W $0002,Y                        ;80A096|B90200  |830002;
@@ -3231,31 +3246,31 @@ Audio_CommandHandlers:
                        STA.L $0000F5,X                      ;80A0A0|9FF50000|0000F5;
                        SEP #$20                             ;80A0A4|E220    |      ;
                        LDA.B #$01                           ;80A0A6|A901    |      ;
-                       STA.L $0000F0,X                      ;80A0A8|9FF00000|0000F0;
+                       STA.L DMA_CommandQueue-$7E0000,X     ;80A0A8|9FF00000|0000F0;
                        LDA.B #$00                           ;80A0AC|A900    |      ;
                        STA.L $0000F7,X                      ;80A0AE|9FF70000|0000F7;
                        SEP #$30                             ;80A0B2|E230    |      ;
                        LDA.B #$01                           ;80A0B4|A901    |      ;
-                       STA.L $0001B2                        ;80A0B6|8FB20100|0001B2;
+                       STA.L DMA_QueuePending-$7E0000       ;80A0B6|8FB20100|0001B2;
                        LDA.L $0001B6                        ;80A0BA|AFB60100|0001B6;
                        BPL +                                ;80A0BE|1008    |80A0C8;
                        PHB                                  ;80A0C0|8B      |      ;
                        PHK                                  ;80A0C1|4B      |      ;
                        PLB                                  ;80A0C2|AB      |      ;
-                       JSL.L CODE_FL_809D94                 ;80A0C3|22949D80|809D94;
+                       JSL.L DMA_ProcessCommandQueue        ;80A0C3|22949D80|809D94;
                        PLB                                  ;80A0C7|AB      |      ;
  
                      + PLP                                  ;80A0C8|28      |      ;
                        RTL                                  ;80A0C9|6B      |      ;
  
-       CODE_FL_80A0CA:
+ DMA_QueueVRAMCommand:
                        PHP                                  ;80A0CA|08      |      ;
                        REP #$30                             ;80A0CB|C230    |      ;
-                       LDA.L $0001B0                        ;80A0CD|AFB00100|0001B0;
+                       LDA.L DMA_QueueWriteOffset-$7E0000   ;80A0CD|AFB00100|0001B0;
                        TAX                                  ;80A0D1|AA      |      ;
                        CLC                                  ;80A0D2|18      |      ;
                        ADC.W #$0009                         ;80A0D3|690900  |      ;
-                       STA.L $0001B0                        ;80A0D6|8FB00100|0001B0;
+                       STA.L DMA_QueueWriteOffset-$7E0000   ;80A0D6|8FB00100|0001B0;
                        LDA.W $0000,Y                        ;80A0DA|B90000  |7E0000;
                        STA.L $0000F1,X                      ;80A0DD|9FF10000|0000F1;
                        LDA.W $0002,Y                        ;80A0E1|B90200  |7E0002;
@@ -3266,18 +3281,18 @@ Audio_CommandHandlers:
                        STA.L $0000F7,X                      ;80A0F2|9FF70000|0000F7;
                        SEP #$20                             ;80A0F6|E220    |      ;
                        LDA.B #$02                           ;80A0F8|A902    |      ;
-                       STA.L $0000F0,X                      ;80A0FA|9FF00000|0000F0;
+                       STA.L DMA_CommandQueue-$7E0000,X     ;80A0FA|9FF00000|0000F0;
                        LDA.B #$00                           ;80A0FE|A900    |      ;
                        STA.L $0000F9,X                      ;80A100|9FF90000|0000F9;
                        SEP #$30                             ;80A104|E230    |      ;
                        LDA.B #$01                           ;80A106|A901    |      ;
-                       STA.L $0001B2                        ;80A108|8FB20100|0001B2;
+                       STA.L DMA_QueuePending-$7E0000       ;80A108|8FB20100|0001B2;
                        LDA.L $0001B6                        ;80A10C|AFB60100|0001B6;
                        BPL +                                ;80A110|1008    |80A11A;
                        PHB                                  ;80A112|8B      |      ;
                        PHK                                  ;80A113|4B      |      ;
                        PLB                                  ;80A114|AB      |      ;
-                       JSL.L CODE_FL_809D94                 ;80A115|22949D80|809D94;
+                       JSL.L DMA_ProcessCommandQueue        ;80A115|22949D80|809D94;
                        PLB                                  ;80A119|AB      |      ;
  
                      + PLP                                  ;80A11A|28      |      ;
@@ -3388,7 +3403,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80A209|4B      |      ;
                        PLB                                  ;80A20A|AB      |      ;
                        LDY.W #$A215                         ;80A20B|A015A2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80A20E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80A20E|22CAA080|80A0CA;
                        PLB                                  ;80A212|AB      |      ;
                        BRA +                                ;80A213|8008    |80A21D;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80A215|        |      ;
@@ -3407,7 +3422,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80A227|4B      |      ;
                        PLB                                  ;80A228|AB      |      ;
                        LDY.W #$A233                         ;80A229|A033A2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80A22C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80A22C|22CAA080|80A0CA;
                        PLB                                  ;80A230|AB      |      ;
                        BRA +                                ;80A231|8008    |80A23B;
                        db $00,$28,$7E,$00,$08,$80,$00,$78   ;80A233|        |      ;
@@ -3426,7 +3441,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80A245|4B      |      ;
                        PLB                                  ;80A246|AB      |      ;
                        LDY.W #$A251                         ;80A247|A051A2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80A24A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80A24A|22CAA080|80A0CA;
                        PLB                                  ;80A24E|AB      |      ;
                        BRA +                                ;80A24F|8008    |80A259;
                        db $00,$30,$7E,$00,$08,$80,$00,$1C   ;80A251|        |      ;
@@ -3968,7 +3983,7 @@ Audio_CommandHandlers:
                        JSL.L CODE_FL_809086                 ;80A6F4|22869080|809086;
                        JMP.W CODE_JP_80A6F0                 ;80A6F8|4CF0A6  |80A6F0;
  
-       CODE_FL_80A6FB:
+     HandleGameStates:
                        PHP                                  ;80A6FB|08      |      ;
                        PHK                                  ;80A6FC|4B      |      ;
                        PLB                                  ;80A6FD|AB      |      ;
@@ -3980,9 +3995,9 @@ Audio_CommandHandlers:
                        CLC                                  ;80A707|18      |      ;
                        ADC.W Game_State                     ;80A708|6DA002  |8002A0;
                        TAX                                  ;80A70B|AA      |      ;
-                       LDA.W DATA8_80A727,X                 ;80A70C|BD27A7  |80A727;
+                       LDA.W GameStatePointers,X            ;80A70C|BD27A7  |80A727;
                        STA.B $00                            ;80A70F|8500    |000000;
-                       LDA.W DATA8_80A728,X                 ;80A711|BD28A7  |80A728;
+                       LDA.W PTR24_80A728,X                 ;80A711|BD28A7  |80A728;
                        STA.B $01                            ;80A714|8501    |000001;
                        SEP #$20                             ;80A716|E220    |      ;
                        LDA.B #$80                           ;80A718|A980    |      ;
@@ -3994,23 +4009,35 @@ Audio_CommandHandlers:
                        PLP                                  ;80A724|28      |      ;
                        PLP                                  ;80A725|28      |      ;
                        RTL                                  ;80A726|6B      |      ;
+    GameStatePointers:
+                       dl GameState_TitleScreen             ;80A727|        |8ABE03;
+                       dl GameState_Menu                    ;80A72A|        |83BD17;
+                       dl GameState_GameMenu                ;80A72D|        |83D5CF;
+                       dl GameState_StartMatch              ;80A730|        |878000;
+                       dl GameState_InMatch                 ;80A733|        |8292AD;
+                       dl GameState_EndMatch                ;80A736|        |87BAF6;
+                       dl GameState_InitVS                  ;80A739|        |8B803D;
+                       dl GameState_VS                      ;80A73C|        |8B80DF;
+                       dl GameState_HowtoPlay               ;80A73F|        |89DB1E;
+                       dl GameState_InitDemo                ;80A742|        |89E514;
+                       dl GameState_CharacterBio            ;80A745|        |89E687;
+                       dl GameState_InitVSCredits           ;80A748|        |8BF1E0;
+                       dl GameState_VSCredits               ;80A74B|        |8BF211;
+                       dl GameState_StageClearIntro         ;80A74E|        |89ED3A;
+                       dl GameState_EndlessPointsSum        ;80A751|        |8A8B31;
+                       dl GameState_EndlessEnding           ;80A754|        |8A8B66;
+                       dl GameState_EndlessCredits          ;80A757|        |8A8BBC;
+                       dl GameState_NintendoLogo            ;80A75A|        |80B636;
+                       dl GameState_Congratulations         ;80A75D|        |8AAED3;
+                       dl GameState_InitStageClearCredits   ;80A760|        |84F176;
+                       dl GameState_StageClearCredits       ;80A763|        |84F1B7;
+                       dl GameState_InitPuzzleCredits       ;80A766|        |84F182;
+                       dl GameState_PuzzleCredits           ;80A769|        |84F1CC;
+                       dl GameState_AfterGameHint           ;80A76C|        |86DE34;
+                       dl GameState_Dummy                   ;80A76F|        |80A772;
  
-         DATA8_80A727:
-                       db $03                               ;80A727|        |      ;
- 
-         DATA8_80A728:
-                       db $BE,$8A,$17,$BD,$83,$CF,$D5,$83   ;80A728|        |      ;
-                       db $00,$80,$87,$AD,$92,$82,$F6,$BA   ;80A730|        |      ;
-                       db $87,$3D,$80,$8B,$DF,$80,$8B,$1E   ;80A738|        |      ;
-                       db $DB,$89,$14,$E5,$89,$87,$E6,$89   ;80A740|        |      ;
-                       db $E0,$F1,$8B,$11,$F2,$8B,$3A,$ED   ;80A748|        |      ;
-                       db $89,$31,$8B,$8A,$66,$8B,$8A       ;80A750|        |      ;
-                       db $BC,$8B,$8A                       ;80A757|        |008A8B;
-                       db $36,$B6,$80,$D3,$AE,$8A           ;80A75A|        |      ;
-                       db $76,$F1,$84,$B7,$F1,$84           ;80A760|        |0000F1;
-                       db $82,$F1,$84,$CC,$F1,$84,$34,$DE   ;80A766|        |      ;
-                       db $86                               ;80A76E|        |      ;
-                       db $72,$A7,$80,$6B                   ;80A76F|        |0000A7;
+      GameState_Dummy:
+                       RTL                                  ;80A772|6B      |      ;
  
        CODE_FL_80A773:
                        REP #$30                             ;80A773|C230    |      ;
@@ -4019,7 +4046,7 @@ Audio_CommandHandlers:
                        JSR.W CODE_FN_80A896                 ;80A77C|2096A8  |80A896;
                        JSL.L CODE_FL_809678                 ;80A77F|22789680|809678;
                        JSR.W CODE_FN_80AC3A                 ;80A783|203AAC  |80AC3A;
-                       JSL.L CODE_FL_80A6FB                 ;80A786|22FBA680|80A6FB;
+                       JSL.L HandleGameStates               ;80A786|22FBA680|80A6FB;
                        JSL.L CODE_FL_80C6D6                 ;80A78A|22D6C680|80C6D6;
                        JSR.W CODE_FN_80A8FD                 ;80A78E|20FDA8  |80A8FD;
                        JSR.W CODE_FN_80A8BB                 ;80A791|20BBA8  |80A8BB;
@@ -4224,7 +4251,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80A946|4B      |      ;
                        PLB                                  ;80A947|AB      |      ;
                        LDY.W #$A952                         ;80A948|A052A9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80A94B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80A94B|22CAA080|80A0CA;
                        PLB                                  ;80A94F|AB      |      ;
                        BRA ++                               ;80A950|8008    |80A95A;
                        db $00,$28,$7E,$C0,$06,$80,$00,$78   ;80A952|        |      ;
@@ -4235,7 +4262,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80A95D|4B      |      ;
                        PLB                                  ;80A95E|AB      |      ;
                        LDY.W #$A969                         ;80A95F|A069A9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80A962|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80A962|22CAA080|80A0CA;
                        PLB                                  ;80A966|AB      |      ;
                        BRA CODE_JP_80A971                   ;80A967|8008    |80A971;
                        db $00,$28,$7E,$00,$07,$80,$00,$78   ;80A969|        |      ;
@@ -4340,7 +4367,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80AA76|4B      |      ;
                        PLB                                  ;80AA77|AB      |      ;
                        LDY.W #$AA82                         ;80AA78|A082AA  |      ;
-                       JSL.L CODE_FL_80A07F                 ;80AA7B|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;80AA7B|227FA080|80A07F;
                        PLB                                  ;80AA7F|AB      |      ;
                        BRA +                                ;80AA80|8006    |80AA88;
                        db $C2,$87,$7E,$08,$00,$66           ;80AA82|        |      ;
@@ -4435,7 +4462,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80AB79|4B      |      ;
                        PLB                                  ;80AB7A|AB      |      ;
                        LDY.W #$AB85                         ;80AB7B|A085AB  |      ;
-                       JSL.L CODE_FL_80A07F                 ;80AB7E|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;80AB7E|227FA080|80A07F;
                        PLB                                  ;80AB82|AB      |      ;
                        BRA +                                ;80AB83|8006    |80AB8B;
                        db $CE,$87,$7E,$02,$00,$6C           ;80AB85|        |      ;
@@ -5068,12 +5095,12 @@ Audio_CommandHandlers:
                        STA.B $02                            ;80B109|8502    |000002;
                        LDX.W #$01FE                         ;80B10B|A2FE01  |      ;
  
-                     - LDA.L $7E86F6,X                      ;80B10E|BFF6867E|7E86F6;
+                     - LDA.L Palette_Buffer,X               ;80B10E|BFF6867E|7E86F6;
                        CMP.B $02                            ;80B112|C502    |000002;
                        BEQ +                                ;80B114|F009    |80B11F;
                        INY                                  ;80B116|C8      |      ;
                        JSL.L CODE_FL_80B32C                 ;80B117|222CB380|80B32C;
-                       STA.L $7E86F6,X                      ;80B11B|9FF6867E|7E86F6;
+                       STA.L Palette_Buffer,X               ;80B11B|9FF6867E|7E86F6;
  
                      + DEX                                  ;80B11F|CA      |      ;
                        DEX                                  ;80B120|CA      |      ;
@@ -5573,19 +5600,21 @@ Audio_CommandHandlers:
                        LDX.W #$0000                         ;80B611|A20000  |      ;
  
                      - LDA.W #$0000                         ;80B614|A90000  |      ;
-                       CMP.L $7E86F6,X                      ;80B617|DFF6867E|7E86F6;
+                       CMP.L Palette_Buffer,X               ;80B617|DFF6867E|7E86F6;
                        BEQ +                                ;80B61B|F014    |80B631;
                        STA.B $02                            ;80B61D|8502    |000002;
                        LDA.W #$0001                         ;80B61F|A90100  |      ;
                        STA.W $0366                          ;80B622|8D6603  |800366;
-                       LDA.L $7E86F6,X                      ;80B625|BFF6867E|7E86F6;
+                       LDA.L Palette_Buffer,X               ;80B625|BFF6867E|7E86F6;
                        JSL.L CODE_FL_80B32C                 ;80B629|222CB380|80B32C;
-                       STA.L $7E86F6,X                      ;80B62D|9FF6867E|7E86F6;
+                       STA.L Palette_Buffer,X               ;80B62D|9FF6867E|7E86F6;
  
                      + DEX                                  ;80B631|CA      |      ;
                        DEX                                  ;80B632|CA      |      ;
                        BPL -                                ;80B633|10DF    |80B614;
                        RTL                                  ;80B635|6B      |      ;
+ 
+GameState_NintendoLogo:
                        PHP                                  ;80B636|08      |      ;
                        PHK                                  ;80B637|4B      |      ;
                        PLB                                  ;80B638|AB      |      ;
@@ -5593,28 +5622,38 @@ Audio_CommandHandlers:
                        LDA.W Game_State_State               ;80B63B|ADA202  |8002A2;
                        ASL A                                ;80B63E|0A      |      ;
                        TAX                                  ;80B63F|AA      |      ;
-                       JSR.W (DATA8_80B662,X)               ;80B640|FC62B6  |80B662;
+                       JSR.W (NintendoLogo_Pointers,X)      ;80B640|FC62B6  |80B662;
                        LDA.L $7E3900                        ;80B643|AF00397E|7E3900;
-                       BNE +                                ;80B647|D004    |80B64D;
+                       BNE $04                              ;80B647|D004    |80B64D;
                        JSL.L CODE_FL_80AE15                 ;80B649|2215AE80|80AE15;
- 
-                     + PHB                                  ;80B64D|8B      |      ;
+                       PHB                                  ;80B64D|8B      |      ;
                        PHK                                  ;80B64E|4B      |      ;
                        PLB                                  ;80B64F|AB      |      ;
                        LDY.W #$B65A                         ;80B650|A05AB6  |      ;
-                       JSL.L CODE_FL_80A07F                 ;80B653|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;80B653|227FA080|80A07F;
                        PLB                                  ;80B657|AB      |      ;
                        BRA +                                ;80B658|8006    |80B660;
                        db $F6,$86,$7E,$00,$02,$00           ;80B65A|        |      ;
  
                      + PLB                                  ;80B660|AB      |      ;
                        RTL                                  ;80B661|6B      |      ;
+NintendoLogo_Pointers:
+                       dw NintendoLogo_Init                 ;80B662|        |80B679;
+                       dw CODE_80B8A2                       ;80B664|        |80B8A2;
+                       dw CODE_80B8C8                       ;80B666|        |80B8C8;
+                       dw CODE_80B8D8                       ;80B668|        |80B8D8;
+                       dw CODE_80B944                       ;80B66A|        |80B944;
+                       dw CODE_80B96B                       ;80B66C|        |80B96B;
+                       dw CODE_80B98C                       ;80B66E|        |80B98C;
+                       dw CODE_80B997                       ;80B670|        |80B997;
+                       dw CODE_80B9BC                       ;80B672|        |80B9BC;
+                       dw CODE_80BA43                       ;80B674|        |80BA43;
+                       dw NintendoLogo_Dummy                ;80B676|        |80B678;
  
-         DATA8_80B662:
-                       db $79,$B6,$A2,$B8,$C8,$B8,$D8,$B8   ;80B662|        |      ;
-                       db $44,$B9,$6B,$B9,$8C,$B9,$97,$B9   ;80B66A|        |      ;
-                       db $BC,$B9,$43,$BA,$78,$B6           ;80B672|        |0043B9;
+   NintendoLogo_Dummy:
                        RTS                                  ;80B678|60      |      ;
+ 
+    NintendoLogo_Init:
                        JSL.L CODE_FL_809CF7                 ;80B679|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B67D|228A9C80|809C8A;
                        JSR.W CODE_FN_80B7B7                 ;80B681|20B7B7  |80B7B7;
@@ -5624,7 +5663,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B68F|4B      |      ;
                        PLB                                  ;80B690|AB      |      ;
                        LDY.W #$B69B                         ;80B691|A09BB6  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B694|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B694|22CAA080|80A0CA;
                        PLB                                  ;80B698|AB      |      ;
                        BRA +                                ;80B699|8008    |80B6A3;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$20   ;80B69B|        |      ;
@@ -5635,7 +5674,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B6AE|4B      |      ;
                        PLB                                  ;80B6AF|AB      |      ;
                        LDY.W #$B6BA                         ;80B6B0|A0BAB6  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B6B3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B6B3|22CAA080|80A0CA;
                        PLB                                  ;80B6B7|AB      |      ;
                        BRA +                                ;80B6B8|8008    |80B6C2;
                        db $00,$5D,$7F,$00,$0C,$80,$00,$60   ;80B6BA|        |      ;
@@ -5680,7 +5719,7 @@ Audio_CommandHandlers:
                        DEC.B $00                            ;80B71B|C600    |000000;
                        BNE -                                ;80B71D|D0CD    |80B6EC;
                        LDA.W #$5C28                         ;80B71F|A9285C  |      ;
-                       STA.L $7E86F6                        ;80B722|8FF6867E|7E86F6;
+                       STA.L Palette_Buffer                 ;80B722|8FF6867E|7E86F6;
                        STA.L $7E86F8                        ;80B726|8FF8867E|7E86F8;
                        STA.L $7E86FA                        ;80B72A|8FFA867E|7E86FA;
                        STA.L $7E86FC                        ;80B72E|8FFC867E|7E86FC;
@@ -5803,6 +5842,8 @@ Audio_CommandHandlers:
                        JSL.L CODE_FL_80A145                 ;80B89B|2245A180|80A145;
                        REP #$30                             ;80B89F|C230    |      ;
                        RTS                                  ;80B8A1|60      |      ;
+ 
+          CODE_80B8A2:
                        LDY.W #$0001                         ;80B8A2|A00100  |      ;
                        JSL.L CODE_FL_80AECB                 ;80B8A5|22CBAE80|80AECB;
                        BCC +                                ;80B8A9|901A    |80B8C5;
@@ -5811,7 +5852,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B8AE|4B      |      ;
                        PLB                                  ;80B8AF|AB      |      ;
                        LDY.W #$B8BA                         ;80B8B0|A0BAB8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B8B3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B8B3|22CAA080|80A0CA;
                        PLB                                  ;80B8B7|AB      |      ;
                        BRA ++                               ;80B8B8|8008    |80B8C2;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80B8BA|        |      ;
@@ -5820,6 +5861,8 @@ Audio_CommandHandlers:
  
                      + REP #$20                             ;80B8C5|C220    |      ;
                        RTS                                  ;80B8C7|60      |      ;
+ 
+          CODE_80B8C8:
                        STZ.W $0366                          ;80B8C8|9C6603  |800366;
                        JSL.L CODE_FL_80B57B                 ;80B8CB|227BB580|80B57B;
                        LDA.W $0366                          ;80B8CF|AD6603  |800366;
@@ -5827,6 +5870,8 @@ Audio_CommandHandlers:
                        INC.W Game_State_State               ;80B8D4|EEA202  |8002A2;
  
                      + RTS                                  ;80B8D7|60      |      ;
+ 
+          CODE_80B8D8:
                        LDA.W #$00D1                         ;80B8D8|A9D100  |      ;
                        STA.W $1986                          ;80B8DB|8D8619  |801986;
                        JSL.L CODE_FL_80BB2D                 ;80B8DE|222DBB80|80BB2D;
@@ -5868,7 +5913,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B928|4B      |      ;
                        PLB                                  ;80B929|AB      |      ;
                        LDY.W #$B934                         ;80B92A|A034B9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B92D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B92D|22CAA080|80A0CA;
                        PLB                                  ;80B931|AB      |      ;
                        BRA +                                ;80B932|8008    |80B93C;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80B934|        |      ;
@@ -5877,6 +5922,8 @@ Audio_CommandHandlers:
                        STZ.B $AD                            ;80B93E|64AD    |0000AD;
                        INC.W Game_State_State               ;80B940|EEA202  |8002A2;
                        RTS                                  ;80B943|60      |      ;
+ 
+          CODE_80B944:
                        LDA.B $AD                            ;80B944|A5AD    |0000AD;
                        CMP.W #$0001                         ;80B946|C90100  |      ;
                        BNE +                                ;80B949|D01F    |80B96A;
@@ -5887,7 +5934,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B953|4B      |      ;
                        PLB                                  ;80B954|AB      |      ;
                        LDY.W #$B95F                         ;80B955|A05FB9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B958|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B958|22CAA080|80A0CA;
                        PLB                                  ;80B95C|AB      |      ;
                        BRA ++                               ;80B95D|8008    |80B967;
                        db $00,$30,$7E,$00,$08,$80,$00,$68   ;80B95F|        |      ;
@@ -5895,6 +5942,8 @@ Audio_CommandHandlers:
                     ++ INC.W Game_State_State               ;80B967|EEA202  |8002A2;
  
                      + RTS                                  ;80B96A|60      |      ;
+ 
+          CODE_80B96B:
                        STZ.W $0366                          ;80B96B|9C6603  |800366;
                        JSL.L CODE_FL_80B5A1                 ;80B96E|22A1B580|80B5A1;
                        JSL.L CODE_FL_80B5C6                 ;80B972|22C6B580|80B5C6;
@@ -5909,12 +5958,16 @@ Audio_CommandHandlers:
                        INC.W Game_State_State               ;80B988|EEA202  |8002A2;
  
                      + RTS                                  ;80B98B|60      |      ;
+ 
+          CODE_80B98C:
                        LDA.B $AD                            ;80B98C|A5AD    |0000AD;
                        CMP.W #$0001                         ;80B98E|C90100  |      ;
                        BNE +                                ;80B991|D003    |80B996;
                        INC.W Game_State_State               ;80B993|EEA202  |8002A2;
  
                      + RTS                                  ;80B996|60      |      ;
+ 
+          CODE_80B997:
                        STZ.W $0366                          ;80B997|9C6603  |800366;
                        JSL.L CODE_FL_80B5EC                 ;80B99A|22ECB580|80B5EC;
                        JSL.L CODE_FL_80B611                 ;80B99E|2211B680|80B611;
@@ -5929,6 +5982,8 @@ Audio_CommandHandlers:
                        STA.L $7E935B                        ;80B9B7|8F5B937E|7E935B;
  
                      + RTS                                  ;80B9BB|60      |      ;
+ 
+          CODE_80B9BC:
                        JSL.L CODE_FL_809CF7                 ;80B9BC|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B9C0|228A9C80|809C8A;
                        JSR.W CODE_FN_80BA48                 ;80B9C4|2048BA  |80BA48;
@@ -5940,7 +5995,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B9D8|4B      |      ;
                        PLB                                  ;80B9D9|AB      |      ;
                        LDY.W #$B9E4                         ;80B9DA|A0E4B9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80B9DD|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80B9DD|22CAA080|80A0CA;
                        PLB                                  ;80B9E1|AB      |      ;
                        BRA +                                ;80B9E2|8008    |80B9EC;
                        db $00,$5D,$7F,$80,$08,$80,$00,$20   ;80B9E4|        |      ;
@@ -5951,7 +6006,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80B9F7|4B      |      ;
                        PLB                                  ;80B9F8|AB      |      ;
                        LDY.W #$BA03                         ;80B9F9|A003BA  |      ;
-                       JSL.L CODE_FL_80A07F                 ;80B9FC|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;80B9FC|227FA080|80A07F;
                        PLB                                  ;80BA00|AB      |      ;
                        BRA +                                ;80BA01|8006    |80BA09;
                        db $F6,$86,$7E,$00,$02,$00           ;80BA03|        |000086;
@@ -5968,7 +6023,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80BA27|4B      |      ;
                        PLB                                  ;80BA28|AB      |      ;
                        LDY.W #$BA33                         ;80BA29|A033BA  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80BA2C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80BA2C|22CAA080|80A0CA;
                        PLB                                  ;80BA30|AB      |      ;
                        BRA +                                ;80BA31|8008    |80BA3B;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80BA33|        |      ;
@@ -5976,6 +6031,8 @@ Audio_CommandHandlers:
                      + INC.W Game_State_State               ;80BA3B|EEA202  |8002A2;
                        JSL.L CODE_FL_809D0B                 ;80BA3E|220B9D80|809D0B;
                        RTS                                  ;80BA42|60      |      ;
+ 
+          CODE_80BA43:
                        JSL.L CODE_FL_86D67D                 ;80BA43|227DD686|86D67D;
                        RTS                                  ;80BA47|60      |      ;
  
@@ -8974,7 +9031,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80D920|4B      |      ;
                        PLB                                  ;80D921|AB      |      ;
                        LDY.W #$D92C                         ;80D922|A02CD9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80D925|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80D925|22CAA080|80A0CA;
                        PLB                                  ;80D929|AB      |      ;
                        BRA +                                ;80D92A|8008    |80D934;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80D92C|        |      ;
@@ -9038,7 +9095,7 @@ Audio_CommandHandlers:
                        PHK                                  ;80D9AE|4B      |      ;
                        PLB                                  ;80D9AF|AB      |      ;
                        LDY.W #$D9BA                         ;80D9B0|A0BAD9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;80D9B3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;80D9B3|22CAA080|80A0CA;
                        PLB                                  ;80D9B7|AB      |      ;
                        BRA +                                ;80D9B8|8008    |80D9C2;
                        db $00,$20,$7E,$00,$08,$80,$00,$70   ;80D9BA|        |      ;

@@ -9883,6 +9883,8 @@
                        db $AB,$A0,$29,$DE,$22,$CA,$A0,$80   ;86DE1E|        |      ;
                        db $AB,$80,$08,$00,$28,$7E,$00,$08   ;86DE26|        |      ;
                        db $80,$00,$78,$AB,$28,$6B           ;86DE2E|        |86DE30;
+ 
+GameState_AfterGameHint:
                        PHP                                  ;86DE34|08      |      ;
                        PHK                                  ;86DE35|4B      |      ;
                        PLB                                  ;86DE36|AB      |      ;
@@ -9890,12 +9892,16 @@
                        LDA.W Game_State_State               ;86DE39|ADA202  |0002A2;
                        ASL A                                ;86DE3C|0A      |      ;
                        TAX                                  ;86DE3D|AA      |      ;
-                       JSR.W (DATA8_86DE43,X)               ;86DE3E|FC43DE  |86DE43;
+                       JSR.W (AfterGameHint_Pointers,X)     ;86DE3E|FC43DE  |86DE43;
                        PLP                                  ;86DE41|28      |      ;
                        RTL                                  ;86DE42|6B      |      ;
+AfterGameHint_Pointers:
+                       dw CODE_86DE4B                       ;86DE43|        |86DE4B;
+                       dw CODE_86E051                       ;86DE45|        |86E051;
+                       dw CODE_86E056                       ;86DE47|        |86E056;
+                       dw CODE_86E092                       ;86DE49|        |86E092;
  
-         DATA8_86DE43:
-                       db $4B,$DE,$51,$E0,$56,$E0,$92,$E0   ;86DE43|        |      ;
+          CODE_86DE4B:
                        JSL.L CODE_FL_809CF7                 ;86DE4B|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;86DE4F|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;86DE53|22389E80|809E38;
@@ -9913,7 +9919,7 @@
                        PHK                                  ;86DE7E|4B      |      ;
                        PLB                                  ;86DE7F|AB      |      ;
                        LDY.W #$DE8A                         ;86DE80|A08ADE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;86DE83|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;86DE83|22CAA080|80A0CA;
                        PLB                                  ;86DE87|AB      |      ;
                        BRA +                                ;86DE88|8008    |86DE92;
                        db $00,$5D,$7F,$00,$08,$80,$00,$30   ;86DE8A|        |      ;
@@ -9924,7 +9930,7 @@
                        PHK                                  ;86DE9D|4B      |      ;
                        PLB                                  ;86DE9E|AB      |      ;
                        LDY.W #$DEA9                         ;86DE9F|A0A9DE  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;86DEA2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;86DEA2|22CAA080|80A0CA;
                        PLB                                  ;86DEA6|AB      |      ;
                        BRA +                                ;86DEA7|8008    |86DEB1;
                        db $00,$28,$7E,$00,$08,$80,$00,$78   ;86DEA9|        |      ;
@@ -10000,7 +10006,7 @@
                        PHK                                  ;86DF60|4B      |      ;
                        PLB                                  ;86DF61|AB      |      ;
                        LDY.W #$DF6C                         ;86DF62|A06CDF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;86DF65|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;86DF65|22CAA080|80A0CA;
                        PLB                                  ;86DF69|AB      |      ;
                        BRA +                                ;86DF6A|8008    |86DF74;
                        db $00,$20,$7E,$C0,$07,$80,$00,$70   ;86DF6C|        |      ;
@@ -10009,7 +10015,7 @@
                        PHK                                  ;86DF75|4B      |      ;
                        PLB                                  ;86DF76|AB      |      ;
                        LDY.W #$DF81                         ;86DF77|A081DF  |      ;
-                       JSL.L CODE_FL_80A07F                 ;86DF7A|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;86DF7A|227FA080|80A07F;
                        PLB                                  ;86DF7E|AB      |      ;
                        BRA +                                ;86DF7F|8006    |86DF87;
                        db $F6,$86,$7E,$00,$02,$00           ;86DF81|        |      ;
@@ -10102,8 +10108,12 @@
                        JMP.W CODE_JP_86DF9A                 ;86E04D|4C9ADF  |86DF9A;
  
                      + RTS                                  ;86E050|60      |      ;
+ 
+          CODE_86E051:
                        JSL.L CODE_FL_86D67D                 ;86E051|227DD686|86D67D;
                        RTS                                  ;86E055|60      |      ;
+ 
+          CODE_86E056:
                        LDA.L $7E935B                        ;86E056|AF5B937E|7E935B;
                        INC A                                ;86E05A|1A      |      ;
                        STA.L $7E935B                        ;86E05B|8F5B937E|7E935B;
@@ -10129,6 +10139,8 @@
                        INC.W Game_State_State               ;86E08E|EEA202  |0002A2;
  
                      + RTS                                  ;86E091|60      |      ;
+ 
+          CODE_86E092:
                        LDY.W #$0001                         ;86E092|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;86E095|2218AF80|80AF18;
                        BCC +                                ;86E099|9013    |86E0AE;

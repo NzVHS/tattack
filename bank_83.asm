@@ -3718,7 +3718,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A002|4B      |      ;
                        PLB                                  ;83A003|AB      |      ;
                        LDY.W #$A00E                         ;83A004|A00EA0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A007|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A007|22CAA080|80A0CA;
                        PLB                                  ;83A00B|AB      |      ;
                        BRA +                                ;83A00C|8008    |83A016;
                        db $00,$20,$7E,$80,$01,$80,$00,$68   ;83A00E|        |      ;
@@ -3727,7 +3727,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A017|4B      |      ;
                        PLB                                  ;83A018|AB      |      ;
                        LDY.W #$A023                         ;83A019|A023A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A01C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A01C|22CAA080|80A0CA;
                        PLB                                  ;83A020|AB      |      ;
                        BRA +                                ;83A021|8008    |83A02B;
                        db $00,$30,$7E,$80,$01,$80,$00,$78   ;83A023|        |      ;
@@ -3739,7 +3739,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A02D|4B      |      ;
                        PLB                                  ;83A02E|AB      |      ;
                        LDY.W #$A039                         ;83A02F|A039A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A032|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A032|22CAA080|80A0CA;
                        PLB                                  ;83A036|AB      |      ;
                        BRA +                                ;83A037|8008    |83A041;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;83A039|        |      ;
@@ -3751,7 +3751,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A043|4B      |      ;
                        PLB                                  ;83A044|AB      |      ;
                        LDY.W #$A04F                         ;83A045|A04FA0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A048|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A048|22CAA080|80A0CA;
                        PLB                                  ;83A04C|AB      |      ;
                        BRA +                                ;83A04D|8008    |83A057;
                        db $00,$30,$7E,$00,$08,$80,$00,$78   ;83A04F|        |      ;
@@ -3763,7 +3763,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A059|4B      |      ;
                        PLB                                  ;83A05A|AB      |      ;
                        LDY.W #$A065                         ;83A05B|A065A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A05E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A05E|22CAA080|80A0CA;
                        PLB                                  ;83A062|AB      |      ;
                        BRA +                                ;83A063|8008    |83A06D;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;83A065|        |      ;
@@ -3772,7 +3772,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A06E|4B      |      ;
                        PLB                                  ;83A06F|AB      |      ;
                        LDY.W #$A07A                         ;83A070|A07AA0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A073|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A073|22CAA080|80A0CA;
                        PLB                                  ;83A077|AB      |      ;
                        BRA +                                ;83A078|8008    |83A082;
                        db $00,$30,$7E,$00,$08,$80,$00,$78   ;83A07A|        |      ;
@@ -3784,7 +3784,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A084|4B      |      ;
                        PLB                                  ;83A085|AB      |      ;
                        LDY.W #$A090                         ;83A086|A090A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A089|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A089|22CAA080|80A0CA;
                        PLB                                  ;83A08D|AB      |      ;
                        BRA +                                ;83A08E|8008    |83A098;
                        db $00,$20,$7E,$00,$08,$80,$00,$6C   ;83A090|        |      ;
@@ -3793,7 +3793,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A099|4B      |      ;
                        PLB                                  ;83A09A|AB      |      ;
                        LDY.W #$A0A5                         ;83A09B|A0A5A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A09E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A09E|22CAA080|80A0CA;
                        PLB                                  ;83A0A2|AB      |      ;
                        BRA +                                ;83A0A3|8008    |83A0AD;
                        db $00,$30,$7E,$00,$08,$80,$00,$7C   ;83A0A5|        |      ;
@@ -3807,7 +3807,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A0B9|4B      |      ;
                        PLB                                  ;83A0BA|AB      |      ;
                        LDY.W #$A0C5                         ;83A0BB|A0C5A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A0BE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A0BE|22CAA080|80A0CA;
                        PLB                                  ;83A0C2|AB      |      ;
                        BRA +                                ;83A0C3|8008    |83A0CD;
                        db $40,$20,$7E,$C0,$06,$80,$20,$68   ;83A0C5|        |      ;
@@ -3816,7 +3816,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A0CE|4B      |      ;
                        PLB                                  ;83A0CF|AB      |      ;
                        LDY.W #$A0DA                         ;83A0D0|A0DAA0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A0D3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A0D3|22CAA080|80A0CA;
                        PLB                                  ;83A0D7|AB      |      ;
                        BRA +                                ;83A0D8|8008    |83A0E2;
                        db $40,$30,$7E,$C0,$06,$80,$20,$78   ;83A0DA|        |      ;
@@ -3828,7 +3828,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A0E4|4B      |      ;
                        PLB                                  ;83A0E5|AB      |      ;
                        LDY.W #$A0F0                         ;83A0E6|A0F0A0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A0E9|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A0E9|22CAA080|80A0CA;
                        PLB                                  ;83A0ED|AB      |      ;
                        BRA +                                ;83A0EE|8008    |83A0F8;
                        db $00,$20,$7E,$00,$07,$80,$00,$68   ;83A0F0|        |      ;
@@ -3837,7 +3837,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A0F9|4B      |      ;
                        PLB                                  ;83A0FA|AB      |      ;
                        LDY.W #$A105                         ;83A0FB|A005A1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83A0FE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83A0FE|22CAA080|80A0CA;
                        PLB                                  ;83A102|AB      |      ;
                        BRA +                                ;83A103|8008    |83A10D;
                        db $00,$30,$7E,$00,$07,$80,$00,$78   ;83A105|        |      ;
@@ -3849,7 +3849,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A10F|4B      |      ;
                        PLB                                  ;83A110|AB      |      ;
                        LDY.W #$A11B                         ;83A111|A01BA1  |      ;
-                       JSL.L CODE_FL_80A07F                 ;83A114|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;83A114|227FA080|80A07F;
                        PLB                                  ;83A118|AB      |      ;
                        BRA +                                ;83A119|8006    |83A121;
                        db $F6,$86,$7E,$00,$02,$00           ;83A11B|        |      ;
@@ -3861,7 +3861,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A123|4B      |      ;
                        PLB                                  ;83A124|AB      |      ;
                        LDY.W #$A12F                         ;83A125|A02FA1  |      ;
-                       JSL.L CODE_FL_80A07F                 ;83A128|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;83A128|227FA080|80A07F;
                        PLB                                  ;83A12C|AB      |      ;
                        BRA +                                ;83A12D|8006    |83A135;
                        db $F6,$86,$7E,$00,$01,$00           ;83A12F|        |      ;
@@ -3873,7 +3873,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A137|4B      |      ;
                        PLB                                  ;83A138|AB      |      ;
                        LDY.W #$A143                         ;83A139|A043A1  |      ;
-                       JSL.L CODE_FL_80A07F                 ;83A13C|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;83A13C|227FA080|80A07F;
                        PLB                                  ;83A140|AB      |      ;
                        BRA +                                ;83A141|8006    |83A149;
                        db $F6,$86,$7E,$E0,$00,$00           ;83A143|        |      ;
@@ -4885,7 +4885,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83A938|4B      |      ;
                        PLB                                  ;83A939|AB      |      ;
                        LDY.W #$A944                         ;83A93A|A044A9  |      ;
-                       JSL.L CODE_FL_80A07F                 ;83A93D|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;83A93D|227FA080|80A07F;
                        PLB                                  ;83A941|AB      |      ;
                        BRA +                                ;83A942|8006    |83A94A;
                        db $F6,$86,$7E,$00,$02,$00           ;83A944|        |      ;
@@ -5373,7 +5373,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83AD6D|4B      |      ;
                        PLB                                  ;83AD6E|AB      |      ;
                        LDY.W #$AD79                         ;83AD6F|A079AD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83AD72|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83AD72|22CAA080|80A0CA;
                        PLB                                  ;83AD76|AB      |      ;
                        BRA +                                ;83AD77|8008    |83AD81;
                        db $00,$28,$7E,$00,$02,$80,$00,$6D   ;83AD79|        |      ;
@@ -5382,7 +5382,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83AD82|4B      |      ;
                        PLB                                  ;83AD83|AB      |      ;
                        LDY.W #$AD8E                         ;83AD84|A08EAD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83AD87|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83AD87|22CAA080|80A0CA;
                        PLB                                  ;83AD8B|AB      |      ;
                        BRA +                                ;83AD8C|8008    |83AD96;
                        db $00,$2A,$7E,$00,$02,$80,$00,$7D   ;83AD8E|        |      ;
@@ -5400,7 +5400,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83ADA9|4B      |      ;
                        PLB                                  ;83ADAA|AB      |      ;
                        LDY.W #$ADB5                         ;83ADAB|A0B5AD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83ADAE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83ADAE|22CAA080|80A0CA;
                        PLB                                  ;83ADB2|AB      |      ;
                        BRA +                                ;83ADB3|8008    |83ADBD;
                        db $00,$28,$7E,$00,$02,$80,$C0,$6B   ;83ADB5|        |      ;
@@ -5409,7 +5409,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83ADBE|4B      |      ;
                        PLB                                  ;83ADBF|AB      |      ;
                        LDY.W #$ADCA                         ;83ADC0|A0CAAD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83ADC3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83ADC3|22CAA080|80A0CA;
                        PLB                                  ;83ADC7|AB      |      ;
                        BRA +                                ;83ADC8|8008    |83ADD2;
                        db $00,$2A,$7E,$00,$02,$80,$C0,$7B   ;83ADCA|        |      ;
@@ -6214,7 +6214,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83B490|4B      |      ;
                        PLB                                  ;83B491|AB      |      ;
                        LDY.W #$B49C                         ;83B492|A09CB4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83B495|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83B495|22CAA080|80A0CA;
                        PLB                                  ;83B499|AB      |      ;
                        BRA +                                ;83B49A|8008    |83B4A4;
                        db $00,$22,$7E,$00,$02,$80,$60,$69   ;83B49C|        |      ;
@@ -6223,7 +6223,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83B4A5|4B      |      ;
                        PLB                                  ;83B4A6|AB      |      ;
                        LDY.W #$B4B1                         ;83B4A7|A0B1B4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83B4AA|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83B4AA|22CAA080|80A0CA;
                        PLB                                  ;83B4AE|AB      |      ;
                        BRA +                                ;83B4AF|8008    |83B4B9;
                        db $00,$32,$7E,$00,$02,$80,$60,$79   ;83B4B1|        |      ;
@@ -6235,7 +6235,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83B4BB|4B      |      ;
                        PLB                                  ;83B4BC|AB      |      ;
                        LDY.W #$B4C7                         ;83B4BD|A0C7B4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83B4C0|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83B4C0|22CAA080|80A0CA;
                        PLB                                  ;83B4C4|AB      |      ;
                        BRA +                                ;83B4C5|8008    |83B4CF;
                        db $00,$24,$7E,$00,$02,$80,$60,$6D   ;83B4C7|        |      ;
@@ -6244,7 +6244,7 @@ Menu_DrawPasswordUnderscore:
                        PHK                                  ;83B4D0|4B      |      ;
                        PLB                                  ;83B4D1|AB      |      ;
                        LDY.W #$B4DC                         ;83B4D2|A0DCB4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83B4D5|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83B4D5|22CAA080|80A0CA;
                        PLB                                  ;83B4D9|AB      |      ;
                        BRA +                                ;83B4DA|8008    |83B4E4;
                        db $00,$34,$7E,$00,$02,$80,$60,$7D   ;83B4DC|        |      ;
@@ -7198,6 +7198,8 @@ Options_DoVSLevelHard:
                        JSR.W Options_DoVSLevelHard          ;83BD13|20FCBC  |83BCFC;
                        RTS                                  ;83BD16|60      |      ;
  
+ 
+       GameState_Menu:
                        PHP                                  ;83BD17|08      |      ;
                        PHK                                  ;83BD18|4B      |      ;
                        PLB                                  ;83BD19|AB      |      ;
@@ -7223,29 +7225,68 @@ Options_DoVSLevelHard:
                        LDA.L Game_State_State-$7E0000       ;83BD4E|AFA20200|0002A2;
                        ASL A                                ;83BD52|0A      |      ;
                        TAX                                  ;83BD53|AA      |      ;
-                       JSR.W (DATA8_83BD59,X)               ;83BD54|FC59BD  |83BD59;
+                       JSR.W (Menu_Pointers,X)              ;83BD54|FC59BD  |83BD59;
                        PLP                                  ;83BD57|28      |      ;
                        RTL                                  ;83BD58|6B      |      ;
- 
-         DATA8_83BD59:
-                       db $2C,$BE,$85,$C0,$96,$C0,$DB,$C0   ;83BD59|        |      ;
-                       db $47,$C1,$5E,$C1,$DB,$C1,$FC,$C1   ;83BD61|        |      ;
-                       db $2D,$C3,$DB,$C4,$1F,$C5,$C0,$C5   ;83BD69|        |      ;
-                       db $44,$C6,$FC,$C1,$2D,$C3,$E0,$C6   ;83BD71|        |      ;
-                       db $1F,$C5,$C0,$C5,$42,$C7,$C5,$C7   ;83BD79|        |      ;
-                       db $A0,$C8,$E4,$C8,$35,$C9           ;83BD81|        |      ;
-                       db $42,$C7                           ;83BD87|        |      ;
-                       db $C5,$C7,$26,$CE,$E4,$C8,$35,$C9   ;83BD89|        |      ;
-                       db $50,$CA,$01,$CB,$15,$CD,$A7,$CD   ;83BD91|        |      ;
-                       db $FC,$C1,$2D,$C3,$AE,$CE,$1F,$C5   ;83BD99|        |      ;
-                       db $C0,$C5,$F8,$CE,$36,$CF,$49,$CF   ;83BDA1|        |      ;
-                       db $2D,$C3,$79,$CF,$1F,$C5           ;83BDA9|        |      ;
-                       db $87,$D5                           ;83BDAF|        |0000D5;
-                       db $D8,$D2,$BA,$D3,$5D,$D4           ;83BDB1|        |      ;
-                       db $D8,$D2,$D1,$D4,$5D,$D4           ;83BDB7|        |      ;
-                       db $2D,$C3,$9C,$D5,$1F,$C5           ;83BDBD|        |      ;
-                       db $42,$C7                           ;83BDC3|        |      ;
-                       db $C5,$C7,$6A,$CE,$E4,$C8,$35,$C9   ;83BDC5|        |      ;
+        Menu_Pointers:
+                       dw CODE_83BE2C                       ;83BD59|        |83BE2C;
+                       dw CODE_83C085                       ;83BD5B|        |83C085;
+                       dw CODE_83C096                       ;83BD5D|        |83C096;
+                       dw CODE_83C0DB                       ;83BD5F|        |83C0DB;
+                       dw CODE_83C147                       ;83BD61|        |83C147;
+                       dw CODE_83C15E                       ;83BD63|        |83C15E;
+                       dw CODE_83C1DB                       ;83BD65|        |83C1DB;
+                       dw CODE_83C1FC                       ;83BD67|        |83C1FC;
+                       dw CODE_83C32D                       ;83BD69|        |83C32D;
+                       dw CODE_83C4DB                       ;83BD6B|        |83C4DB;
+                       dw CODE_83C51F                       ;83BD6D|        |83C51F;
+                       dw CODE_83C5C0                       ;83BD6F|        |83C5C0;
+                       dw CODE_83C644                       ;83BD71|        |83C644;
+                       dw CODE_83C1FC                       ;83BD73|        |83C1FC;
+                       dw CODE_83C32D                       ;83BD75|        |83C32D;
+                       dw CODE_83C6E0                       ;83BD77|        |83C6E0;
+                       dw CODE_83C51F                       ;83BD79|        |83C51F;
+                       dw CODE_83C5C0                       ;83BD7B|        |83C5C0;
+                       dw CODE_83C742                       ;83BD7D|        |83C742;
+                       dw CODE_83C7C5                       ;83BD7F|        |83C7C5;
+                       dw CODE_83C8A0                       ;83BD81|        |83C8A0;
+                       dw CODE_83C8E4                       ;83BD83|        |83C8E4;
+                       dw CODE_83C935                       ;83BD85|        |83C935;
+                       dw CODE_83C742                       ;83BD87|        |83C742;
+                       dw CODE_83C7C5                       ;83BD89|        |83C7C5;
+                       dw CODE_83CE26                       ;83BD8B|        |83CE26;
+                       dw CODE_83C8E4                       ;83BD8D|        |83C8E4;
+                       dw CODE_83C935                       ;83BD8F|        |83C935;
+                       dw CODE_83CA50                       ;83BD91|        |83CA50;
+                       dw CODE_83CB01                       ;83BD93|        |83CB01;
+                       dw CODE_83CD15                       ;83BD95|        |83CD15;
+                       dw CODE_83CDA7                       ;83BD97|        |83CDA7;
+                       dw CODE_83C1FC                       ;83BD99|        |83C1FC;
+                       dw CODE_83C32D                       ;83BD9B|        |83C32D;
+                       dw CODE_83CEAE                       ;83BD9D|        |83CEAE;
+                       dw CODE_83C51F                       ;83BD9F|        |83C51F;
+                       dw CODE_83C5C0                       ;83BDA1|        |83C5C0;
+                       dw CODE_83CEF8                       ;83BDA3|        |83CEF8;
+                       dw CODE_83CF36                       ;83BDA5|        |83CF36;
+                       dw CODE_83CF49                       ;83BDA7|        |83CF49;
+                       dw CODE_83C32D                       ;83BDA9|        |83C32D;
+                       dw CODE_83CF79                       ;83BDAB|        |83CF79;
+                       dw CODE_83C51F                       ;83BDAD|        |83C51F;
+                       dw UNREACH_83D587                    ;83BDAF|        |83D587;
+                       dw CODE_83D2D8                       ;83BDB1|        |83D2D8;
+                       dw CODE_83D3BA                       ;83BDB3|        |83D3BA;
+                       dw CODE_83D45D                       ;83BDB5|        |83D45D;
+                       dw CODE_83D2D8                       ;83BDB7|        |83D2D8;
+                       dw UNREACH_83D4D1                    ;83BDB9|        |83D4D1;
+                       dw CODE_83D45D                       ;83BDBB|        |83D45D;
+                       dw CODE_83C32D                       ;83BDBD|        |83C32D;
+                       dw CODE_83D59C                       ;83BDBF|        |83D59C;
+                       dw CODE_83C51F                       ;83BDC1|        |83C51F;
+                       dw CODE_83C742                       ;83BDC3|        |83C742;
+                       dw CODE_83C7C5                       ;83BDC5|        |83C7C5;
+                       dw CODE_83CE6A                       ;83BDC7|        |83CE6A;
+                       dw CODE_83C8E4                       ;83BDC9|        |83C8E4;
+                       dw CODE_83C935                       ;83BDCB|        |83C935;
  
        CODE_FL_83BDCD:
                        LDA.W #$0001                         ;83BDCD|A90100  |      ;
@@ -7293,6 +7334,8 @@ Options_DoVSLevelHard:
  
                      + REP #$20                             ;83BE29|C220    |      ;
                        RTS                                  ;83BE2B|60      |      ;
+ 
+          CODE_83BE2C:
                        INC.W Game_State_State               ;83BE2C|EEA202  |8302A2;
                        JSR.W CODE_FN_83BE78                 ;83BE2F|2078BE  |83BE78;
                        JSL.L CODE_FL_8A8ACB                 ;83BE32|22CB8A8A|8A8ACB;
@@ -7413,7 +7456,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83BF6D|4B      |      ;
                        PLB                                  ;83BF6E|AB      |      ;
                        LDY.W #$BF79                         ;83BF6F|A079BF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83BF72|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83BF72|22CAA080|80A0CA;
                        PLB                                  ;83BF76|AB      |      ;
                        BRA +                                ;83BF77|8008    |83BF81;
                        db $00,$5D,$7F,$00,$60,$80,$00,$30   ;83BF79|        |      ;
@@ -7424,7 +7467,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83BF8C|4B      |      ;
                        PLB                                  ;83BF8D|AB      |      ;
                        LDY.W #$BF98                         ;83BF8E|A098BF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83BF91|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83BF91|22CAA080|80A0CA;
                        PLB                                  ;83BF95|AB      |      ;
                        BRA +                                ;83BF96|8008    |83BFA0;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;83BF98|        |      ;
@@ -7435,7 +7478,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83BFAB|4B      |      ;
                        PLB                                  ;83BFAC|AB      |      ;
                        LDY.W #$BFB7                         ;83BFAD|A0B7BF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83BFB0|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83BFB0|22CAA080|80A0CA;
                        PLB                                  ;83BFB4|AB      |      ;
                        BRA +                                ;83BFB5|8008    |83BFBF;
                        db $00,$5D,$7F,$00,$08,$80,$00,$60   ;83BFB7|        |      ;
@@ -7446,7 +7489,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83BFCA|4B      |      ;
                        PLB                                  ;83BFCB|AB      |      ;
                        LDY.W #$BFD6                         ;83BFCC|A0D6BF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83BFCF|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83BFCF|22CAA080|80A0CA;
                        PLB                                  ;83BFD3|AB      |      ;
                        BRA +                                ;83BFD4|8008    |83BFDE;
                        db $00,$5D,$7F,$00,$08,$80,$00,$70   ;83BFD6|        |      ;
@@ -7457,7 +7500,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83BFE9|4B      |      ;
                        PLB                                  ;83BFEA|AB      |      ;
                        LDY.W #$BFF5                         ;83BFEB|A0F5BF  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83BFEE|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83BFEE|22CAA080|80A0CA;
                        PLB                                  ;83BFF2|AB      |      ;
                        BRA +                                ;83BFF3|8008    |83BFFD;
                        db $00,$83,$7F,$00,$20,$80,$00,$00   ;83BFF5|        |      ;
@@ -7468,7 +7511,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C008|4B      |      ;
                        PLB                                  ;83C009|AB      |      ;
                        LDY.W #$C014                         ;83C00A|A014C0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C00D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C00D|22CAA080|80A0CA;
                        PLB                                  ;83C011|AB      |      ;
                        BRA +                                ;83C012|8008    |83C01C;
                        db $00,$9D,$7F,$00,$20,$80,$00,$20   ;83C014|        |      ;
@@ -7481,7 +7524,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C031|4B      |      ;
                        PLB                                  ;83C032|AB      |      ;
                        LDY.W #$C03D                         ;83C033|A03DC0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C036|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C036|22CAA080|80A0CA;
                        PLB                                  ;83C03A|AB      |      ;
                        BRA +                                ;83C03B|8008    |83C045;
                        db $00,$91,$7F,$00,$0C,$80,$00,$01   ;83C03D|        |      ;
@@ -7505,6 +7548,8 @@ Options_DoVSLevelHard:
                        STZ.W $01D3                          ;83C07E|9CD301  |8301D3;
                        STZ.W $01D5                          ;83C081|9CD501  |8301D5;
                        RTS                                  ;83C084|60      |      ;
+ 
+          CODE_83C085:
                        LDY.W #$0001                         ;83C085|A00100  |      ;
                        JSL.L CODE_FL_80AECB                 ;83C088|22CBAE80|80AECB;
                        BCC +                                ;83C08C|9005    |83C093;
@@ -7513,6 +7558,8 @@ Options_DoVSLevelHard:
  
                      + REP #$20                             ;83C093|C220    |      ;
                        RTS                                  ;83C095|60      |      ;
+ 
+          CODE_83C096:
                        LDA.W $1A6E                          ;83C096|AD6E1A  |831A6E;
                        ASL A                                ;83C099|0A      |      ;
                        TAX                                  ;83C09A|AA      |      ;
@@ -7544,6 +7591,8 @@ Options_DoVSLevelHard:
  
        CODE_JP_83C0DA:
                        RTS                                  ;83C0DA|60      |      ;
+ 
+          CODE_83C0DB:
                        LDA.W $1A6E                          ;83C0DB|AD6E1A  |831A6E;
                        ASL A                                ;83C0DE|0A      |      ;
                        TAX                                  ;83C0DF|AA      |      ;
@@ -7581,6 +7630,8 @@ Options_DoVSLevelHard:
                        db $D4,$95,$7E,$F0,$0B,$9C,$6E,$1A   ;83C130|        |000095;
                        db $A2,$00,$05,$20,$EE,$9F,$80,$03   ;83C138|        |      ;
                        db $20,$02,$A5,$20,$58,$A0,$60       ;83C140|        |83A502;
+ 
+          CODE_83C147:
                        JSR.W CODE_FN_83849D                 ;83C147|209D84  |83849D;
                        LDY.W #$0001                         ;83C14A|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;83C14D|2218AF80|80AF18;
@@ -7591,6 +7642,8 @@ Options_DoVSLevelHard:
  
                      + REP #$20                             ;83C15B|C220    |      ;
                        RTS                                  ;83C15D|60      |      ;
+ 
+          CODE_83C15E:
                        INC.W Game_State_State               ;83C15E|EEA202  |8302A2;
                        JSR.W CODE_FN_83BE78                 ;83C161|2078BE  |83BE78;
                        JSL.L CODE_FL_8A8ACB                 ;83C164|22CB8A8A|8A8ACB;
@@ -7637,6 +7690,8 @@ Options_DoVSLevelHard:
                        STA.L $7E9622                        ;83C1D3|8F22967E|7E9622;
                        JSR.W CODE_FN_8384A4                 ;83C1D7|20A484  |8384A4;
                        RTS                                  ;83C1DA|60      |      ;
+ 
+          CODE_83C1DB:
                        LDY.W #$0001                         ;83C1DB|A00100  |      ;
                        JSL.L CODE_FL_80AECB                 ;83C1DE|22CBAE80|80AECB;
                        BCC +                                ;83C1E2|9010    |83C1F4;
@@ -7652,6 +7707,8 @@ Options_DoVSLevelHard:
  
          DATA8_83C1F7:
                        db $37,$0F,$22,$33,$29               ;83C1F7|        |      ;
+ 
+          CODE_83C1FC:
                        LDA.W $1A6E                          ;83C1FC|AD6E1A  |831A6E;
                        ASL A                                ;83C1FF|0A      |      ;
                        TAX                                  ;83C200|AA      |      ;
@@ -7668,7 +7725,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C21B|4B      |      ;
                        PLB                                  ;83C21C|AB      |      ;
                        LDY.W #$C227                         ;83C21D|A027C2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C220|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C220|22CAA080|80A0CA;
                        PLB                                  ;83C224|AB      |      ;
                        BRA +                                ;83C225|8008    |83C22F;
                        db $00,$9D,$7F,$00,$0A,$80,$00,$20   ;83C227|        |      ;
@@ -7684,7 +7741,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C243|4B      |      ;
                        PLB                                  ;83C244|AB      |      ;
                        LDY.W #$C24F                         ;83C245|A04FC2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C248|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C248|22CAA080|80A0CA;
                        PLB                                  ;83C24C|AB      |      ;
                        BRA +                                ;83C24D|8008    |83C257;
                        db $00,$A7,$7F,$00,$0A,$80,$00,$25   ;83C24F|        |      ;
@@ -7695,7 +7752,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C25C|4B      |      ;
                        PLB                                  ;83C25D|AB      |      ;
                        LDY.W #$C268                         ;83C25E|A068C2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C261|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C261|22CAA080|80A0CA;
                        PLB                                  ;83C265|AB      |      ;
                        BRA +                                ;83C266|8008    |83C270;
                        db $00,$B1,$7F,$00,$0C,$80,$00,$2A   ;83C268|        |      ;
@@ -7706,7 +7763,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C275|4B      |      ;
                        PLB                                  ;83C276|AB      |      ;
                        LDY.W #$C281                         ;83C277|A081C2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C27A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C27A|22CAA080|80A0CA;
                        PLB                                  ;83C27E|AB      |      ;
                        BRA +                                ;83C27F|8008    |83C289;
                        db $00,$91,$7F,$00,$0C,$80,$00,$01   ;83C281|        |      ;
@@ -7723,7 +7780,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C29D|4B      |      ;
                        PLB                                  ;83C29E|AB      |      ;
                        LDY.W #$C2A9                         ;83C29F|A0A9C2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C2A2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C2A2|22CAA080|80A0CA;
                        PLB                                  ;83C2A6|AB      |      ;
                        BRA +                                ;83C2A7|8008    |83C2B1;
                        db $80,$20,$7E,$C0,$05,$80,$40,$68   ;83C2A9|        |      ;
@@ -7732,7 +7789,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C2B2|4B      |      ;
                        PLB                                  ;83C2B3|AB      |      ;
                        LDY.W #$C2BE                         ;83C2B4|A0BEC2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C2B7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C2B7|22CAA080|80A0CA;
                        PLB                                  ;83C2BB|AB      |      ;
                        BRA +                                ;83C2BC|8008    |83C2C6;
                        db $80,$30,$7E,$C0,$05,$80,$40,$78   ;83C2BE|        |      ;
@@ -7780,6 +7837,8 @@ Options_DoVSLevelHard:
                        LDA.W #$0022                         ;83C326|A92200  |      ;
                        STA.W Game_State_State               ;83C329|8DA202  |8302A2;
                        RTS                                  ;83C32C|60      |      ;
+ 
+          CODE_83C32D:
                        LDA.W $1A6E                          ;83C32D|AD6E1A  |831A6E;
                        ASL A                                ;83C330|0A      |      ;
                        TAX                                  ;83C331|AA      |      ;
@@ -7953,6 +8012,8 @@ Options_DoVSLevelHard:
                        STA.L HowtoImprove_Selection         ;83C4D6|8F3A957E|7E953A;
  
                      + RTS                                  ;83C4DA|60      |      ;
+ 
+          CODE_83C4DB:
                        LDA.L Game1P_Selection               ;83C4DB|AF2A957E|7E952A;
                        CLC                                  ;83C4DF|18      |      ;
                        ADC.W #$0006                         ;83C4E0|690600  |      ;
@@ -7977,6 +8038,8 @@ Options_DoVSLevelHard:
  
                      + RTS                                  ;83C518|60      |      ;
                        db $0B,$0B,$13,$18,$36,$0A           ;83C519|        |      ;
+ 
+          CODE_83C51F:
                        LDA.W $1A6E                          ;83C51F|AD6E1A  |831A6E;
                        ASL A                                ;83C522|0A      |      ;
                        TAX                                  ;83C523|AA      |      ;
@@ -8047,6 +8110,8 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83C5BC|9C6E1A  |831A6E;
  
                      + RTS                                  ;83C5BF|60      |      ;
+ 
+          CODE_83C5C0:
                        LDA.W $1A6E                          ;83C5C0|AD6E1A  |831A6E;
                        ASL A                                ;83C5C3|0A      |      ;
                        TAX                                  ;83C5C4|AA      |      ;
@@ -8099,6 +8164,8 @@ Options_DoVSLevelHard:
                        LDA.W #$0025                         ;83C63D|A92500  |      ;
                        STA.W Game_State_State               ;83C640|8DA202  |8302A2;
                        RTS                                  ;83C643|60      |      ;
+ 
+          CODE_83C644:
                        JSR.W CODE_FN_83849D                 ;83C644|209D84  |83849D;
                        LDY.W #$0001                         ;83C647|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;83C64A|2218AF80|80AF18;
@@ -8174,6 +8241,8 @@ Options_DoVSLevelHard:
                        db $D7,$86,$F6,$D7,$86,$0B,$D8,$86   ;83C6D3|        |      ;
                        JSL.L CODE_FL_86D87F                 ;83C6DB|227FD886|86D87F;
                        RTS                                  ;83C6DF|60      |      ;
+ 
+          CODE_83C6E0:
                        LDA.W #$0000                         ;83C6E0|A90000  |      ;
                        STA.L $7EF1E0                        ;83C6E3|8FE0F17E|7EF1E0;
                        LDA.L Game2P_Selection               ;83C6E7|AF2C957E|7E952C;
@@ -8204,6 +8273,8 @@ Options_DoVSLevelHard:
                        db $80,$90,$0B,$C2,$20,$A9,$06,$00   ;83C731|        |83C6C3;
                        db $8D,$A0,$02,$9C,$A2,$02,$C2,$20   ;83C739|        |0002A0;
                        db $60                               ;83C741|        |      ;
+ 
+          CODE_83C742:
                        LDA.W $1A6E                          ;83C742|AD6E1A  |831A6E;
                        ASL A                                ;83C745|0A      |      ;
                        TAX                                  ;83C746|AA      |      ;
@@ -8228,7 +8299,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C776|4B      |      ;
                        PLB                                  ;83C777|AB      |      ;
                        LDY.W #$C782                         ;83C778|A082C7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C77B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C77B|22CAA080|80A0CA;
                        PLB                                  ;83C77F|AB      |      ;
                        BRA +                                ;83C780|8008    |83C78A;
                        db $80,$20,$7E,$00,$05,$80,$40,$68   ;83C782|        |      ;
@@ -8237,7 +8308,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83C78B|4B      |      ;
                        PLB                                  ;83C78C|AB      |      ;
                        LDY.W #$C797                         ;83C78D|A097C7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83C790|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83C790|22CAA080|80A0CA;
                        PLB                                  ;83C794|AB      |      ;
                        BRA +                                ;83C795|8008    |83C79F;
                        db $80,$30,$7E,$00,$05               ;83C797|        |      ;
@@ -8263,6 +8334,8 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83C7C1|9C6E1A  |831A6E;
  
                      + RTS                                  ;83C7C4|60      |      ;
+ 
+          CODE_83C7C5:
                        LDA.W $1A6E                          ;83C7C5|AD6E1A  |831A6E;
                        ASL A                                ;83C7C8|0A      |      ;
                        TAX                                  ;83C7C9|AA      |      ;
@@ -8354,6 +8427,8 @@ Options_DoVSLevelHard:
                        STA.L VS_MenuSelection               ;83C89B|8F3C957E|7E953C;
  
                      + RTS                                  ;83C89F|60      |      ;
+ 
+          CODE_83C8A0:
                        LDA.L $7E961E                        ;83C8A0|AF1E967E|7E961E;
                        BEQ +                                ;83C8A4|F017    |83C8BD;
                        LDY.W #$C8B2                         ;83C8A6|A0B2C8  |      ;
@@ -8381,6 +8456,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8397A1                 ;83C8DC|20A197  |8397A1;
                        RTS                                  ;83C8DF|60      |      ;
                        db $16,$16,$1C,$15                   ;83C8E0|        |      ;
+ 
+          CODE_83C8E4:
                        LDA.W $1A6E                          ;83C8E4|AD6E1A  |831A6E;
                        ASL A                                ;83C8E7|0A      |      ;
                        TAX                                  ;83C8E8|AA      |      ;
@@ -8419,6 +8496,8 @@ Options_DoVSLevelHard:
                        STZ.W $1A70                          ;83C931|9C701A  |831A70;
  
                      + RTS                                  ;83C934|60      |      ;
+ 
+          CODE_83C935:
                        LDA.W $1A6E                          ;83C935|AD6E1A  |831A6E;
                        ASL A                                ;83C938|0A      |      ;
                        TAX                                  ;83C939|AA      |      ;
@@ -8540,6 +8619,8 @@ Options_DoVSLevelHard:
                        STA.L $7E961E                        ;83CA48|8F1E967E|7E961E;
                        STA.W $1A82                          ;83CA4C|8D821A  |831A82;
                        RTS                                  ;83CA4F|60      |      ;
+ 
+          CODE_83CA50:
                        LDA.W $1A6E                          ;83CA50|AD6E1A  |831A6E;
                        ASL A                                ;83CA53|0A      |      ;
                        TAX                                  ;83CA54|AA      |      ;
@@ -8614,6 +8695,8 @@ Options_DoVSLevelHard:
                        BPL -                                ;83CAFE|10F8    |83CAF8;
  
                      + RTS                                  ;83CB00|60      |      ;
+ 
+          CODE_83CB01:
                        LDA.W $1A6E                          ;83CB01|AD6E1A  |831A6E;
                        ASL A                                ;83CB04|0A      |      ;
                        TAX                                  ;83CB05|AA      |      ;
@@ -8832,6 +8915,8 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83CD11|9C6E1A  |831A6E;
  
                      + RTS                                  ;83CD14|60      |      ;
+ 
+          CODE_83CD15:
                        LDA.W $1A6E                          ;83CD15|AD6E1A  |831A6E;
                        ASL A                                ;83CD18|0A      |      ;
                        TAX                                  ;83CD19|AA      |      ;
@@ -8897,6 +8982,8 @@ Options_DoVSLevelHard:
        UNREACH_83CDA2:
                        db $00,$00,$14                       ;83CDA2|        |      ;
                        db $19,$37                           ;83CDA5|        |      ;
+ 
+          CODE_83CDA7:
                        LDA.W $1A6E                          ;83CDA7|AD6E1A  |831A6E;
                        ASL A                                ;83CDAA|0A      |      ;
                        TAX                                  ;83CDAB|AA      |      ;
@@ -8948,6 +9035,8 @@ Options_DoVSLevelHard:
  
                     ++ STA.L $7E961E                        ;83CE21|8F1E967E|7E961E;
                        RTS                                  ;83CE25|60      |      ;
+ 
+          CODE_83CE26:
                        LDA.L $7E961E                        ;83CE26|AF1E967E|7E961E;
                        BEQ +                                ;83CE2A|F017    |83CE43;
                        LDY.W #$CE38                         ;83CE2C|A038CE  |      ;
@@ -8975,6 +9064,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8397A1                 ;83CE62|20A197  |8397A1;
                        RTS                                  ;83CE65|60      |      ;
                        db $1B,$1B,$1C,$1A                   ;83CE66|        |      ;
+ 
+          CODE_83CE6A:
                        LDA.L $7E961E                        ;83CE6A|AF1E967E|7E961E;
                        BEQ +                                ;83CE6E|F017    |83CE87;
                        LDY.W #$CE7C                         ;83CE70|A07CCE  |      ;
@@ -9002,6 +9093,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8397A1                 ;83CEA6|20A197  |8397A1;
                        RTS                                  ;83CEA9|60      |      ;
                        db $39,$39,$1C,$38                   ;83CEAA|        |      ;
+ 
+          CODE_83CEAE:
                        LDA.W #$FFFF                         ;83CEAE|A9FFFF  |      ;
                        STA.W $02A8                          ;83CEB1|8DA802  |8302A8;
                        LDA.L HowtoPlay_Selection            ;83CEB4|AF32957E|7E9532;
@@ -9028,6 +9121,8 @@ Options_DoVSLevelHard:
  
                      + RTS                                  ;83CEF1|60      |      ;
                        db $24,$0C,$0C,$0C,$0C,$23           ;83CEF2|        |      ;
+ 
+          CODE_83CEF8:
                        LDA.W $1A6E                          ;83CEF8|AD6E1A  |831A6E;
                        ASL A                                ;83CEFB|0A      |      ;
                        TAX                                  ;83CEFC|AA      |      ;
@@ -9051,6 +9146,8 @@ Options_DoVSLevelHard:
                        db $1F,$CC,$93,$00,$20,$7E           ;83CF2C|        |      ;
                        JSR.W CODE_FN_83A058                 ;83CF32|2058A0  |83A058;
                        RTS                                  ;83CF35|60      |      ;
+ 
+          CODE_83CF36:
                        JSR.W CODE_FN_839B9F                 ;83CF36|209F9B  |839B9F;
                        JSR.W CODE_FN_839C17                 ;83CF39|20179C  |839C17;
                        LDA.L $7E95D4                        ;83CF3C|AFD4957E|7E95D4;
@@ -9059,6 +9156,8 @@ Options_DoVSLevelHard:
                        INC.W Game_State_State               ;83CF45|EEA202  |8302A2;
  
                      + RTS                                  ;83CF48|60      |      ;
+ 
+          CODE_83CF49:
                        LDA.W $1A6E                          ;83CF49|AD6E1A  |831A6E;
                        ASL A                                ;83CF4C|0A      |      ;
                        TAX                                  ;83CF4D|AA      |      ;
@@ -9079,6 +9178,8 @@ Options_DoVSLevelHard:
                        LDA.W #$0002                         ;83CF72|A90200  |      ;
                        STA.W $1A6E                          ;83CF75|8D6E1A  |831A6E;
                        RTS                                  ;83CF78|60      |      ;
+ 
+          CODE_83CF79:
                        LDA.L $7E95D2                        ;83CF79|AFD2957E|7E95D2;
                        STA.B $BB                            ;83CF7D|85BB    |0000BB;
                        LDY.W #$CF8B                         ;83CF7F|A08BCF  |      ;
@@ -9278,6 +9379,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W Options_DoCharacter            ;83D2D4|2001BC  |83BC01;
                        RTS                                  ;83D2D7|60      |      ;
+ 
+          CODE_83D2D8:
                        LDA.L $001A6E                        ;83D2D8|AF6E1A00|001A6E;
                        ASL A                                ;83D2DC|0A      |      ;
                        TAX                                  ;83D2DD|AA      |      ;
@@ -9368,6 +9471,8 @@ Options_DoVSLevelHard:
                        STA.L Etc_Selection                  ;83D3B5|8F38957E|7E9538;
  
                      + RTS                                  ;83D3B9|60      |      ;
+ 
+          CODE_83D3BA:
                        LDA.L $7E95D2                        ;83D3BA|AFD2957E|7E95D2;
                        STA.B $BB                            ;83D3BE|85BB    |0000BB;
                        LDY.W #$D3CC                         ;83D3C0|A0CCD3  |      ;
@@ -9430,6 +9535,8 @@ Options_DoVSLevelHard:
                        db $00,$08,$00                       ;83D459|        |      ;
  
                      + RTS                                  ;83D45C|60      |      ;
+ 
+          CODE_83D45D:
                        LDA.W $1A6E                          ;83D45D|AD6E1A  |831A6E;
                        ASL A                                ;83D460|0A      |      ;
                        TAX                                  ;83D461|AA      |      ;
@@ -9478,6 +9585,8 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83D4CD|9C6E1A  |831A6E;
  
                      + RTS                                  ;83D4D0|60      |      ;
+ 
+       UNREACH_83D4D1:
                        db $AF,$D2,$95,$7E,$85,$BB,$A0,$E3   ;83D4D1|        |7E95D2;
                        db $D4,$AF,$38,$95,$7E,$20,$F8,$87   ;83D4D9|        |0000AF;
                        db $80,$03,$04,$09,$D5,$A5,$00,$8F   ;83D4E1|        |83D4E6;
@@ -9508,10 +9617,14 @@ Options_DoVSLevelHard:
                        db $A9,$01,$00,$85,$B1,$A2,$00,$00   ;83D56B|        |      ;
                        db $BF,$74,$94,$7E,$A0,$83,$D5,$20   ;83D573|        |7E9474;
                        db $98,$8F,$9F,$74,$94,$7E,$80,$03   ;83D57B|        |      ;
-                       db $01,$0B,$00,$60,$20,$9D,$84,$A0   ;83D583|        |00000B;
-                       db $01,$00,$22,$18,$AF,$80,$90,$06   ;83D58B|        |000000;
-                       db $C2,$20,$22,$7F,$D8,$86,$C2,$20   ;83D593|        |      ;
-                       db $60                               ;83D59B|        |      ;
+                       db $01,$0B,$00,$60                   ;83D583|        |00000B;
+ 
+       UNREACH_83D587:
+                       db $20,$9D,$84,$A0,$01,$00,$22,$18   ;83D587|        |83849D;
+                       db $AF,$80,$90,$06,$C2,$20,$22,$7F   ;83D58F|        |069080;
+                       db $D8,$86,$C2,$20,$60               ;83D597|        |      ;
+ 
+          CODE_83D59C:
                        LDA.W #$FFFF                         ;83D59C|A9FFFF  |      ;
                        STA.W $02A8                          ;83D59F|8DA802  |8302A8;
                        LDA.L $7E95D2                        ;83D5A2|AFD2957E|7E95D2;
@@ -9530,6 +9643,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8397A1                 ;83D5C7|20A197  |8397A1;
                        RTS                                  ;83D5CA|60      |      ;
                        db $0C,$0C,$0C,$34                   ;83D5CB|        |      ;
+ 
+   GameState_GameMenu:
                        PHP                                  ;83D5CF|08      |      ;
                        PHK                                  ;83D5D0|4B      |      ;
                        PLB                                  ;83D5D1|AB      |      ;
@@ -9560,14 +9675,15 @@ Options_DoVSLevelHard:
                        LDA.W $02A8                          ;83D618|ADA802  |8302A8;
                        ASL A                                ;83D61B|0A      |      ;
                        TAX                                  ;83D61C|AA      |      ;
-                       JSR.W (DATA8_83D622,X)               ;83D61D|FC22D6  |83D622;
+                       JSR.W (GameMenu_Pointers,X)          ;83D61D|FC22D6  |83D622;
                        PLP                                  ;83D620|28      |      ;
                        RTL                                  ;83D621|6B      |      ;
+    GameMenu_Pointers:
+                       dw CODE_83D628                       ;83D622|        |83D628;
+                       dw UNREACH_83D63A                    ;83D624|        |83D63A;
+                       dw CODE_83D642                       ;83D626|        |83D642;
  
-         DATA8_83D622:
-                       db $28,$D6                           ;83D622|        |      ;
-                       db $3A,$D6                           ;83D624|        |      ;
-                       db $42,$D6                           ;83D626|        |      ;
+          CODE_83D628:
                        LDA.L $7E38FE                        ;83D628|AFFE387E|7E38FE;
                        ASL A                                ;83D62C|0A      |      ;
                        TAX                                  ;83D62D|AA      |      ;
@@ -9576,7 +9692,11 @@ Options_DoVSLevelHard:
  
          DATA8_83D632:
                        db $50,$D6,$50,$D6,$E0,$DB,$A7,$EA   ;83D632|        |      ;
+ 
+       UNREACH_83D63A:
                        db $A9,$00,$00,$8F,$3C,$95,$7E,$60   ;83D63A|        |      ;
+ 
+          CODE_83D642:
                        LDA.L $7E38FE                        ;83D642|AFFE387E|7E38FE;
                        ASL A                                ;83D646|0A      |      ;
                        TAX                                  ;83D647|AA      |      ;
@@ -9677,7 +9797,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D743|4B      |      ;
                        PLB                                  ;83D744|AB      |      ;
                        LDY.W #$D74F                         ;83D745|A04FD7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D748|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D748|22CAA080|80A0CA;
                        PLB                                  ;83D74C|AB      |      ;
                        BRA +                                ;83D74D|8008    |83D757;
                        db $00,$BD,$7F,$00,$0A,$80,$00,$20   ;83D74F|        |      ;
@@ -9689,7 +9809,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D75F|4B      |      ;
                        PLB                                  ;83D760|AB      |      ;
                        LDY.W #$D76B                         ;83D761|A06BD7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D764|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D764|22CAA080|80A0CA;
                        PLB                                  ;83D768|AB      |      ;
                        BRA +                                ;83D769|8008    |83D773;
                        db $00,$C7,$7F,$00,$0A,$80,$00,$25   ;83D76B|        |      ;
@@ -9700,7 +9820,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D778|4B      |      ;
                        PLB                                  ;83D779|AB      |      ;
                        LDY.W #$D784                         ;83D77A|A084D7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D77D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D77D|22CAA080|80A0CA;
                        PLB                                  ;83D781|AB      |      ;
                        BRA +                                ;83D782|8008    |83D78C;
                        db $00,$D1,$7F,$00,$0C,$80,$00,$2A   ;83D784|        |      ;
@@ -9715,7 +9835,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D795|4B      |      ;
                        PLB                                  ;83D796|AB      |      ;
                        LDY.W #$D7A1                         ;83D797|A0A1D7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D79A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D79A|22CAA080|80A0CA;
                        PLB                                  ;83D79E|AB      |      ;
                        BRA +                                ;83D79F|8008    |83D7A9;
                        db $00,$85,$7F,$00,$0C,$80,$00,$01   ;83D7A1|        |      ;
@@ -9744,7 +9864,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D7E2|4B      |      ;
                        PLB                                  ;83D7E3|AB      |      ;
                        LDY.W #$D7EE                         ;83D7E4|A0EED7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D7E7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D7E7|22CAA080|80A0CA;
                        PLB                                  ;83D7EB|AB      |      ;
                        BRA +                                ;83D7EC|8008    |83D7F6;
                        db $80,$21,$7E,$00,$02,$80,$C0,$68   ;83D7EE|        |      ;
@@ -9753,7 +9873,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D7F7|4B      |      ;
                        PLB                                  ;83D7F8|AB      |      ;
                        LDY.W #$D803                         ;83D7F9|A003D8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D7FC|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D7FC|22CAA080|80A0CA;
                        PLB                                  ;83D800|AB      |      ;
                        BRA +                                ;83D801|8008    |83D80B;
                        db $80,$31,$7E,$00,$02,$80,$C0,$78   ;83D803|        |      ;
@@ -9776,7 +9896,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D830|4B      |      ;
                        PLB                                  ;83D831|AB      |      ;
                        LDY.W #$D83C                         ;83D832|A03CD8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D835|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D835|22CAA080|80A0CA;
                        PLB                                  ;83D839|AB      |      ;
                        BRA ++                               ;83D83A|8008    |83D844;
                        db $80,$23,$7E,$00,$02,$80,$C0,$69   ;83D83C|        |      ;
@@ -9785,7 +9905,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83D845|4B      |      ;
                        PLB                                  ;83D846|AB      |      ;
                        LDY.W #$D851                         ;83D847|A051D8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83D84A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83D84A|22CAA080|80A0CA;
                        PLB                                  ;83D84E|AB      |      ;
                        BRA +                                ;83D84F|8008    |83D859;
                        db $80,$33,$7E,$00,$02,$80,$C0,$79   ;83D851|        |      ;
@@ -10190,7 +10310,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83DC49|4B      |      ;
                        PLB                                  ;83DC4A|AB      |      ;
                        LDY.W #$DC55                         ;83DC4B|A055DC  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83DC4E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83DC4E|22CAA080|80A0CA;
                        PLB                                  ;83DC52|AB      |      ;
                        BRA +                                ;83DC53|8008    |83DC5D;
                        db $00,$BD,$7F,$00,$20,$80,$00,$20   ;83DC55|        |      ;
@@ -10288,7 +10408,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83DD67|4B      |      ;
                        PLB                                  ;83DD68|AB      |      ;
                        LDY.W #$DD73                         ;83DD69|A073DD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83DD6C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83DD6C|22CAA080|80A0CA;
                        PLB                                  ;83DD70|AB      |      ;
                        BRA +                                ;83DD71|8008    |83DD7B;
                        db $00,$5D,$7F,$00,$10,$80,$00,$68   ;83DD73|        |      ;
@@ -10297,7 +10417,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83DD7C|4B      |      ;
                        PLB                                  ;83DD7D|AB      |      ;
                        LDY.W #$DD88                         ;83DD7E|A088DD  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83DD81|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83DD81|22CAA080|80A0CA;
                        PLB                                  ;83DD85|AB      |      ;
                        BRA +                                ;83DD86|8008    |83DD90;
                        db $00,$6D,$7F,$00,$10,$80,$00,$78   ;83DD88|        |      ;
@@ -10623,7 +10743,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E0DA|4B      |      ;
                        PLB                                  ;83E0DB|AB      |      ;
                        LDY.W #$E0E6                         ;83E0DC|A0E6E0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E0DF|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E0DF|22CAA080|80A0CA;
                        PLB                                  ;83E0E3|AB      |      ;
                        BRA +                                ;83E0E4|8008    |83E0EE;
                        db $00,$20,$7E,$00,$01,$80,$00,$68   ;83E0E6|        |      ;
@@ -10632,7 +10752,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E0EF|4B      |      ;
                        PLB                                  ;83E0F0|AB      |      ;
                        LDY.W #$E0FB                         ;83E0F1|A0FBE0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E0F4|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E0F4|22CAA080|80A0CA;
                        PLB                                  ;83E0F8|AB      |      ;
                        BRA +                                ;83E0F9|8008    |83E103;
                        db $00,$30,$7E,$40,$01,$80,$00,$78   ;83E0FB|        |      ;
@@ -10663,7 +10783,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E138|4B      |      ;
                        PLB                                  ;83E139|AB      |      ;
                        LDY.W #$E144                         ;83E13A|A044E1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E13D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E13D|22CAA080|80A0CA;
                        PLB                                  ;83E141|AB      |      ;
                        BRA +                                ;83E142|8008    |83E14C;
                        db $00,$21,$7E,$00,$02,$80,$80,$68   ;83E144|        |      ;
@@ -10672,7 +10792,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E14D|4B      |      ;
                        PLB                                  ;83E14E|AB      |      ;
                        LDY.W #$E159                         ;83E14F|A059E1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E152|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E152|22CAA080|80A0CA;
                        PLB                                  ;83E156|AB      |      ;
                        BRA +                                ;83E157|8008    |83E161;
                        db $40,$31,$7E,$C0,$01,$80,$A0,$78   ;83E159|        |      ;
@@ -10694,7 +10814,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E183|4B      |      ;
                        PLB                                  ;83E184|AB      |      ;
                        LDY.W #$E18F                         ;83E185|A08FE1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E188|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E188|22CAA080|80A0CA;
                        PLB                                  ;83E18C|AB      |      ;
                        BRA ++                               ;83E18D|8008    |83E197;
                        db $00,$23,$7E,$00,$02,$80,$80,$69   ;83E18F|        |      ;
@@ -10703,7 +10823,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E198|4B      |      ;
                        PLB                                  ;83E199|AB      |      ;
                        LDY.W #$E1A4                         ;83E19A|A0A4E1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E19D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E19D|22CAA080|80A0CA;
                        PLB                                  ;83E1A1|AB      |      ;
                        BRA +                                ;83E1A2|8008    |83E1AC;
                        db $00,$33,$7E,$00,$02,$80,$80,$79   ;83E1A4|        |      ;
@@ -10728,7 +10848,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E1D8|4B      |      ;
                        PLB                                  ;83E1D9|AB      |      ;
                        LDY.W #$E1E4                         ;83E1DA|A0E4E1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E1DD|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E1DD|22CAA080|80A0CA;
                        PLB                                  ;83E1E1|AB      |      ;
                        BRA ++                               ;83E1E2|8008    |83E1EC;
                        db $00,$25,$7E,$00,$02,$80,$80,$6A   ;83E1E4|        |      ;
@@ -10737,7 +10857,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E1ED|4B      |      ;
                        PLB                                  ;83E1EE|AB      |      ;
                        LDY.W #$E1F9                         ;83E1EF|A0F9E1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E1F2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E1F2|22CAA080|80A0CA;
                        PLB                                  ;83E1F6|AB      |      ;
                        BRA +                                ;83E1F7|8008    |83E201;
                        db $00,$35,$7E,$00,$02,$80,$80,$7A   ;83E1F9|        |      ;
@@ -10854,7 +10974,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E31C|4B      |      ;
                        PLB                                  ;83E31D|AB      |      ;
                        LDY.W #$E328                         ;83E31E|A028E3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E321|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E321|22CAA080|80A0CA;
                        PLB                                  ;83E325|AB      |      ;
                        BRA +                                ;83E326|8008    |83E330;
                        db $00,$65,$7F,$00,$08,$80,$00,$6C   ;83E328|        |      ;
@@ -10863,7 +10983,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E331|4B      |      ;
                        PLB                                  ;83E332|AB      |      ;
                        LDY.W #$E33D                         ;83E333|A03DE3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E336|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E336|22CAA080|80A0CA;
                        PLB                                  ;83E33A|AB      |      ;
                        BRA +                                ;83E33B|8008    |83E345;
                        db $00,$75,$7F,$00,$08,$80,$00,$7C   ;83E33D|        |      ;
@@ -10876,7 +10996,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E351|4B      |      ;
                        PLB                                  ;83E352|AB      |      ;
                        LDY.W #$E35D                         ;83E353|A05DE3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E356|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E356|22CAA080|80A0CA;
                        PLB                                  ;83E35A|AB      |      ;
                        BRA +                                ;83E35B|8008    |83E365;
                        db $00,$5D,$7F,$00,$08,$80,$00,$68   ;83E35D|        |      ;
@@ -10885,7 +11005,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E366|4B      |      ;
                        PLB                                  ;83E367|AB      |      ;
                        LDY.W #$E372                         ;83E368|A072E3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E36B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E36B|22CAA080|80A0CA;
                        PLB                                  ;83E36F|AB      |      ;
                        BRA +                                ;83E370|8008    |83E37A;
                        db $00,$6D,$7F,$00,$08,$80,$00,$78   ;83E372|        |      ;
@@ -11361,7 +11481,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E83C|4B      |      ;
                        PLB                                  ;83E83D|AB      |      ;
                        LDY.W #$E848                         ;83E83E|A048E8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E841|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E841|22CAA080|80A0CA;
                        PLB                                  ;83E845|AB      |      ;
                        BRA +                                ;83E846|8008    |83E850;
                        db $00,$28,$7E,$00,$04,$80,$C0,$6B   ;83E848|        |      ;
@@ -11370,7 +11490,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83E851|4B      |      ;
                        PLB                                  ;83E852|AB      |      ;
                        LDY.W #$E85D                         ;83E853|A05DE8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83E856|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83E856|22CAA080|80A0CA;
                        PLB                                  ;83E85A|AB      |      ;
                        BRA +                                ;83E85B|8008    |83E865;
                        db $00,$28,$7E,$00,$04,$80,$C0,$7B   ;83E85D|        |      ;
@@ -11608,7 +11728,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83EADE|4B      |      ;
                        PLB                                  ;83EADF|AB      |      ;
                        LDY.W #$EAEA                         ;83EAE0|A0EAEA  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83EAE3|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83EAE3|22CAA080|80A0CA;
                        PLB                                  ;83EAE7|AB      |      ;
                        BRA +                                ;83EAE8|8008    |83EAF2;
                        db $00,$BD,$7F,$00,$20,$80,$00,$20   ;83EAEA|        |      ;
@@ -12143,7 +12263,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F0DB|4B      |      ;
                        PLB                                  ;83F0DC|AB      |      ;
                        LDY.W #$F0E7                         ;83F0DD|A0E7F0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F0E0|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F0E0|22CAA080|80A0CA;
                        PLB                                  ;83F0E4|AB      |      ;
                        BRA +                                ;83F0E5|8008    |83F0EF;
                        db $00,$20,$7E,$00,$01,$80,$00,$68   ;83F0E7|        |      ;
@@ -12152,7 +12272,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F0F0|4B      |      ;
                        PLB                                  ;83F0F1|AB      |      ;
                        LDY.W #$F0FC                         ;83F0F2|A0FCF0  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F0F5|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F0F5|22CAA080|80A0CA;
                        PLB                                  ;83F0F9|AB      |      ;
                        BRA +                                ;83F0FA|8008    |83F104;
                        db $00,$30,$7E,$40,$01,$80,$00,$78   ;83F0FC|        |      ;
@@ -12167,7 +12287,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F115|4B      |      ;
                        PLB                                  ;83F116|AB      |      ;
                        LDY.W #$F121                         ;83F117|A021F1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F11A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F11A|22CAA080|80A0CA;
                        PLB                                  ;83F11E|AB      |      ;
                        BRA +                                ;83F11F|8008    |83F129;
                        db $00,$21,$7E,$C0,$02,$80,$80,$68   ;83F121|        |      ;
@@ -12176,7 +12296,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F12A|4B      |      ;
                        PLB                                  ;83F12B|AB      |      ;
                        LDY.W #$F136                         ;83F12C|A036F1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F12F|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F12F|22CAA080|80A0CA;
                        PLB                                  ;83F133|AB      |      ;
                        BRA +                                ;83F134|8008    |83F13E;
                        db $00,$31,$7E,$00,$03,$80,$80,$78   ;83F136|        |      ;
@@ -12195,7 +12315,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F15B|4B      |      ;
                        PLB                                  ;83F15C|AB      |      ;
                        LDY.W #$F167                         ;83F15D|A067F1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F160|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F160|22CAA080|80A0CA;
                        PLB                                  ;83F164|AB      |      ;
                        BRA ++                               ;83F165|8008    |83F16F;
                        db $C0,$23,$7E,$C0,$02,$80,$E0,$69   ;83F167|        |      ;
@@ -12204,7 +12324,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F170|4B      |      ;
                        PLB                                  ;83F171|AB      |      ;
                        LDY.W #$F17C                         ;83F172|A07CF1  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F175|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F175|22CAA080|80A0CA;
                        PLB                                  ;83F179|AB      |      ;
                        BRA ++                               ;83F17A|8008    |83F184;
                        db $C0,$33,$7E,$C0,$02,$80,$E0,$79   ;83F17C|        |      ;
@@ -12474,7 +12594,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F3DD|4B      |      ;
                        PLB                                  ;83F3DE|AB      |      ;
                        LDY.W #$F3E9                         ;83F3DF|A0E9F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F3E2|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F3E2|22CAA080|80A0CA;
                        PLB                                  ;83F3E6|AB      |      ;
                        BRA +                                ;83F3E7|8008    |83F3F1;
                        db $40,$20,$7E,$C0,$03,$80,$20,$68   ;83F3E9|        |      ;
@@ -12483,7 +12603,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F3F2|4B      |      ;
                        PLB                                  ;83F3F3|AB      |      ;
                        LDY.W #$F3FE                         ;83F3F4|A0FEF3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F3F7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F3F7|22CAA080|80A0CA;
                        PLB                                  ;83F3FB|AB      |      ;
                        BRA +                                ;83F3FC|8008    |83F406;
                        db $40,$30,$7E,$C0,$03,$80,$20,$78   ;83F3FE|        |      ;
@@ -12510,7 +12630,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F437|4B      |      ;
                        PLB                                  ;83F438|AB      |      ;
                        LDY.W #$F443                         ;83F439|A043F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F43C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F43C|22CAA080|80A0CA;
                        PLB                                  ;83F440|AB      |      ;
                        BRA ++                               ;83F441|8008    |83F44B;
                        db $00,$24,$7E,$C0,$00,$80,$00,$6A   ;83F443|        |      ;
@@ -12519,7 +12639,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F44C|4B      |      ;
                        PLB                                  ;83F44D|AB      |      ;
                        LDY.W #$F458                         ;83F44E|A058F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F451|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F451|22CAA080|80A0CA;
                        PLB                                  ;83F455|AB      |      ;
                        BRA +                                ;83F456|8008    |83F460;
                        db $40,$34,$7E,$C0,$00,$80,$20,$7A   ;83F458|        |      ;
@@ -12531,7 +12651,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F468|4B      |      ;
                        PLB                                  ;83F469|AB      |      ;
                        LDY.W #$F474                         ;83F46A|A074F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F46D|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F46D|22CAA080|80A0CA;
                        PLB                                  ;83F471|AB      |      ;
                        BRA +                                ;83F472|8008    |83F47C;
                        db $C0,$24,$7E,$40,$02,$80,$60,$6A   ;83F474|        |      ;
@@ -12540,7 +12660,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F47D|4B      |      ;
                        PLB                                  ;83F47E|AB      |      ;
                        LDY.W #$F489                         ;83F47F|A089F4  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F482|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F482|22CAA080|80A0CA;
                        PLB                                  ;83F486|AB      |      ;
                        BRA +                                ;83F487|8008    |83F491;
                        db $C0,$34,$7E,$40,$02,$80,$60,$7A   ;83F489|        |      ;
@@ -12865,7 +12985,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F7D2|4B      |      ;
                        PLB                                  ;83F7D3|AB      |      ;
                        LDY.W #$F7DE                         ;83F7D4|A0DEF7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F7D7|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F7D7|22CAA080|80A0CA;
                        PLB                                  ;83F7DB|AB      |      ;
                        BRA +                                ;83F7DC|8008    |83F7E6;
                        db $80,$20,$7E,$C0,$00,$80,$40,$68   ;83F7DE|        |      ;
@@ -12874,7 +12994,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F7E7|4B      |      ;
                        PLB                                  ;83F7E8|AB      |      ;
                        LDY.W #$F7F3                         ;83F7E9|A0F3F7  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F7EC|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F7EC|22CAA080|80A0CA;
                        PLB                                  ;83F7F0|AB      |      ;
                        BRA +                                ;83F7F1|8008    |83F7FB;
                        db $C0,$30,$7E,$C0,$00,$80,$60,$78   ;83F7F3|        |      ;
@@ -12887,7 +13007,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F806|4B      |      ;
                        PLB                                  ;83F807|AB      |      ;
                        LDY.W #$F812                         ;83F808|A012F8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F80B|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F80B|22CAA080|80A0CA;
                        PLB                                  ;83F80F|AB      |      ;
                        BRA +                                ;83F810|8008    |83F81A;
                        db $40,$21,$7E,$00,$02,$80,$A0,$68   ;83F812|        |      ;
@@ -12896,7 +13016,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F81B|4B      |      ;
                        PLB                                  ;83F81C|AB      |      ;
                        LDY.W #$F827                         ;83F81D|A027F8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F820|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F820|22CAA080|80A0CA;
                        PLB                                  ;83F824|AB      |      ;
                        BRA +                                ;83F825|8008    |83F82F;
                        db $40,$31,$7E,$00,$02,$80,$A0,$78   ;83F827|        |      ;
@@ -12919,7 +13039,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F854|4B      |      ;
                        PLB                                  ;83F855|AB      |      ;
                        LDY.W #$F860                         ;83F856|A060F8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F859|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F859|22CAA080|80A0CA;
                        PLB                                  ;83F85D|AB      |      ;
                        BRA ++                               ;83F85E|8008    |83F868;
                        db $40,$23,$7E,$00,$02,$80,$A0,$69   ;83F860|        |      ;
@@ -12928,7 +13048,7 @@ Options_DoVSLevelHard:
                        PHK                                  ;83F869|4B      |      ;
                        PLB                                  ;83F86A|AB      |      ;
                        LDY.W #$F875                         ;83F86B|A075F8  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;83F86E|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;83F86E|22CAA080|80A0CA;
                        PLB                                  ;83F872|AB      |      ;
                        BRA ++                               ;83F873|8008    |83F87D;
                        db $40,$33,$7E,$00,$02,$80,$A0,$79   ;83F875|        |      ;

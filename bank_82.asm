@@ -832,6 +832,8 @@
                        db $03,$03,$04,$04,$04,$03,$04,$04   ;829295|        |      ;
                        db $03,$04,$04,$04,$03,$03,$04,$03   ;82929D|        |      ;
                        db $03,$04,$04,$04,$04,$04,$04,$04   ;8292A5|        |      ;
+ 
+    GameState_InMatch:
                        PHP                                  ;8292AD|08      |      ;
                        PHK                                  ;8292AE|4B      |      ;
                        PLB                                  ;8292AF|AB      |      ;
@@ -846,12 +848,14 @@
                        LDA.W Game_State_State               ;8292C3|ADA202  |8202A2;
                        ASL A                                ;8292C6|0A      |      ;
                        TAX                                  ;8292C7|AA      |      ;
-                       JSR.W (DATA8_8292CD,X)               ;8292C8|FCCD92  |8292CD;
+                       JSR.W (InMatch_Pointers,X)           ;8292C8|FCCD92  |8292CD;
                        PLP                                  ;8292CB|28      |      ;
                        RTL                                  ;8292CC|6B      |      ;
+     InMatch_Pointers:
+                       dw CODE_8292D1                       ;8292CD|        |8292D1;
+                       dw CODE_829338                       ;8292CF|        |829338;
  
-         DATA8_8292CD:
-                       db $D1,$92,$38,$93                   ;8292CD|        |      ;
+          CODE_8292D1:
                        LDA.W $0358                          ;8292D1|AD5803  |820358;
                        BNE +                                ;8292D4|D046    |82931C;
                        LDA.W $035C                          ;8292D6|AD5C03  |82035C;
@@ -860,7 +864,7 @@
                        PHK                                  ;8292DC|4B      |      ;
                        PLB                                  ;8292DD|AB      |      ;
                        LDY.W #$92E8                         ;8292DE|A0E892  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;8292E1|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;8292E1|22CAA080|80A0CA;
                        PLB                                  ;8292E5|AB      |      ;
                        BRA ++                               ;8292E6|8008    |8292F0;
                        db $08,$51,$7E,$80,$01,$80,$00,$60   ;8292E8|        |      ;
@@ -878,7 +882,7 @@
                        PHK                                  ;829306|4B      |      ;
                        PLB                                  ;829307|AB      |      ;
                        LDY.W #$9312                         ;829308|A01293  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82930B|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82930B|227FA080|80A07F;
                        PLB                                  ;82930F|AB      |      ;
                        BRA ++                               ;829310|8006    |829318;
                        db $16,$87,$7E,$40,$00,$10           ;829312|        |      ;
@@ -889,7 +893,7 @@
                        PHK                                  ;82931D|4B      |      ;
                        PLB                                  ;82931E|AB      |      ;
                        LDY.W #$9329                         ;82931F|A02993  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;829322|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;829322|22CAA080|80A0CA;
                        PLB                                  ;829326|AB      |      ;
                        BRA +                                ;829327|8008    |829331;
                        db $00,$20,$7E,$C0,$07,$80,$00,$70   ;829329|        |      ;
@@ -898,6 +902,8 @@
  
          DATA8_829332:
                        db $6B,$93,$51,$9D,$51,$9D           ;829332|        |      ;
+ 
+          CODE_829338:
                        LDY.W #$0001                         ;829338|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;82933B|2218AF80|80AF18;
                        BCC +                                ;82933F|9027    |829368;
@@ -1816,7 +1822,7 @@
                        PHK                                  ;829C9C|4B      |      ;
                        PLB                                  ;829C9D|AB      |      ;
                        LDY.W #$9CA8                         ;829C9E|A0A89C  |      ;
-                       JSL.L CODE_FL_80A07F                 ;829CA1|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;829CA1|227FA080|80A07F;
                        PLB                                  ;829CA5|AB      |      ;
                        BRA +                                ;829CA6|8006    |829CAE;
                        db $B6,$88,$7E,$10,$00,$E0           ;829CA8|        |      ;
@@ -2618,7 +2624,7 @@
                        PHK                                  ;82A36A|4B      |      ;
                        PLB                                  ;82A36B|AB      |      ;
                        LDY.W #$A376                         ;82A36C|A076A3  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A36F|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A36F|227FA080|80A07F;
                        PLB                                  ;82A373|AB      |      ;
                        BRA +                                ;82A374|8006    |82A37C;
                        db $F6,$87,$7E,$00,$01,$80           ;82A376|        |      ;
@@ -2883,7 +2889,7 @@
                        PHK                                  ;82A605|4B      |      ;
                        PLB                                  ;82A606|AB      |      ;
                        LDY.W #$A611                         ;82A607|A011A6  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A60A|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A60A|227FA080|80A07F;
                        PLB                                  ;82A60E|AB      |      ;
                        BRA +                                ;82A60F|8006    |82A617;
                        db $16,$87,$7E,$40,$00,$10           ;82A611|        |      ;
@@ -2932,7 +2938,7 @@
                        PHK                                  ;82A66A|4B      |      ;
                        PLB                                  ;82A66B|AB      |      ;
                        LDY.W #$A676                         ;82A66C|A076A6  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A66F|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A66F|227FA080|80A07F;
                        PLB                                  ;82A673|AB      |      ;
                        BRA +                                ;82A674|8006    |82A67C;
                        db $16,$87,$7E,$40,$00,$10           ;82A676|        |      ;
@@ -2979,7 +2985,7 @@
                        PHK                                  ;82A6D8|4B      |      ;
                        PLB                                  ;82A6D9|AB      |      ;
                        LDY.W #$A6E4                         ;82A6DA|A0E4A6  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A6DD|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A6DD|227FA080|80A07F;
                        PLB                                  ;82A6E1|AB      |      ;
                        BRA +                                ;82A6E2|8006    |82A6EA;
                        db $F6,$87,$7E,$00,$01,$80           ;82A6E4|        |      ;
@@ -3159,7 +3165,7 @@
                        PHK                                  ;82A8A3|4B      |      ;
                        PLB                                  ;82A8A4|AB      |      ;
                        LDY.W #$A8AF                         ;82A8A5|A0AFA8  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A8A8|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A8A8|227FA080|80A07F;
                        PLB                                  ;82A8AC|AB      |      ;
                        BRA +                                ;82A8AD|8006    |82A8B5;
                        db $F6,$86,$7E,$00,$02,$00           ;82A8AF|        |      ;
@@ -3184,7 +3190,7 @@
                        PHK                                  ;82A8E3|4B      |      ;
                        PLB                                  ;82A8E4|AB      |      ;
                        LDY.W #$A8EF                         ;82A8E5|A0EFA8  |      ;
-                       JSL.L CODE_FL_80A07F                 ;82A8E8|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82A8E8|227FA080|80A07F;
                        PLB                                  ;82A8EC|AB      |      ;
                        BRA +                                ;82A8ED|8006    |82A8F5;
                        db $F6,$86,$7E,$00,$02,$00           ;82A8EF|        |      ;
@@ -3238,7 +3244,7 @@
                        PHK                                  ;82A965|4B      |      ;
                        PLB                                  ;82A966|AB      |      ;
                        LDY.W #$A971                         ;82A967|A071A9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82A96A|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82A96A|22CAA080|80A0CA;
                        PLB                                  ;82A96E|AB      |      ;
                        BRA +                                ;82A96F|8008    |82A979;
                        db $00,$5D,$7F,$00,$02,$80,$00,$02   ;82A971|        |      ;
@@ -3249,7 +3255,7 @@
                        PHK                                  ;82A97E|4B      |      ;
                        PLB                                  ;82A97F|AB      |      ;
                        LDY.W #$A98A                         ;82A980|A08AA9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82A983|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82A983|22CAA080|80A0CA;
                        PLB                                  ;82A987|AB      |      ;
                        BRA +                                ;82A988|8008    |82A992;
                        db $00,$5F,$7F,$00,$02,$80,$00,$03   ;82A98A|        |      ;
@@ -3260,7 +3266,7 @@
                        PHK                                  ;82A997|4B      |      ;
                        PLB                                  ;82A998|AB      |      ;
                        LDY.W #$A9A3                         ;82A999|A0A3A9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82A99C|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82A99C|22CAA080|80A0CA;
                        PLB                                  ;82A9A0|AB      |      ;
                        BRA +                                ;82A9A1|8008    |82A9AB;
                        db $00,$61,$7F,$00,$02,$80,$00,$04   ;82A9A3|        |      ;
@@ -3271,7 +3277,7 @@
                        PHK                                  ;82A9B0|4B      |      ;
                        PLB                                  ;82A9B1|AB      |      ;
                        LDY.W #$A9BC                         ;82A9B2|A0BCA9  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82A9B5|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82A9B5|22CAA080|80A0CA;
                        PLB                                  ;82A9B9|AB      |      ;
                        BRA +                                ;82A9BA|8008    |82A9C4;
                        db $00,$63,$7F,$00,$02,$80,$00,$05   ;82A9BC|        |      ;
@@ -11015,7 +11021,7 @@
                        PHK                                  ;82F2A5|4B      |      ;
                        PLB                                  ;82F2A6|AB      |      ;
                        LDY.W #$F2B1                         ;82F2A7|A0B1F2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82F2AA|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82F2AA|22CAA080|80A0CA;
                        PLB                                  ;82F2AE|AB      |      ;
                        BRA +                                ;82F2AF|8008    |82F2B9;
                        db $61,$F3,$82,$80,$00,$80,$C0,$60   ;82F2B1|        |      ;
@@ -11039,7 +11045,7 @@
                        PHK                                  ;82F2E3|4B      |      ;
                        PLB                                  ;82F2E4|AB      |      ;
                        LDY.W #$F2EF                         ;82F2E5|A0EFF2  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82F2E8|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82F2E8|22CAA080|80A0CA;
                        PLB                                  ;82F2EC|AB      |      ;
                        BRA +                                ;82F2ED|8008    |82F2F7;
                        db $08,$51,$7E,$80,$01,$80,$00,$60   ;82F2EF|        |      ;
@@ -11063,7 +11069,7 @@
                        PHK                                  ;82F32C|4B      |      ;
                        PLB                                  ;82F32D|AB      |      ;
                        LDY.W #$F338                         ;82F32E|A038F3  |      ;
-                       JSL.L CODE_FL_80A0CA                 ;82F331|22CAA080|80A0CA;
+                       JSL.L DMA_QueueVRAMCommand           ;82F331|22CAA080|80A0CA;
                        PLB                                  ;82F335|AB      |      ;
                        BRA +                                ;82F336|8008    |82F340;
                        db $00,$5D,$7F,$00,$08,$80,$00,$02   ;82F338|        |      ;
