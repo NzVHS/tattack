@@ -852,10 +852,10 @@
                        PLP                                  ;8292CB|28      |      ;
                        RTL                                  ;8292CC|6B      |      ;
      InMatch_Pointers:
-                       dw CODE_8292D1                       ;8292CD|        |8292D1;
-                       dw CODE_829338                       ;8292CF|        |829338;
+                       dw InMatch_MainLoop                  ;8292CD|        |8292D1;
+                       dw InMatch_Exit                      ;8292CF|        |829338;
  
-          CODE_8292D1:
+     InMatch_MainLoop:
                        LDA.W $0358                          ;8292D1|AD5803  |820358;
                        BNE +                                ;8292D4|D046    |82931C;
                        LDA.W $035C                          ;8292D6|AD5C03  |82035C;
@@ -872,17 +872,17 @@
                     ++ LDA.W $02A8                          ;8292F0|ADA802  |8202A8;
                        ASL A                                ;8292F3|0A      |      ;
                        TAX                                  ;8292F4|AA      |      ;
-                       JSR.W (DATA8_829332,X)               ;8292F5|FC3293  |829332;
-                       LDA.W $02A8                          ;8292F8|ADA802  |8202A8;
-                       BNE ++                               ;8292FB|D01B    |829318;
+                       JSR.W (PTR16_829332,X)               ;8292F5|FC3293  |829332;
+                       LDA.W $02A8                          ;8292F8|ADA802  |8202A8; check if we're in a 1P game
+                       BNE ++                               ;8292FB|D01B    |829318; branch if not
                        LDA.W Character_1P                   ;8292FD|ADBA02  |8202BA;
-                       CMP.W #$0006                         ;829300|C90600  |      ;
-                       BNE ++                               ;829303|D013    |829318;
+                       CMP.W #$0006                         ;829300|C90600  |      ; are we on a Bowser Stage? (Stage Clear)
+                       BNE ++                               ;829303|D013    |829318; branch if not
                        PHB                                  ;829305|8B      |      ;
                        PHK                                  ;829306|4B      |      ;
                        PLB                                  ;829307|AB      |      ;
                        LDY.W #$9312                         ;829308|A01293  |      ;
-                       JSL.L DMA_QueueCGRAMCommand          ;82930B|227FA080|80A07F;
+                       JSL.L DMA_QueueCGRAMCommand          ;82930B|227FA080|80A07F; causes your attack to flash white
                        PLB                                  ;82930F|AB      |      ;
                        BRA ++                               ;829310|8006    |829318;
                        db $16,$87,$7E,$40,$00,$10           ;829312|        |      ;
@@ -899,11 +899,12 @@
                        db $00,$20,$7E,$C0,$07,$80,$00,$70   ;829329|        |      ;
  
                      + RTS                                  ;829331|60      |      ;
+         PTR16_829332:
+                       dw CODE_82936B                       ;829332|        |82936B;
+                       dw CODE_829D51                       ;829334|        |829D51;
+                       dw CODE_829D51                       ;829336|        |829D51;
  
-         DATA8_829332:
-                       db $6B,$93,$51,$9D,$51,$9D           ;829332|        |      ;
- 
-          CODE_829338:
+         InMatch_Exit:
                        LDY.W #$0001                         ;829338|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;82933B|2218AF80|80AF18;
                        BCC +                                ;82933F|9027    |829368;
@@ -925,6 +926,8 @@
  
                      + REP #$20                             ;829368|C220    |      ;
                        RTS                                  ;82936A|60      |      ;
+ 
+          CODE_82936B:
                        REP #$30                             ;82936B|C230    |      ;
                        LDA.L $7E38FE                        ;82936D|AFFE387E|7E38FE;
                        CMP.W #$0003                         ;829371|C90300  |      ;
@@ -1905,6 +1908,8 @@
                        JSL.L CODE_FL_86D7D8                 ;829D4C|22D8D786|86D7D8;
  
                      + RTS                                  ;829D50|60      |      ;
+ 
+          CODE_829D51:
                        TDC                                  ;829D51|7B      |      ;
                        STA.W $04E4                          ;829D52|8DE404  |8204E4;
                        JSL.L CODE_FL_89A78C                 ;829D55|228CA789|89A78C;
@@ -2256,12 +2261,14 @@
                        STA.B $00                            ;82A07A|8500    |000000;
                        ASL A                                ;82A07C|0A      |      ;
                        TAX                                  ;82A07D|AA      |      ;
-                       JSR.W (DATA8_82A082,X)               ;82A07E|FC82A0  |82A082;
+                       JSR.W (PTR16_82A082,X)               ;82A07E|FC82A0  |82A082;
  
                      + RTS                                  ;82A081|60      |      ;
- 
-         DATA8_82A082:
-                       db $D1,$E8,$47,$EC,$58,$ED,$C4,$ED   ;82A082|        |      ;
+         PTR16_82A082:
+                       dw CODE_82E8D1                       ;82A082|        |82E8D1;
+                       dw CODE_82EC47                       ;82A084|        |82EC47;
+                       dw CODE_82ED58                       ;82A086|        |82ED58;
+                       dw CODE_82EDC4                       ;82A088|        |82EDC4;
  
        CODE_FN_82A08A:
                        LDA.W $04F8                          ;82A08A|ADF804  |8204F8;
@@ -3227,17 +3234,23 @@
                        LDA.W $035A                          ;82A93B|AD5A03  |82035A;
                        ASL A                                ;82A93E|0A      |      ;
                        TAX                                  ;82A93F|AA      |      ;
-                       JSR.W (DATA8_82A944,X)               ;82A940|FC44A9  |82A944;
+                       JSR.W (PTR16_82A944,X)               ;82A940|FC44A9  |82A944;
                        RTS                                  ;82A943|60      |      ;
+         PTR16_82A944:
+                       dw CODE_82A948                       ;82A944|        |82A948;
+                       dw CODE_82A956                       ;82A946|        |82A956;
  
-         DATA8_82A944:
-                       db $48,$A9,$56,$A9                   ;82A944|        |      ;
+          CODE_82A948:
                        JSL.L CODE_FL_80BB2D                 ;82A948|222DBB80|80BB2D;
-                       db $CA,$B5,$8C,$00,$5D,$7F           ;82A94C|        |      ;
+                       dl DATA8_8CB5CA                      ;82A94C|        |8CB5CA;
+                       dl $7F5D00                           ;82A94F|        |7F5D00;
                        INC.W $035C                          ;82A952|EE5C03  |82035C;
                        RTS                                  ;82A955|60      |      ;
+ 
+          CODE_82A956:
                        JSL.L CODE_FL_80BB2D                 ;82A956|222DBB80|80BB2D;
-                       db $07,$CC,$90,$00,$5D,$7F           ;82A95A|        |      ;
+                       dl DATA8_90CC07                      ;82A95A|        |90CC07;
+                       dl $7F5D00                           ;82A95D|        |7F5D00;
                        INC.W $035C                          ;82A960|EE5C03  |82035C;
                        RTS                                  ;82A963|60      |      ;
                        PHB                                  ;82A964|8B      |      ;
@@ -10035,6 +10048,8 @@
                        db $00                               ;82E8C3|        |      ;
                        db $18,$28,$38,$48,$58,$68,$78,$88   ;82E8C4|        |      ;
                        db $98,$A8,$B8,$C8,$D8               ;82E8CC|        |      ;
+ 
+          CODE_82E8D1:
                        REP #$30                             ;82E8D1|C230    |      ;
                        LDA.W #$00FF                         ;82E8D3|A9FF00  |      ;
                        STA.W $036E                          ;82E8D6|8D6E03  |82036E;
@@ -10044,17 +10059,20 @@
                        LDA.W $02A8                          ;82E8E1|ADA802  |8202A8;
                        ASL A                                ;82E8E4|0A      |      ;
                        TAX                                  ;82E8E5|AA      |      ;
-                       JSR.W (DATA8_82E8EB,X)               ;82E8E6|FCEBE8  |82E8EB;
+                       JSR.W (PTR16_82E8EB,X)               ;82E8E6|FCEBE8  |82E8EB;
                        BRA +                                ;82E8E9|8006    |82E8F1;
- 
-         DATA8_82E8EB:
-                       db $00,$E9,$D4,$E9,$D4,$E9           ;82E8EB|        |      ;
+         PTR16_82E8EB:
+                       dw CODE_82E900                       ;82E8EB|        |82E900;
+                       dw CODE_82E9D4                       ;82E8ED|        |82E9D4;
+                       dw CODE_82E9D4                       ;82E8EF|        |82E9D4;
  
                      + JSR.W CODE_FN_82E901                 ;82E8F1|2001E9  |82E901;
                        LDX.W $0360                          ;82E8F4|AE6003  |820360;
                        LDA.W #$0010                         ;82E8F7|A91000  |      ;
                        STA.W $03DA,X                        ;82E8FA|9DDA03  |8203DA;
                        INC.W $03D6,X                        ;82E8FD|FED603  |8203D6;
+ 
+          CODE_82E900:
                        RTS                                  ;82E900|60      |      ;
  
        CODE_FN_82E901:
@@ -10162,6 +10180,8 @@
                        STA.W Board,Y                        ;82E9CC|997C0F  |820F7C;
                        JSL.L CODE_FL_85851D                 ;82E9CF|221D8585|85851D;
                        RTS                                  ;82E9D3|60      |      ;
+ 
+          CODE_82E9D4:
                        LDX.W $0360                          ;82E9D4|AE6003  |820360;
                        LDA.W $0478,X                        ;82E9D7|BD7804  |820478;
                        BNE +                                ;82E9DA|D001    |82E9DD;
@@ -10384,6 +10404,8 @@
                        db $00,$00,$01,$01,$00,$00,$00,$01   ;82EC30|        |      ;
                        db $00,$01,$01,$00,$01,$00,$01,$00   ;82EC38|        |      ;
                        db $01,$00,$01,$00,$00,$01,$01       ;82EC40|        |000000;
+ 
+          CODE_82EC47:
                        LDX.W $0360                          ;82EC47|AE6003  |820360;
                        LDA.B $B3,X                          ;82EC4A|B5B3    |0000B3;
                        AND.W #$0030                         ;82EC4C|293000  |      ;
@@ -10409,7 +10431,7 @@
                        LDA.W $02A8                          ;82EC71|ADA802  |8202A8;
                        CMP.W #$0000                         ;82EC74|C90000  |      ;
                        BNE +                                ;82EC77|D003    |82EC7C;
-                       JMP.W CODE_JP_82ED14                 ;82EC79|4C14ED  |82ED14;
+                       JMP.W Increase_Score                 ;82EC79|4C14ED  |82ED14;
  
                      + CMP.W #$0002                         ;82EC7C|C90200  |      ;
                        BEQ +                                ;82EC7F|F001    |82EC82;
@@ -10439,7 +10461,7 @@
                        db $50,$A9,$9F,$86,$8D,$12,$03,$A9   ;82ED06|        |82ECB1;
                        db $01,$00,$8D,$14,$03,$60           ;82ED0E|        |000000;
  
-       CODE_JP_82ED14:
+       Increase_Score:
                        LDA.W Board_Speed                    ;82ED14|ADDE02  |8202DE;
                        STA.W $0324                          ;82ED17|8D2403  |820324;
                        LDA.W $03EA,X                        ;82ED1A|BDEA03  |8203EA;
@@ -10456,7 +10478,7 @@
                        SBC.W #$869F                         ;82ED34|E99F86  |      ;
                        STA.B $56                            ;82ED37|8556    |000056;
                        LDA.W Score_HiByte                   ;82ED39|ADC402  |8202C4;
-                       SBC.W #$0001                         ;82ED3C|E90100  |      ;
+                       SBC.W #$0001                         ;82ED3C|E90100  |      ; this limits the score to decimal 99999
                        STA.B $54                            ;82ED3F|8554    |000054;
                        ORA.B $56                            ;82ED41|0556    |000056;
                        BEQ +                                ;82ED43|F004    |82ED49;
@@ -10471,6 +10493,8 @@
  
        CODE_JP_82ED57:
                        RTS                                  ;82ED57|60      |      ;
+ 
+          CODE_82ED58:
                        LDX.W $0360                          ;82ED58|AE6003  |820360;
                        LDA.W $03E2,X                        ;82ED5B|BDE203  |8203E2;
                        BNE +                                ;82ED5E|D032    |82ED92;
@@ -10496,12 +10520,15 @@
                    +++ LDA.W $0356                          ;82ED8A|AD5603  |820356;
                        ASL A                                ;82ED8D|0A      |      ;
                        TAX                                  ;82ED8E|AA      |      ;
-                       JSR.W (DATA8_82ED93,X)               ;82ED8F|FC93ED  |82ED93;
+                       JSR.W (PTR16_82ED93,X)               ;82ED8F|FC93ED  |82ED93;
  
                      + RTS                                  ;82ED92|60      |      ;
+         PTR16_82ED93:
+                       dw CODE_82ED99                       ;82ED93|        |82ED99;
+                       dw CODE_82EDBC                       ;82ED95|        |82EDBC;
+                       dw CODE_82EDC0                       ;82ED97|        |82EDC0;
  
-         DATA8_82ED93:
-                       db $99,$ED,$BC,$ED,$C0,$ED           ;82ED93|        |      ;
+          CODE_82ED99:
                        INC.W $0404                          ;82ED99|EE0404  |820404;
                        LDA.L $7E38FE                        ;82ED9C|AFFE387E|7E38FE;
                        CMP.W #$0002                         ;82EDA0|C90200  |      ;
@@ -10516,10 +10543,16 @@
                        DEC.W $0B9C,X                        ;82EDB8|DE9C0B  |820B9C;
  
                      + RTS                                  ;82EDBB|60      |      ;
+ 
+          CODE_82EDBC:
                        INC.W $0404                          ;82EDBC|EE0404  |820404;
                        RTS                                  ;82EDBF|60      |      ;
+ 
+          CODE_82EDC0:
                        INC.W $0406                          ;82EDC0|EE0604  |820406;
                        RTS                                  ;82EDC3|60      |      ;
+ 
+          CODE_82EDC4:
                        REP #$30                             ;82EDC4|C230    |      ;
                        LDX.W $0360                          ;82EDC6|AE6003  |820360;
                        LDA.W $03E2,X                        ;82EDC9|BDE203  |8203E2;
@@ -11064,7 +11097,8 @@
                        JSL.L CODE_FL_80C682                 ;82F319|2282C680|80C682;
                        JSL.L CODE_FL_80C61F                 ;82F31D|221FC680|80C61F;
                        JSL.L CODE_FL_80BB2D                 ;82F321|222DBB80|80BB2D;
-                       db $CA,$B5,$8C,$00,$5D,$7F           ;82F325|        |      ;
+                       dl DATA8_8CB5CA                      ;82F325|        |8CB5CA;
+                       dl $7F5D00                           ;82F328|        |7F5D00;
                        PHB                                  ;82F32B|8B      |      ;
                        PHK                                  ;82F32C|4B      |      ;
                        PLB                                  ;82F32D|AB      |      ;

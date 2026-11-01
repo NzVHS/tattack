@@ -23,14 +23,14 @@
                        REP #$30                             ;808018|C230    |      ;
                        TSX                                  ;80801A|BA      |      ;
                        TXY                                  ;80801B|9B      |      ;
-                       LDX.W #$1FF7                         ;80801C|A2F71F  |      ;
+                       LDX.W #$1FF7                         ;80801C|A2F71F  |      ; set stack to #$1FF7
                        TXS                                  ;80801F|9A      |      ;
                        SEP #$20                             ;808020|E220    |      ;
                        LDA.B #$01                           ;808022|A901    |      ;
                        STA.W MEMSEL                         ;808024|8D0D42  |00420D; enable FastROM
                        LDA.B #$80                           ;808027|A980    |      ;
                        STA.W $01B6                          ;808029|8DB601  |0001B6;
-                       STA.W INIDISP                        ;80802C|8D0021  |002100; blanks the screen
+                       STA.W INIDISP                        ;80802C|8D0021  |002100; blank the screen
                        STZ.W $01EC                          ;80802F|9CEC01  |0001EC;
                        STZ.W NMITIMEN                       ;808032|9C0042  |004200;
                        STZ.W MDMAEN                         ;808035|9C0B42  |00420B;
@@ -1247,7 +1247,7 @@
                        db $9C,$6A,$43,$9C,$7A,$43,$C2,$30   ;808E18|        |00436A;
                        db $60                               ;808E20|        |      ;
  
-          CODE_808E21:
+          NMI_Handler:
                        JML.L CODE_JL_808E25                 ;808E21|5C258E80|808E25;
  
        CODE_JL_808E25:
@@ -1321,7 +1321,7 @@
                        PLB                                  ;808EB7|AB      |      ;
                        RTI                                  ;808EB8|40      |      ;
  
-          CODE_808EB9:
+          IRQ_Handler:
                        JML.L CODE_JL_808EBD                 ;808EB9|5CBD8E80|808EBD;
  
        CODE_JL_808EBD:
@@ -2850,6 +2850,7 @@ Audio_CommandHandlers:
                        PLP                                  ;809CD5|28      |      ;
                        RTL                                  ;809CD6|6B      |      ;
  
+ 
             EnableNMI:
                        PHP                                  ;809CD7|08      |      ;
                        SEP #$20                             ;809CD8|E220    |      ;
@@ -2871,16 +2872,17 @@ Audio_CommandHandlers:
                        RTL                                  ;809CF6|6B      |      ;
  
  
-       CODE_FL_809CF7:
+          BlankScreen:
                        PHP                                  ;809CF7|08      |      ;
                        SEP #$20                             ;809CF8|E220    |      ;
-                       LDA.W $01B6                          ;809CFA|ADB601  |8301B6;
+                       LDA.W $01B6                          ;809CFA|ADB601  |0001B6;
                        ORA.B #$80                           ;809CFD|0980    |      ;
-                       STA.W $01B6                          ;809CFF|8DB601  |8301B6;
-                       STA.W INIDISP                        ;809D02|8D0021  |832100;
+                       STA.W $01B6                          ;809CFF|8DB601  |0001B6;
+                       STA.W INIDISP                        ;809D02|8D0021  |002100;
                        JSL.L CODE_FL_809CCA                 ;809D05|22CA9C80|809CCA;
                        PLP                                  ;809D09|28      |      ;
                        RTL                                  ;809D0A|6B      |      ;
+ 
  
        CODE_FL_809D0B:
                        PHP                                  ;809D0B|08      |      ;
@@ -2921,17 +2923,17 @@ Audio_CommandHandlers:
                      - RTL                                  ;809D93|6B      |      ;
  
 DMA_ProcessCommandQueue:
-                       LDA.W DMA_QueuePending               ;809D94|ADB201  |8001B2;
+                       LDA.W DMA_QueuePending               ;809D94|ADB201  |0001B2;
                        BEQ -                                ;809D97|F0FA    |809D93;
-                       STZ.W DMA_QueuePending               ;809D99|9CB201  |8001B2;
-                       STZ.W DMA_QueueWriteOffset           ;809D9C|9CB001  |8001B0;
-                       STZ.W $01B1                          ;809D9F|9CB101  |8001B1;
-                       STZ.W HDMAEN                         ;809DA2|9C0C42  |80420C;
-                       STZ.W MDMAEN                         ;809DA5|9C0B42  |80420B;
+                       STZ.W DMA_QueuePending               ;809D99|9CB201  |0001B2;
+                       STZ.W DMA_QueueWriteOffset           ;809D9C|9CB001  |0001B0;
+                       STZ.W $01B1                          ;809D9F|9CB101  |0001B1;
+                       STZ.W HDMAEN                         ;809DA2|9C0C42  |00420C;
+                       STZ.W MDMAEN                         ;809DA5|9C0B42  |00420B;
                        LDY.B #$00                           ;809DA8|A000    |      ;
  
        CODE_JP_809DAA:
-                       LDA.W DMA_CommandQueue,Y             ;809DAA|B9F000  |8000F0;
+                       LDA.W DMA_CommandQueue,Y             ;809DAA|B9F000  |0000F0;
                        BEQ +                                ;809DAD|F007    |809DB6;
                        DEC A                                ;809DAF|3A      |      ;
                        BEQ DMA_ExecuteCommand_CGRAM         ;809DB0|F005    |809DB7;
@@ -3001,10 +3003,10 @@ DMA_ExecuteCommand_VRAM:
                        PHK                                  ;809E3A|4B      |      ;
                        PLB                                  ;809E3B|AB      |      ;
                        REP #$30                             ;809E3C|C230    |      ;
-                       STZ.W $0292                          ;809E3E|9C9202  |800292;
+                       STZ.W $0292                          ;809E3E|9C9202  |000292;
                        LDY.W #$0000                         ;809E41|A00000  |      ;
                        LDA.W #$F400                         ;809E44|A900F4  |      ;
-                       CPY.W $0292                          ;809E47|CC9202  |800292;
+                       CPY.W $0292                          ;809E47|CC9202  |000292;
                        BCS +                                ;809E4A|B011    |809E5D;
                        db $C0,$00,$02,$B0,$0C,$99,$00,$1D   ;809E4C|        |      ;
                        db $99,$02,$1D,$C8,$C8,$C8,$C8,$80   ;809E54|        |      ;
@@ -3271,13 +3273,13 @@ DMA_QueueCGRAMCommand:
                        CLC                                  ;80A0D2|18      |      ;
                        ADC.W #$0009                         ;80A0D3|690900  |      ;
                        STA.L DMA_QueueWriteOffset-$7E0000   ;80A0D6|8FB00100|0001B0;
-                       LDA.W $0000,Y                        ;80A0DA|B90000  |7E0000;
+                       LDA.W $0000,Y                        ;80A0DA|B90000  |000000;
                        STA.L $0000F1,X                      ;80A0DD|9FF10000|0000F1;
-                       LDA.W $0002,Y                        ;80A0E1|B90200  |7E0002;
+                       LDA.W $0002,Y                        ;80A0E1|B90200  |000002;
                        STA.L $0000F3,X                      ;80A0E4|9FF30000|0000F3;
-                       LDA.W $0004,Y                        ;80A0E8|B90400  |7E0004;
+                       LDA.W $0004,Y                        ;80A0E8|B90400  |000004;
                        STA.L $0000F5,X                      ;80A0EB|9FF50000|0000F5;
-                       LDA.W $0006,Y                        ;80A0EF|B90600  |7E0006;
+                       LDA.W $0006,Y                        ;80A0EF|B90600  |000006;
                        STA.L $0000F7,X                      ;80A0F2|9FF70000|0000F7;
                        SEP #$20                             ;80A0F6|E220    |      ;
                        LDA.B #$02                           ;80A0F8|A902    |      ;
@@ -3321,23 +3323,24 @@ DMA_QueueCGRAMCommand:
                        PHB                                  ;80A148|8B      |      ;
                        PHK                                  ;80A149|4B      |      ;
                        PLB                                  ;80A14A|AB      |      ;
-                       STZ.W MDMAEN                         ;80A14B|9C0B42  |80420B;
-                       STZ.W HDMAEN                         ;80A14E|9C0C42  |80420C;
-                       STZ.W $01F1                          ;80A151|9CF101  |8001F1;
-                       STZ.W $021E                          ;80A154|9C1E02  |80021E;
-                       STZ.W HDMA0LINES                     ;80A157|9C0A43  |80430A;
-                       STZ.W HDMA1LINES                     ;80A15A|9C1A43  |80431A;
-                       STZ.W HDMA2LINES                     ;80A15D|9C2A43  |80432A;
-                       STZ.W HDMA3LINES                     ;80A160|9C3A43  |80433A;
-                       STZ.W HDMA4LINES                     ;80A163|9C4A43  |80434A;
-                       STZ.W HDMA5LINES                     ;80A166|9C5A43  |80435A;
-                       STZ.W HDMA6LINES                     ;80A169|9C6A43  |80436A;
-                       STZ.W HDMA7LINES                     ;80A16C|9C7A43  |80437A;
+                       STZ.W MDMAEN                         ;80A14B|9C0B42  |00420B;
+                       STZ.W HDMAEN                         ;80A14E|9C0C42  |00420C;
+                       STZ.W $01F1                          ;80A151|9CF101  |0001F1;
+                       STZ.W $021E                          ;80A154|9C1E02  |00021E;
+                       STZ.W HDMA0LINES                     ;80A157|9C0A43  |00430A;
+                       STZ.W HDMA1LINES                     ;80A15A|9C1A43  |00431A;
+                       STZ.W HDMA2LINES                     ;80A15D|9C2A43  |00432A;
+                       STZ.W HDMA3LINES                     ;80A160|9C3A43  |00433A;
+                       STZ.W HDMA4LINES                     ;80A163|9C4A43  |00434A;
+                       STZ.W HDMA5LINES                     ;80A166|9C5A43  |00435A;
+                       STZ.W HDMA6LINES                     ;80A169|9C6A43  |00436A;
+                       STZ.W HDMA7LINES                     ;80A16C|9C7A43  |00437A;
                        LDA.B #$81                           ;80A16F|A981    |      ;
-                       STA.W NMITIMEN                       ;80A171|8D0042  |804200;
+                       STA.W NMITIMEN                       ;80A171|8D0042  |004200;
                        PLB                                  ;80A174|AB      |      ;
                        PLP                                  ;80A175|28      |      ;
                        RTL                                  ;80A176|6B      |      ;
+ 
                        db $08,$8B,$4B,$AB,$E2,$20,$8D,$73   ;80A177|        |      ;
                        db $02,$22,$CA,$9C,$80,$CE,$73,$02   ;80A17F|        |      ;
                        db $D0,$F7,$AB,$28,$6B,$C2,$30,$A9   ;80A187|        |80A180;
@@ -4185,7 +4188,7 @@ DMA_QueueCGRAMCommand:
                        BRA +                                ;80A8AD|800B    |80A8BA;
  
                     ++ JSL.L CODE_FL_86D7D8                 ;80A8AF|22D8D786|86D7D8;
-                       JSL.L CODE_FL_809CF7                 ;80A8B3|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;80A8B3|22F79C80|809CF7;
                        JMP.W CODE_JP_808151                 ;80A8B7|4C5181  |808151;
  
                      + RTS                                  ;80A8BA|60      |      ;
@@ -5624,9 +5627,10 @@ GameState_NintendoLogo:
                        TAX                                  ;80B63F|AA      |      ;
                        JSR.W (NintendoLogo_Pointers,X)      ;80B640|FC62B6  |80B662;
                        LDA.L $7E3900                        ;80B643|AF00397E|7E3900;
-                       BNE $04                              ;80B647|D004    |80B64D;
+                       BNE +                                ;80B647|D004    |80B64D;
                        JSL.L CODE_FL_80AE15                 ;80B649|2215AE80|80AE15;
-                       PHB                                  ;80B64D|8B      |      ;
+ 
+                     + PHB                                  ;80B64D|8B      |      ;
                        PHK                                  ;80B64E|4B      |      ;
                        PLB                                  ;80B64F|AB      |      ;
                        LDY.W #$B65A                         ;80B650|A05AB6  |      ;
@@ -5654,11 +5658,12 @@ NintendoLogo_Pointers:
                        RTS                                  ;80B678|60      |      ;
  
     NintendoLogo_Init:
-                       JSL.L CODE_FL_809CF7                 ;80B679|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;80B679|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B67D|228A9C80|809C8A;
                        JSR.W CODE_FN_80B7B7                 ;80B681|20B7B7  |80B7B7;
                        JSL.L CODE_FL_80BB2D                 ;80B684|222DBB80|80BB2D;
-                       db $3B,$AF,$94,$00,$5D,$7F           ;80B688|        |      ;
+                       dl CompGFX_NintendoLogo              ;80B688|        |94AF3B;
+                       dl $7F5D00                           ;80B68B|        |7F5D00;
                        PHB                                  ;80B68E|8B      |      ;
                        PHK                                  ;80B68F|4B      |      ;
                        PLB                                  ;80B690|AB      |      ;
@@ -5669,7 +5674,8 @@ NintendoLogo_Pointers:
                        db $00,$5D,$7F,$00,$0E,$80,$00,$20   ;80B69B|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;80B6A3|222DBB80|80BB2D;
-                       db $A4,$B4,$94,$00,$5D,$7F           ;80B6A7|        |      ;
+                       dl CompGFX_NintendoLogoQuote         ;80B6A7|        |94B4A4;
+                       dl $7F5D00                           ;80B6AA|        |7F5D00;
                        PHB                                  ;80B6AD|8B      |      ;
                        PHK                                  ;80B6AE|4B      |      ;
                        PLB                                  ;80B6AF|AB      |      ;
@@ -5680,11 +5686,14 @@ NintendoLogo_Pointers:
                        db $00,$5D,$7F,$00,$0C,$80,$00,$60   ;80B6BA|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;80B6C2|222DBB80|80BB2D;
-                       db $8D,$B9,$94,$1C,$39,$7E           ;80B6C6|        |      ;
+                       dl DATA8_94B98D                      ;80B6C6|        |94B98D;
+                       dl $7E391C                           ;80B6C9|        |7E391C;
                        JSL.L CODE_FL_80BB2D                 ;80B6CC|222DBB80|80BB2D;
-                       db $C1,$B8,$94,$00,$30,$7E           ;80B6D0|        |      ;
+                       dl DATA8_94B8C1                      ;80B6D0|        |94B8C1;
+                       dl $7E3000                           ;80B6D3|        |7E3000;
                        JSL.L CODE_FL_80BB2D                 ;80B6D6|222DBB80|80BB2D;
-                       db $EC,$B7,$94,$00,$5D,$7F           ;80B6DA|        |      ;
+                       dl DATA8_94B7EC                      ;80B6DA|        |94B7EC;
+                       dl $7F5D00                           ;80B6DD|        |7F5D00;
                        LDA.W #$0008                         ;80B6E0|A90800  |      ;
                        STA.B $00                            ;80B6E3|8500    |000000;
                        LDX.W #$0000                         ;80B6E5|A20000  |      ;
@@ -5875,7 +5884,8 @@ NintendoLogo_Pointers:
                        LDA.W #$00D1                         ;80B8D8|A9D100  |      ;
                        STA.W $1986                          ;80B8DB|8D8619  |801986;
                        JSL.L CODE_FL_80BB2D                 ;80B8DE|222DBB80|80BB2D;
-                       db $EC,$B7,$94,$00,$5D,$7F           ;80B8E2|        |      ;
+                       dl DATA8_94B7EC                      ;80B8E2|        |94B7EC;
+                       dl $7F5D00                           ;80B8E5|        |7F5D00;
                        LDA.W #$0008                         ;80B8E8|A90800  |      ;
                        STA.B $00                            ;80B8EB|8500    |000000;
                        LDX.W #$0000                         ;80B8ED|A20000  |      ;
@@ -5984,13 +5994,14 @@ NintendoLogo_Pointers:
                      + RTS                                  ;80B9BB|60      |      ;
  
           CODE_80B9BC:
-                       JSL.L CODE_FL_809CF7                 ;80B9BC|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;80B9BC|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B9C0|228A9C80|809C8A;
                        JSR.W CODE_FN_80BA48                 ;80B9C4|2048BA  |80BA48;
                        LDA.W #$FFFF                         ;80B9C7|A9FFFF  |      ;
                        STA.W $029E                          ;80B9CA|8D9E02  |80029E;
                        JSL.L CODE_FL_80BB2D                 ;80B9CD|222DBB80|80BB2D;
-                       db $CB,$B9,$94,$00,$5D,$7F           ;80B9D1|        |      ;
+                       dl UNREACH_94B9CB                    ;80B9D1|        |94B9CB;
+                       dl $7F5D00                           ;80B9D4|        |7F5D00;
                        PHB                                  ;80B9D7|8B      |      ;
                        PHK                                  ;80B9D8|4B      |      ;
                        PLB                                  ;80B9D9|AB      |      ;
@@ -6001,7 +6012,8 @@ NintendoLogo_Pointers:
                        db $00,$5D,$7F,$80,$08,$80,$00,$20   ;80B9E4|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;80B9EC|222DBB80|80BB2D;
-                       db $6E,$BE,$94,$F6,$86,$7E           ;80B9F0|        |0094BE;
+                       dl UNREACH_94BE6E                    ;80B9F0|        |94BE6E;
+                       dl $7E86F6                           ;80B9F3|        |7E86F6;
                        PHB                                  ;80B9F6|8B      |      ;
                        PHK                                  ;80B9F7|4B      |      ;
                        PLB                                  ;80B9F8|AB      |      ;
@@ -6009,7 +6021,7 @@ NintendoLogo_Pointers:
                        JSL.L DMA_QueueCGRAMCommand          ;80B9FC|227FA080|80A07F;
                        PLB                                  ;80BA00|AB      |      ;
                        BRA +                                ;80BA01|8006    |80BA09;
-                       db $F6,$86,$7E,$00,$02,$00           ;80BA03|        |000086;
+                       db $F6,$86,$7E,$00,$02,$00           ;80BA03|        |      ;
  
                      + LDA.L $7E3900                        ;80BA09|AF00397E|7E3900;
                        DEC A                                ;80BA0D|3A      |      ;
@@ -6018,7 +6030,8 @@ NintendoLogo_Pointers:
                        db $20,$7E,$80,$0A                   ;80BA18|        |80807E;
  
                      + JSL.L CODE_FL_80BB2D                 ;80BA1C|222DBB80|80BB2D;
-                       db $AD,$BF,$94,$00,$20,$7E           ;80BA20|        |0094BF;
+                       dl UNREACH_94BFAD                    ;80BA20|        |94BFAD;
+                       dl $7E2000                           ;80BA23|        |7E2000;
                        PHB                                  ;80BA26|8B      |      ;
                        PHK                                  ;80BA27|4B      |      ;
                        PLB                                  ;80BA28|AB      |      ;
@@ -10538,11 +10551,11 @@ Native_Reserved2__ignored:
 Native_ABORT__ignored:
                        dw InfiniteLoop                      ;80FFE8|        |808000;
            Native_NMI:
-                       dw CODE_808E21                       ;80FFEA|        |808E21;
+                       dw NMI_Handler                       ;80FFEA|        |808E21;
 Native_RESET__ignored:
                        dw InfiniteLoop                      ;80FFEC|        |808000;
            Native_IRQ:
-                       dw CODE_808EB9                       ;80FFEE|        |808EB9;
+                       dw IRQ_Handler                       ;80FFEE|        |808EB9;
 Emulation_Reserved1__ignored:
                        dw InfiniteLoop                      ;80FFF0|        |808000;
 Emulation_Reserved2__ignored:

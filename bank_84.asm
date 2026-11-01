@@ -625,7 +625,8 @@ TitleScreen_LittleYoshiBob:
                        LDA.W #$0000                         ;848BFD|A90000  |      ;
                        STA.L $7ED3BF                        ;848C00|8FBFD37E|7ED3BF;
                        JSL.L CODE_FL_80BB2D                 ;848C04|222DBB80|80BB2D;
-                       db $4E,$FD,$91,$00,$5D,$7F           ;848C08|        |      ;
+                       dl DATA8_91FD4E                      ;848C08|        |91FD4E;
+                       dl $7F5D00                           ;848C0B|        |7F5D00;
                        PLP                                  ;848C0E|28      |      ;
                        RTL                                  ;848C0F|6B      |      ;
  
@@ -1521,46 +1522,139 @@ TitleScreen_LittleYoshiBob:
  
          DATA8_8492FC:
                        db $D8,$00                           ;8492FC|        |      ;
+  Text_OpcodePointers:
+                       dw Text_OpcodeFF                     ;8492FE|        |849516; handler
  
-         DATA8_8492FE:
-                       db $16,$95                           ;8492FE|        |      ;
+        DATA16_849300:
+                       dw $0000                             ;849300|        |      ; operand length
+                       dw Text_OpcodeFE                     ;849302|        |849528;
+                       dw $0001                             ;849304|        |      ;
+                       dw Text_OpcodeFD                     ;849306|        |849531;
+                       dw $0001                             ;849308|        |      ;
+                       dw Text_OpcodeFC                     ;84930A|        |84953C;
+                       dw $0002                             ;84930C|        |      ;
+                       dw Text_OpcodeFB                     ;84930E|        |849546;
+                       dw $0002                             ;849310|        |      ;
+                       dw Text_OpcodeFA                     ;849312|        |849550;
+                       dw $0002                             ;849314|        |      ;
+                       dw Text_OpcodeF9                     ;849316|        |84955A;
+                       dw $0002                             ;849318|        |      ;
+                       dw Text_OpcodeF8                     ;84931A|        |849564;
+                       dw $0005                             ;84931C|        |      ;
+                       dw Text_OpcodeF7                     ;84931E|        |849599;
+                       dw $0003                             ;849320|        |      ;
+                       dw Text_OpcodeF6                     ;849322|        |8495AF;
+                       dw $0002                             ;849324|        |      ;
+                       dw Text_OpcodeF5                     ;849326|        |8495C9;
+                       dw $0000                             ;849328|        |      ;
+                       dw Text_OpcodeF4                     ;84932A|        |8495DA;
+                       dw $0002                             ;84932C|        |      ;
+                       dw Text_OpcodeF3                     ;84932E|        |8495E4;
+                       dw $0002                             ;849330|        |      ;
+                       dw Text_OpcodeF2                     ;849332|        |8495EE;
+                       dw $0001                             ;849334|        |      ;
+                       dw Text_OpcodeF1                     ;849336|        |8495F3;
+                       dw $0001                             ;849338|        |      ;
+                       dw Text_OpcodeF0                     ;84933A|        |84960C;
+                       dw $0002                             ;84933C|        |      ;
+                       dw Text_OpcodeEF                     ;84933E|        |849616;
+                       dw $0004                             ;849340|        |      ;
+                       dw Text_OpcodeEE                     ;849342|        |849625;
+                       dw $0000                             ;849344|        |      ;
+                       dw Text_OpcodeED                     ;849346|        |849647;
+                       dw $0005                             ;849348|        |      ;
+                       dw Text_OpcodeEC                     ;84934A|        |849668;
+                       dw $0001                             ;84934C|        |      ;
+                       dw Text_OpcodeEB                     ;84934E|        |84966F;
+                       dw $0001                             ;849350|        |      ;
+                       dw Text_OpcodeEA                     ;849352|        |849676;
+                       dw $0001                             ;849354|        |      ;
+                       dw Text_OpcodeE9                     ;849356|        |849689;
+                       dw $0000                             ;849358|        |      ;
+                       dw Text_OpcodeE8                     ;84935A|        |849690;
+                       dw $0000                             ;84935C|        |      ;
+                       dw Text_OpcodeE7                     ;84935E|        |849697;
+                       dw $0000                             ;849360|        |      ;
+                       dw Text_OpcodeE6                     ;849362|        |8496C3;
+                       dw $0001                             ;849364|        |      ;
+                       dw Text_OpcodeE5                     ;849366|        |8496C8;
+                       dw $0001                             ;849368|        |      ;
+                       dw Text_OpcodeE4                     ;84936A|        |8496CD;
+                       dw $0001                             ;84936C|        |      ;
+                       dw Text_OpcodeE3                     ;84936E|        |8496D2;
+                       dw $0001                             ;849370|        |      ;
+                       dw Text_OpcodeE2                     ;849372|        |8496D7;
+                       dw $0001                             ;849374|        |      ;
+                       dw Text_OpcodeE1                     ;849376|        |8496DC;
+                       dw $0001                             ;849378|        |      ;
+                       dw Text_OpcodeE0                     ;84937A|        |8496E5;
+                       dw $0000                             ;84937C|        |      ;
+                       dw Text_OpcodeDF                     ;84937E|        |849750;
+                       dw $0002                             ;849380|        |      ;
+                       dw Text_OpcodeDE                     ;849382|        |849765;
+                       dw $0004                             ;849384|        |      ;
+                       dw Text_OpcodeDD                     ;849386|        |849772;
+                       dw $0002                             ;849388|        |      ;
+                       dw Text_OpcodeDC                     ;84938A|        |84977B;
+                       dw $0002                             ;84938C|        |      ;
+                       dw Text_OpcodeDA                     ;84938E|        |849789;
+                       dw $0003                             ;849390|        |      ;
+                       dw Text_OpcodeDB                     ;849392|        |849784;
+                       dw $0004                             ;849394|        |      ;
+                       dw Text_OpcodeD9                     ;849396|        |8497A3;
+                       dw $0004                             ;849398|        |      ;
+                       dw Text_OpcodeD8                     ;84939A|        |8497CF;
+                       dw $0001                             ;84939C|        |      ;
+                       dw Text_OpcodeD7                     ;84939E|        |8497F8;
+                       dw $0005                             ;8493A0|        |      ;
+                       dw Text_OpcodeD6                     ;8493A2|        |849811;
+                       dw $0003                             ;8493A4|        |      ;
+                       dw Text_OpcodeD5                     ;8493A6|        |849819;
+                       dw $0003                             ;8493A8|        |      ;
+                       dw Text_OpcodeD4                     ;8493AA|        |849821;
+                       dw $0003                             ;8493AC|        |      ;
+                       dw Text_OpcodeD3                     ;8493AE|        |849829;
+                       dw $0004                             ;8493B0|        |      ;
+                       dw Text_OpcodeD2                     ;8493B2|        |849836;
+                       dw $0001                             ;8493B4|        |      ;
+                       dw Text_OpcodeD1                     ;8493B6|        |84983B;
+                       dw $0001                             ;8493B8|        |      ;
+                       dw Text_OpcodeD0                     ;8493BA|        |849840;
+                       dw $0001                             ;8493BC|        |      ;
+                       dw Text_OpcodeCF                     ;8493BE|        |849845;
+                       dw $0001                             ;8493C0|        |      ;
+                       dw Text_OpcodeCE                     ;8493C2|        |84984A;
+                       dw $0001                             ;8493C4|        |      ;
+                       dw Text_OpcodeCD                     ;8493C6|        |84984F;
+                       dw $0001                             ;8493C8|        |      ;
+                       dw Text_OpcodeCC                     ;8493CA|        |849854;
+                       dw $0001                             ;8493CC|        |      ;
+                       dw Text_OpcodeCB                     ;8493CE|        |849859;
+                       dw $0001                             ;8493D0|        |      ;
+                       dw Text_OpcodeCA                     ;8493D2|        |84985E;
+                       dw $0001                             ;8493D4|        |      ;
+                       dw Text_OpcodeC9                     ;8493D6|        |849863;
+                       dw $0001                             ;8493D8|        |      ;
+                       dw Text_OpcodeC8                     ;8493DA|        |84987D;
+                       dw $0002                             ;8493DC|        |      ;
+                       dw Text_OpcodeC7                     ;8493DE|        |84988C;
+                       dw $0002                             ;8493E0|        |      ;
+                       dw Text_OpcodeC6                     ;8493E2|        |849896;
+                       dw $0002                             ;8493E4|        |      ;
+                       dw Text_OpcodeC5                     ;8493E6|        |8498A0;
+                       dw $0002                             ;8493E8|        |      ;
+                       dw Text_OpcodeC4                     ;8493EA|        |8498BA;
+                       dw $0005                             ;8493EC|        |      ;
+                       dw Text_OpcodeC3                     ;8493EE|        |8498C7;
+                       dw $0002                             ;8493F0|        |      ;
+                       dw Text_OpcodeC2                     ;8493F2|        |849791;
+                       dw $0009                             ;8493F4|        |      ;
+                       dw UNREACH_8493FE                    ;8493F6|        |8493FE;
+                       dw $0000                             ;8493F8|        |      ;
+                       dw UNREACH_8493FE                    ;8493FA|        |8493FE;
+                       dw $0000                             ;8493FC|        |      ;
  
-         DATA8_849300:
-                       db $00,$00,$28,$95,$01,$00,$31,$95   ;849300|        |      ;
-                       db $01,$00,$3C,$95,$02,$00,$46,$95   ;849308|        |      ;
-                       db $02,$00,$50,$95,$02,$00,$5A,$95   ;849310|        |      ;
-                       db $02,$00,$64,$95,$05,$00,$99,$95   ;849318|        |      ;
-                       db $03,$00,$AF,$95,$02,$00,$C9,$95   ;849320|        |      ;
-                       db $00,$00,$DA,$95,$02,$00,$E4,$95   ;849328|        |      ;
-                       db $02,$00,$EE,$95,$01,$00,$F3,$95   ;849330|        |      ;
-                       db $01,$00,$0C,$96,$02,$00,$16,$96   ;849338|        |      ;
-                       db $04,$00,$25,$96,$00,$00,$47,$96   ;849340|        |      ;
-                       db $05,$00,$68,$96,$01,$00           ;849348|        |      ;
-                       db $6F,$96,$01,$00,$76,$96,$01,$00   ;84934E|        |000196;
-                       db $89,$96,$00,$00                   ;849356|        |      ;
-                       db $90,$96,$00,$00,$97,$96,$00,$00   ;84935A|        |      ;
-                       db $C3,$96,$01,$00,$C8,$96,$01,$00   ;849362|        |      ;
-                       db $CD,$96,$01,$00,$D2,$96,$01,$00   ;84936A|        |      ;
-                       db $D7,$96,$01,$00,$DC,$96,$01,$00   ;849372|        |      ;
-                       db $E5,$96,$00,$00,$50,$97,$02,$00   ;84937A|        |      ;
-                       db $65,$97,$04,$00                   ;849382|        |      ;
-                       db $72,$97,$02,$00                   ;849386|        |000097;
-                       db $7B,$97,$02,$00,$89,$97,$03,$00   ;84938A|        |      ;
-                       db $84,$97,$04,$00                   ;849392|        |000097;
-                       db $A3,$97,$04,$00,$CF,$97,$01,$00   ;849396|        |      ;
-                       db $F8,$97,$05,$00,$11,$98,$03,$00   ;84939E|        |      ;
-                       db $19,$98,$03,$00,$21,$98,$03,$00   ;8493A6|        |      ;
-                       db $29,$98,$04,$00,$36,$98,$01,$00   ;8493AE|        |      ;
-                       db $3B,$98,$01,$00,$40,$98,$01,$00   ;8493B6|        |      ;
-                       db $45,$98,$01,$00,$4A,$98,$01,$00   ;8493BE|        |      ;
-                       db $4F,$98,$01,$00,$54,$98,$01,$00   ;8493C6|        |      ;
-                       db $59,$98,$01,$00                   ;8493CE|        |      ;
-                       db $5E,$98,$01,$00,$63,$98,$01,$00   ;8493D2|        |000198;
-                       db $7D,$98,$02,$00,$8C,$98,$02,$00   ;8493DA|        |      ;
-                       db $96,$98,$02,$00,$A0,$98,$02,$00   ;8493E2|        |      ;
-                       db $BA,$98,$05,$00,$C7,$98,$02,$00   ;8493EA|        |      ;
-                       db $91,$97,$09,$00                   ;8493F2|        |      ;
-                       db $FE,$93,$00,$00,$FE,$93,$00,$00   ;8493F6|        |000093;
+       UNREACH_8493FE:
                        db $00                               ;8493FE|        |      ;
  
        CODE_FL_8493FF:
@@ -1661,11 +1755,11 @@ TitleScreen_LittleYoshiBob:
                        STA.B $06                            ;8494BA|8506    |000006;
                        PLB                                  ;8494BC|AB      |      ;
                        PLX                                  ;8494BD|FA      |      ;
-                       LDA.L DATA8_849300,X                 ;8494BE|BF009384|849300;
+                       LDA.L DATA16_849300,X                ;8494BE|BF009384|849300;
                        CLC                                  ;8494C2|18      |      ;
                        ADC.W $009B,Y                        ;8494C3|799B00  |7E009B;
                        STA.W $009B,Y                        ;8494C6|999B00  |7E009B;
-                       JMP.W (DATA8_8492FE,X)               ;8494C9|7CFE92  |8492FE;
+                       JMP.W (Text_OpcodePointers,X)        ;8494C9|7CFE92  |8492FE;
  
        CODE_JP_8494CC:
                        REP #$20                             ;8494CC|C220    |      ;
@@ -1721,34 +1815,50 @@ TitleScreen_LittleYoshiBob:
  
                      + CLC                                  ;849514|18      |      ;
                        RTS                                  ;849515|60      |      ;
+ 
+        Text_OpcodeFF:
                        LDA.W #$0000                         ;849516|A90000  |      ;
                        STA.W $009E,Y                        ;849519|999E00  |7E009E;
                        LDA.W $004A,Y                        ;84951C|B94A00  |7E004A;
                        ORA.W #$0002                         ;84951F|090200  |      ;
                        STA.W $004A,Y                        ;849522|994A00  |7E004A;
                        JMP.W CODE_JP_8494EE                 ;849525|4CEE94  |8494EE;
+ 
+        Text_OpcodeFE:
                        LDA.W #$0000                         ;849528|A90000  |      ;
                        STA.W $009E,Y                        ;84952B|999E00  |7E009E;
                        JMP.W CODE_JP_8494EE                 ;84952E|4CEE94  |8494EE;
+ 
+        Text_OpcodeFD:
                        JSL.L CODE_FL_849BDC                 ;849531|22DC9B84|849BDC;
                        JSL.L CODE_FL_849924                 ;849535|22249984|849924;
                        JMP.W CODE_JP_8494E4                 ;849539|4CE494  |8494E4;
+ 
+        Text_OpcodeFC:
                        SEP #$20                             ;84953C|E220    |      ;
                        LDA.B $00                            ;84953E|A500    |000000;
                        STA.W $004C,Y                        ;849540|994C00  |7E004C;
                        JMP.W CODE_JP_84943E                 ;849543|4C3E94  |84943E;
+ 
+        Text_OpcodeFB:
                        SEP #$20                             ;849546|E220    |      ;
                        LDA.B $00                            ;849548|A500    |000000;
                        STA.W $004D,Y                        ;84954A|994D00  |7E004D;
                        JMP.W CODE_JP_84943E                 ;84954D|4C3E94  |84943E;
+ 
+        Text_OpcodeFA:
                        SEP #$20                             ;849550|E220    |      ;
                        LDA.B $00                            ;849552|A500    |000000;
                        STA.W $004E,Y                        ;849554|994E00  |7E004E;
                        JMP.W CODE_JP_84943E                 ;849557|4C3E94  |84943E;
+ 
+        Text_OpcodeF9:
                        SEP #$20                             ;84955A|E220    |      ;
                        LDA.B $00                            ;84955C|A500    |000000;
                        STA.W $0074,Y                        ;84955E|997400  |7E0074;
                        JMP.W CODE_JP_84943E                 ;849561|4C3E94  |84943E;
+ 
+        Text_OpcodeF8:
                        LDA.B $00                            ;849564|A500    |000000;
                        AND.W #$00FF                         ;849566|29FF00  |      ;
                        ASL A                                ;849569|0A      |      ;
@@ -1777,6 +1887,8 @@ TitleScreen_LittleYoshiBob:
                        STA.W $0059,Y                        ;84958F|995900  |7E0059;
                        JSL.L CODE_FL_849BA6                 ;849592|22A69B84|849BA6;
                        JMP.W CODE_JP_84943E                 ;849596|4C3E94  |84943E;
+ 
+        Text_OpcodeF7:
                        JSR.W CODE_FN_8495B9                 ;849599|20B995  |8495B9;
                        LDA.B $01                            ;84959C|A501    |000001;
                        AND.W #$00F8                         ;84959E|29F800  |      ;
@@ -1785,6 +1897,8 @@ TitleScreen_LittleYoshiBob:
                        STA.W $0051,Y                        ;8495A5|995100  |7E0051;
                        JSL.L CODE_FL_849924                 ;8495A8|22249984|849924;
                        JMP.W CODE_JP_8494E4                 ;8495AC|4CE494  |8494E4;
+ 
+        Text_OpcodeF6:
                        JSR.W CODE_FN_8495B9                 ;8495AF|20B995  |8495B9;
                        JSL.L CODE_FL_849924                 ;8495B2|22249984|849924;
                        JMP.W CODE_JP_8494E4                 ;8495B6|4CE494  |8494E4;
@@ -1797,6 +1911,8 @@ TitleScreen_LittleYoshiBob:
                        STA.W $004F,Y                        ;8495C2|994F00  |7E004F;
                        JSR.W CODE_FN_849BC0                 ;8495C5|20C09B  |849BC0;
                        RTS                                  ;8495C8|60      |      ;
+ 
+        Text_OpcodeF5:
                        JSL.L CODE_FL_8499C4                 ;8495C9|22C49984|8499C4;
                        BCS +                                ;8495CD|B008    |8495D7;
                        JSL.L CODE_FL_849B8E                 ;8495CF|228E9B84|849B8E;
@@ -1804,16 +1920,24 @@ TitleScreen_LittleYoshiBob:
                        INC.W $009B,X                        ;8495D4|FE9B00  |7E009B;
  
                      + JMP.W CODE_JP_8494E4                 ;8495D7|4CE494  |8494E4;
+ 
+        Text_OpcodeF4:
                        SEP #$20                             ;8495DA|E220    |      ;
                        LDA.B $00                            ;8495DC|A500    |000000;
                        STA.W $0078,Y                        ;8495DE|997800  |7E0078;
                        JMP.W CODE_JP_84943E                 ;8495E1|4C3E94  |84943E;
+ 
+        Text_OpcodeF3:
                        SEP #$20                             ;8495E4|E220    |      ;
                        LDA.B $00                            ;8495E6|A500    |000000;
                        STA.W $0079,Y                        ;8495E8|997900  |7E0079;
                        JMP.W CODE_JP_84943E                 ;8495EB|4C3E94  |84943E;
+ 
+        Text_OpcodeF2:
                        LDA.W $0078,Y                        ;8495EE|B97800  |7E0078;
                        BRA +                                ;8495F1|8003    |8495F6;
+ 
+        Text_OpcodeF1:
                        LDA.W $0079,Y                        ;8495F3|B97900  |7E0079;
  
                      + JSR.W CODE_FN_849CC5                 ;8495F6|20C59C  |849CC5;
@@ -1824,12 +1948,14 @@ TitleScreen_LittleYoshiBob:
                        LDA.W $0074,Y                        ;849603|B97400  |7E0074;
                        STA.W $009E,Y                        ;849606|999E00  |7E009E;
                        JMP.W CODE_JP_8494CC                 ;849609|4CCC94  |8494CC;
+ 
+        Text_OpcodeF0:
                        SEP #$20                             ;84960C|E220    |      ;
                        LDA.B $00                            ;84960E|A500    |000000;
                        STA.W $005B,Y                        ;849610|995B00  |7E005B;
                        JMP.W CODE_JP_84943E                 ;849613|4C3E94  |84943E;
  
-       CODE_JP_849616:
+        Text_OpcodeEF:
                        PHX                                  ;849616|DA      |      ;
                        PHY                                  ;849617|5A      |      ;
                        PHB                                  ;849618|8B      |      ;
@@ -1840,6 +1966,8 @@ TitleScreen_LittleYoshiBob:
                        PLY                                  ;849620|7A      |      ;
                        PLX                                  ;849621|FA      |      ;
                        JMP.W CODE_JP_8494CC                 ;849622|4CCC94  |8494CC;
+ 
+        Text_OpcodeEE:
                        PHX                                  ;849625|DA      |      ;
                        PHY                                  ;849626|5A      |      ;
                        PHB                                  ;849627|8B      |      ;
@@ -1861,6 +1989,8 @@ TitleScreen_LittleYoshiBob:
                        ADC.W $009B,Y                        ;84963E|799B00  |7E009B;
                        STA.W $009B,Y                        ;849641|999B00  |7E009B;
                        JMP.W CODE_JP_8494E4                 ;849644|4CE494  |8494E4;
+ 
+        Text_OpcodeED:
                        LDA.B $00                            ;849647|A500    |000000;
                        AND.W #$00FF                         ;849649|29FF00  |      ;
                        ASL A                                ;84964C|0A      |      ;
@@ -1877,24 +2007,36 @@ TitleScreen_LittleYoshiBob:
  
          DATA8_849662:
                        db $00,$00,$03,$00,$06,$00           ;849662|        |      ;
+ 
+        Text_OpcodeEC:
                        TYA                                  ;849668|98      |      ;
                        CLC                                  ;849669|18      |      ;
                        ADC.W #$0000                         ;84966A|690000  |      ;
                        BRA +                                ;84966D|800C    |84967B;
-                       db $98,$18,$69,$03,$00,$80,$05,$98   ;84966F|        |      ;
-                       db $18,$69,$06,$00                   ;849677|        |      ;
+ 
+        Text_OpcodeEB:
+                       db $98,$18,$69,$03,$00,$80,$05       ;84966F|        |      ;
+ 
+        Text_OpcodeEA:
+                       db $98,$18,$69,$06,$00               ;849676|        |      ;
  
                      + TAX                                  ;84967B|AA      |      ;
                        LDA.W $007A,X                        ;84967C|BD7A00  |7E007A;
                        STA.B $00                            ;84967F|8500    |000000;
                        LDA.W $007B,X                        ;849681|BD7B00  |7E007B;
                        STA.B $01                            ;849684|8501    |000001;
-                       JMP.W CODE_JP_849616                 ;849686|4C1696  |849616;
+                       JMP.W Text_OpcodeEF                  ;849686|4C1696  |849616;
+ 
+        Text_OpcodeE9:
                        db $98,$18,$69,$00,$00,$80,$0C       ;849689|        |      ;
+ 
+        Text_OpcodeE8:
                        TYA                                  ;849690|98      |      ;
                        CLC                                  ;849691|18      |      ;
                        ADC.W #$0003                         ;849692|690300  |      ;
                        BRA +                                ;849695|8005    |84969C;
+ 
+        Text_OpcodeE7:
                        TYA                                  ;849697|98      |      ;
                        CLC                                  ;849698|18      |      ;
                        ADC.W #$0006                         ;849699|690600  |      ;
@@ -1923,21 +2065,35 @@ TitleScreen_LittleYoshiBob:
                        TYX                                  ;8496BC|BB      |      ;
                        INC.W $009B,X                        ;8496BD|FE9B00  |7E009B;
                        JMP.W CODE_JP_8494E4                 ;8496C0|4CE494  |8494E4;
+ 
+        Text_OpcodeE6:
                        LDA.W #$000A                         ;8496C3|A90A00  |      ;
                        BRA CODE_JP_8496DF                   ;8496C6|8017    |8496DF;
+ 
+        Text_OpcodeE5:
                        LDA.W #$001E                         ;8496C8|A91E00  |      ;
                        BRA CODE_JP_8496DF                   ;8496CB|8012    |8496DF;
+ 
+        Text_OpcodeE4:
                        LDA.W #$003C                         ;8496CD|A93C00  |      ;
                        BRA CODE_JP_8496DF                   ;8496D0|800D    |8496DF;
+ 
+        Text_OpcodeE3:
                        LDA.W #$0078                         ;8496D2|A97800  |      ;
                        BRA CODE_JP_8496DF                   ;8496D5|8008    |8496DF;
+ 
+        Text_OpcodeE2:
                        LDA.W #$012C                         ;8496D7|A92C01  |      ;
                        BRA CODE_JP_8496DF                   ;8496DA|8003    |8496DF;
+ 
+        Text_OpcodeE1:
                        LDA.W #$0258                         ;8496DC|A95802  |      ;
  
        CODE_JP_8496DF:
                        STA.W $009E,Y                        ;8496DF|999E00  |7E009E;
                        JMP.W CODE_JP_8494CC                 ;8496E2|4CCC94  |8494CC;
+ 
+        Text_OpcodeE0:
                        LDA.W $004A,Y                        ;8496E5|B94A00  |7E004A;
                        BIT.W #$1000                         ;8496E8|890010  |      ;
                        BEQ +                                ;8496EB|F00A    |8496F7;
@@ -1986,6 +2142,8 @@ TitleScreen_LittleYoshiBob:
                        TYX                                  ;849749|BB      |      ;
                        INC.W $009B,X                        ;84974A|FE9B00  |7E009B;
                        JMP.W CODE_JP_84943E                 ;84974D|4C3E94  |84943E;
+ 
+        Text_OpcodeDF:
                        LDA.W #$FF00                         ;849750|A900FF  |      ;
                        TRB.B $00                            ;849753|1400    |000000;
                        ASL.B $00                            ;849755|0600    |000000;
@@ -1995,22 +2153,33 @@ TitleScreen_LittleYoshiBob:
                        ADC.B $00                            ;84975D|6500    |000000;
                        STA.W $0083,Y                        ;84975F|998300  |7E0083;
                        JMP.W CODE_JP_84943E                 ;849762|4C3E94  |84943E;
+ 
+        Text_OpcodeDE:
                        LDA.B $00                            ;849765|A500    |000000;
                        STA.W $0085,Y                        ;849767|998500  |7E0085;
                        LDA.B $01                            ;84976A|A501    |000001;
                        STA.W $0086,Y                        ;84976C|998600  |7E0086;
                        JMP.W CODE_JP_84943E                 ;84976F|4C3E94  |84943E;
+ 
+        Text_OpcodeDD:
                        db $A2,$00,$00,$20,$CA,$AE,$4C,$E4   ;849772|        |      ;
                        db $94                               ;84977A|        |0000A2;
+ 
+        Text_OpcodeDC:
                        LDX.W #$0001                         ;84977B|A20100  |      ;
                        JSR.W CODE_FN_84AECA                 ;84977E|20CAAE  |84AECA;
                        JMP.W CODE_JP_8494E4                 ;849781|4CE494  |8494E4;
  
-                     - LDA.B $01                            ;849784|A501    |000001;
+        Text_OpcodeDB:
+                       LDA.B $01                            ;849784|A501    |000001;
                        STA.W $009C,Y                        ;849786|999C00  |7E009C;
+ 
+        Text_OpcodeDA:
                        LDA.B $00                            ;849789|A500    |000000;
                        STA.W $009B,Y                        ;84978B|999B00  |7E009B;
                        JMP.W CODE_JP_84943E                 ;84978E|4C3E94  |84943E;
+ 
+        Text_OpcodeC2:
                        LDA.W $009A,Y                        ;849791|B99A00  |7E009A;
                        AND.W #$00FF                         ;849794|29FF00  |      ;
                        ASL A                                ;849797|0A      |      ;
@@ -2018,6 +2187,8 @@ TitleScreen_LittleYoshiBob:
                        LDA.L $000000,X                      ;849799|BF000000|000000;
                        STA.W $009B,Y                        ;84979D|999B00  |7E009B;
                        JMP.W CODE_JP_84943E                 ;8497A0|4C3E94  |84943E;
+ 
+        Text_OpcodeD9:
                        SEP #$20                             ;8497A3|E220    |      ;
                        LDA.W $0088,Y                        ;8497A5|B98800  |7E0088;
                        CMP.B #$09                           ;8497A8|C909    |      ;
@@ -2038,10 +2209,12 @@ TitleScreen_LittleYoshiBob:
                        STA.W $0089,X                        ;8497C3|9D8900  |7E0089;
                        LDA.W $009C,Y                        ;8497C6|B99C00  |7E009C;
                        STA.W $008A,X                        ;8497C9|9D8A00  |7E008A;
-                       BRA -                                ;8497CC|80B6    |849784;
+                       BRA Text_OpcodeDB                    ;8497CC|80B6    |849784;
  
        UNREACH_8497CE:
                        db $00                               ;8497CE|        |      ;
+ 
+        Text_OpcodeD8:
                        SEP #$20                             ;8497CF|E220    |      ;
                        LDA.W $0088,Y                        ;8497D1|B98800  |7E0088;
                        SEC                                  ;8497D4|38      |      ;
@@ -2063,6 +2236,8 @@ TitleScreen_LittleYoshiBob:
  
        UNREACH_8497F7:
                        db $00                               ;8497F7|        |      ;
+ 
+        Text_OpcodeD7:
                        SEP #$20                             ;8497F8|E220    |      ;
                        LDA.B $00                            ;8497FA|A500    |000000;
                        STA.W $00A5,Y                        ;8497FC|99A500  |7E00A5;
@@ -2073,38 +2248,66 @@ TitleScreen_LittleYoshiBob:
                        LDA.B $03                            ;849809|A503    |000003;
                        STA.W $00A8,Y                        ;84980B|99A800  |7E00A8;
                        JMP.W CODE_JP_84943E                 ;84980E|4C3E94  |84943E;
+ 
+        Text_OpcodeD6:
                        LDA.B $00                            ;849811|A500    |000000;
                        STA.W $00A1,Y                        ;849813|99A100  |7E00A1;
                        JMP.W CODE_JP_84943E                 ;849816|4C3E94  |84943E;
+ 
+        Text_OpcodeD5:
                        LDA.B $00                            ;849819|A500    |000000;
                        STA.W $005C,Y                        ;84981B|995C00  |7E005C;
                        JMP.W CODE_JP_84943E                 ;84981E|4C3E94  |84943E;
+ 
+        Text_OpcodeD4:
                        LDA.B $00                            ;849821|A500    |000000;
                        STA.W $00A3,Y                        ;849823|99A300  |7E00A3;
                        JMP.W CODE_JP_84943E                 ;849826|4C3E94  |84943E;
+ 
+        Text_OpcodeD3:
                        LDA.B $00                            ;849829|A500    |000000;
                        STA.W $0092,Y                        ;84982B|999200  |7E0092;
                        LDA.B $01                            ;84982E|A501    |000001;
                        STA.W $0093,Y                        ;849830|999300  |7E0093;
                        JMP.W CODE_JP_84943E                 ;849833|4C3E94  |84943E;
+ 
+        Text_OpcodeD2:
                        LDA.W #$8000                         ;849836|A90080  |      ;
                        BRA +                                ;849839|8036    |849871;
+ 
+        Text_OpcodeD1:
                        LDA.W #$8000                         ;84983B|A90080  |      ;
                        BRA ++                               ;84983E|8028    |849868;
+ 
+        Text_OpcodeD0:
                        LDA.W #$2000                         ;849840|A90020  |      ;
                        BRA +                                ;849843|802C    |849871;
+ 
+        Text_OpcodeCF:
                        LDA.W #$2000                         ;849845|A90020  |      ;
                        BRA ++                               ;849848|801E    |849868;
+ 
+        Text_OpcodeCE:
                        LDA.W #$1000                         ;84984A|A90010  |      ;
                        BRA +                                ;84984D|8022    |849871;
+ 
+        Text_OpcodeCD:
                        LDA.W #$1000                         ;84984F|A90010  |      ;
                        BRA ++                               ;849852|8014    |849868;
+ 
+        Text_OpcodeCC:
                        LDA.W #$0800                         ;849854|A90008  |      ;
                        BRA ++                               ;849857|800F    |849868;
+ 
+        Text_OpcodeCB:
                        LDA.W #$0800                         ;849859|A90008  |      ;
                        BRA +                                ;84985C|8013    |849871;
-                       db $A9,$00,$40,$80,$0E,$A9,$00,$40   ;84985E|        |      ;
-                       db $80,$00                           ;849866|        |849868;
+ 
+        Text_OpcodeCA:
+                       db $A9,$00,$40,$80,$0E               ;84985E|        |      ;
+ 
+        Text_OpcodeC9:
+                       db $A9,$00,$40,$80,$00               ;849863|        |      ;
  
                     ++ ORA.W $004A,Y                        ;849868|194A00  |7E004A;
                        STA.W $004A,Y                        ;84986B|994A00  |7E004A;
@@ -2114,6 +2317,8 @@ TitleScreen_LittleYoshiBob:
                        AND.W $004A,Y                        ;849874|394A00  |7E004A;
                        STA.W $004A,Y                        ;849877|994A00  |7E004A;
                        JMP.W CODE_JP_84943E                 ;84987A|4C3E94  |84943E;
+ 
+        Text_OpcodeC8:
                        LDA.B $00                            ;84987D|A500    |000000;
                        AND.W #$00FF                         ;84987F|29FF00  |      ;
                        ASL A                                ;849882|0A      |      ;
@@ -2122,14 +2327,20 @@ TitleScreen_LittleYoshiBob:
                        ASL A                                ;849885|0A      |      ;
                        STA.W $0076,Y                        ;849886|997600  |7E0076;
                        JMP.W CODE_JP_84943E                 ;849889|4C3E94  |84943E;
+ 
+        Text_OpcodeC7:
                        SEP #$20                             ;84988C|E220    |      ;
                        LDA.B $00                            ;84988E|A500    |000000;
                        STA.W $0049,Y                        ;849890|994900  |7E0049;
                        JMP.W CODE_JP_84943E                 ;849893|4C3E94  |84943E;
+ 
+        Text_OpcodeC6:
                        SEP #$20                             ;849896|E220    |      ;
                        LDA.B $00                            ;849898|A500    |000000;
                        STA.W $0095,Y                        ;84989A|999500  |7E0095;
                        JMP.W CODE_JP_84943E                 ;84989D|4C3E94  |84943E;
+ 
+        Text_OpcodeC5:
                        LDA.W $004A,Y                        ;8498A0|B94A00  |7E004A;
                        AND.W #$F9FF                         ;8498A3|29FFF9  |      ;
                        LSR.B $00                            ;8498A6|4600    |000000;
@@ -2142,11 +2353,15 @@ TitleScreen_LittleYoshiBob:
  
                      + STA.W $004A,Y                        ;8498B4|994A00  |7E004A;
                        JMP.W CODE_JP_84943E                 ;8498B7|4C3E94  |84943E;
+ 
+        Text_OpcodeC4:
                        LDA.B $00                            ;8498BA|A500    |000000;
                        STA.W $0098,Y                        ;8498BC|999800  |7E0098;
                        LDA.B $02                            ;8498BF|A502    |000002;
                        STA.W $0096,Y                        ;8498C1|999600  |7E0096;
                        JMP.W CODE_JP_84943E                 ;8498C4|4C3E94  |84943E;
+ 
+        Text_OpcodeC3:
                        JSR.W CODE_FN_849930                 ;8498C7|203099  |849930;
                        JMP.W CODE_JP_84943E                 ;8498CA|4C3E94  |84943E;
  
@@ -2300,10 +2515,11 @@ TitleScreen_LittleYoshiBob:
                        AND.W #$00FF                         ;8499CC|29FF00  |      ;
                        ASL A                                ;8499CF|0A      |      ;
                        TAX                                  ;8499D0|AA      |      ;
-                       JMP.W (DATA8_8499D4,X)               ;8499D1|7CD499  |8499D4;
- 
-         DATA8_8499D4:
-                       db $E8,$99,$F5,$99,$1E,$9A           ;8499D4|        |      ;
+                       JMP.W (PTR16_8499D4,X)               ;8499D1|7CD499  |8499D4;
+         PTR16_8499D4:
+                       dw CODE_8499E8                       ;8499D4|        |8499E8;
+                       dw CODE_8499F5                       ;8499D6|        |8499F5;
+                       dw CODE_849A1E                       ;8499D8|        |849A1E;
  
        CODE_JP_8499DA:
                        REP #$30                             ;8499DA|C230    |      ;
@@ -2320,11 +2536,15 @@ TitleScreen_LittleYoshiBob:
                        PLP                                  ;8499E5|28      |      ;
                        SEC                                  ;8499E6|38      |      ;
                        RTL                                  ;8499E7|6B      |      ;
+ 
+          CODE_8499E8:
                        JSL.L CODE_FL_849924                 ;8499E8|22249984|849924;
                        SEP #$20                             ;8499EC|E220    |      ;
                        TYX                                  ;8499EE|BB      |      ;
                        INC.W $0072,X                        ;8499EF|FE7200  |7E0072;
                        JMP.W CODE_JP_8499E1                 ;8499F2|4CE199  |8499E1;
+ 
+          CODE_8499F5:
                        LDA.W $0053,Y                        ;8499F5|B95300  |7E0053;
                        STA.B $00                            ;8499F8|8500    |000000;
                        LDA.W $0055,Y                        ;8499FA|B95500  |7E0055;
@@ -2343,6 +2563,8 @@ TitleScreen_LittleYoshiBob:
                        TYX                                  ;849A17|BB      |      ;
                        INC.W $0072,X                        ;849A18|FE7200  |7E0072;
                        JMP.W CODE_JP_8499E1                 ;849A1B|4CE199  |8499E1;
+ 
+          CODE_849A1E:
                        SEP #$20                             ;849A1E|E220    |      ;
                        LDA.W $0073,Y                        ;849A20|B97300  |7E0073;
                        BEQ +                                ;849A23|F02A    |849A4F;
@@ -3803,7 +4025,7 @@ TitleScreen_LittleYoshiBob:
                        AND.W #$00FF                         ;84A819|29FF00  |      ;
                        ASL A                                ;84A81C|0A      |      ;
                        TAX                                  ;84A81D|AA      |      ;
-                       JMP.W (DATA8_84A827,X)               ;84A81E|7C27A8  |84A827;
+                       JMP.W (PTR16_84A827,X)               ;84A81E|7C27A8  |84A827;
  
        CODE_JP_84A821:
                        REP #$30                             ;84A821|C230    |      ;
@@ -3811,9 +4033,12 @@ TitleScreen_LittleYoshiBob:
                        PLX                                  ;84A824|FA      |      ;
                        PLP                                  ;84A825|28      |      ;
                        RTL                                  ;84A826|6B      |      ;
+         PTR16_84A827:
+                       dw CODE_84A82D                       ;84A827|        |84A82D;
+                       dw CODE_84A863                       ;84A829|        |84A863;
+                       dw CODE_84A9A0                       ;84A82B|        |84A9A0;
  
-         DATA8_84A827:
-                       db $2D,$A8,$63,$A8,$A0,$A9           ;84A827|        |      ;
+          CODE_84A82D:
                        LDA.W #$0000                         ;84A82D|A90000  |      ;
                        STA.W $0022,Y                        ;84A830|992200  |7E0022;
                        STA.W $0024,Y                        ;84A833|992400  |7E0024;
@@ -3832,6 +4057,8 @@ TitleScreen_LittleYoshiBob:
                        STA.W $003E,Y                        ;84A85A|993E00  |7E003E;
                        STA.W $0040,Y                        ;84A85D|994000  |7E0040;
                        JMP.W CODE_JP_84A821                 ;84A860|4C21A8  |84A821;
+ 
+          CODE_84A863:
                        SEP #$20                             ;84A863|E220    |      ;
                        LDA.B #$01                           ;84A865|A901    |      ;
                        CLC                                  ;84A867|18      |      ;
@@ -3950,6 +4177,8 @@ TitleScreen_LittleYoshiBob:
                        ORA.W $0040,Y                        ;84A997|194000  |7E0040;
                        STA.W $0040,Y                        ;84A99A|994000  |7E0040;
                        JMP.W CODE_JP_84A821                 ;84A99D|4C21A8  |84A821;
+ 
+          CODE_84A9A0:
                        SEP #$20                             ;84A9A0|E220    |      ;
                        LDA.B #$02                           ;84A9A2|A902    |      ;
                        CLC                                  ;84A9A4|18      |      ;
@@ -4224,25 +4453,46 @@ TitleScreen_LittleYoshiBob:
                        LDA.L DATA8_998000,X                 ;84AC36|BF008099|998000;
                        XBA                                  ;84AC3A|EB      |      ;
                        LDX.B $02                            ;84AC3B|A602    |000002;
-                       JMP.W (DATA8_84AC40,X)               ;84AC3D|7C40AC  |84AC40;
+                       JMP.W (PTR16_84AC40,X)               ;84AC3D|7C40AC  |84AC40;
+         PTR16_84AC40:
+                       dw CODE_84AC65                       ;84AC40|        |84AC65;
+                       dw CODE_84AC62                       ;84AC42|        |84AC62;
+                       dw CODE_84AC5F                       ;84AC44|        |84AC5F;
+                       dw CODE_84AC5C                       ;84AC46|        |84AC5C;
+                       dw CODE_84AC59                       ;84AC48|        |84AC59;
+                       dw CODE_84AC56                       ;84AC4A|        |84AC56;
+                       dw CODE_84AC53                       ;84AC4C|        |84AC53;
+                       dw CODE_84AC50                       ;84AC4E|        |84AC50;
  
-         DATA8_84AC40:
-                       db $65,$AC,$62,$AC,$5F,$AC,$5C,$AC   ;84AC40|        |      ;
-                       db $59,$AC,$56,$AC,$53,$AC,$50,$AC   ;84AC48|        |      ;
+          CODE_84AC50:
                        ASL.B $04                            ;84AC50|0604    |000004;
                        ROL A                                ;84AC52|2A      |      ;
+ 
+          CODE_84AC53:
                        ASL.B $04                            ;84AC53|0604    |000004;
                        ROL A                                ;84AC55|2A      |      ;
+ 
+          CODE_84AC56:
                        ASL.B $04                            ;84AC56|0604    |000004;
                        ROL A                                ;84AC58|2A      |      ;
+ 
+          CODE_84AC59:
                        ASL.B $04                            ;84AC59|0604    |000004;
                        ROL A                                ;84AC5B|2A      |      ;
+ 
+          CODE_84AC5C:
                        ASL.B $04                            ;84AC5C|0604    |000004;
                        ROL A                                ;84AC5E|2A      |      ;
+ 
+          CODE_84AC5F:
                        ASL.B $04                            ;84AC5F|0604    |000004;
                        ROL A                                ;84AC61|2A      |      ;
+ 
+          CODE_84AC62:
                        ASL.B $04                            ;84AC62|0604    |000004;
                        ROL A                                ;84AC64|2A      |      ;
+ 
+          CODE_84AC65:
                        AND.B $0A                            ;84AC65|250A    |00000A;
                        STA.W $0002,Y                        ;84AC67|990200  |000002;
                        LDA.B $08                            ;84AC6A|A508    |000008;
@@ -4342,32 +4592,33 @@ TitleScreen_LittleYoshiBob:
                        LDX.W #$00A9                         ;84AD7B|A2A900  |      ;
                        LDA.B #$00                           ;84AD7E|A900    |      ;
  
-                     - STA.W $0000,Y                        ;84AD80|990000  |7E0000;
+                     - STA.W $0000,Y                        ;84AD80|990000  |000000;
                        INY                                  ;84AD83|C8      |      ;
                        DEX                                  ;84AD84|CA      |      ;
                        BNE -                                ;84AD85|D0F9    |84AD80;
                        PLY                                  ;84AD87|7A      |      ;
                        LDA.B #$01                           ;84AD88|A901    |      ;
-                       STA.W $004D,Y                        ;84AD8A|994D00  |7E004D;
-                       STA.W $0095,Y                        ;84AD8D|999500  |7E0095;
-                       STA.W $005B,Y                        ;84AD90|995B00  |7E005B;
+                       STA.W $004D,Y                        ;84AD8A|994D00  |00004D;
+                       STA.W $0095,Y                        ;84AD8D|999500  |000095;
+                       STA.W $005B,Y                        ;84AD90|995B00  |00005B;
                        LDA.B #$02                           ;84AD93|A902    |      ;
-                       STA.W $004E,Y                        ;84AD95|994E00  |7E004E;
-                       STA.W $0078,Y                        ;84AD98|997800  |7E0078;
+                       STA.W $004E,Y                        ;84AD95|994E00  |00004E;
+                       STA.W $0078,Y                        ;84AD98|997800  |000078;
                        LDA.B #$07                           ;84AD9B|A907    |      ;
-                       STA.W $0079,Y                        ;84AD9D|997900  |7E0079;
+                       STA.W $0079,Y                        ;84AD9D|997900  |000079;
                        LDA.L Language-$7E0000               ;84ADA0|AF861A00|001A86;
-                       STA.W $009A,Y                        ;84ADA4|999A00  |7E009A;
+                       STA.W $009A,Y                        ;84ADA4|999A00  |00009A;
                        REP #$20                             ;84ADA7|C220    |      ;
                        LDA.W #$0001                         ;84ADA9|A90100  |      ;
-                       STA.W $0074,Y                        ;84ADAC|997400  |7E0074;
+                       STA.W $0074,Y                        ;84ADAC|997400  |000074;
                        LDA.W #$0080                         ;84ADAF|A98000  |      ;
-                       STA.W $0096,Y                        ;84ADB2|999600  |7E0096;
-                       STA.W $0098,Y                        ;84ADB5|999800  |7E0098;
+                       STA.W $0096,Y                        ;84ADB2|999600  |000096;
+                       STA.W $0098,Y                        ;84ADB5|999800  |000098;
                        PLY                                  ;84ADB8|7A      |      ;
                        PLX                                  ;84ADB9|FA      |      ;
                        PLP                                  ;84ADBA|28      |      ;
                        RTL                                  ;84ADBB|6B      |      ;
+ 
  
        CODE_FL_84ADBC:
                        PHP                                  ;84ADBC|08      |      ;
@@ -4383,9 +4634,9 @@ TitleScreen_LittleYoshiBob:
                        CLC                                  ;84ADCB|18      |      ;
                        ADC.W #$0003                         ;84ADCC|690300  |      ;
                        STA.B $04,S                          ;84ADCF|8304    |000004;
-                       LDY.W $0001,X                        ;84ADD1|BC0100  |8B0001;
+                       LDY.W $0001,X                        ;84ADD1|BC0100  |000001;
                        SEP #$20                             ;84ADD4|E220    |      ;
-                       LDA.W $0003,X                        ;84ADD6|BD0300  |8B0003;
+                       LDA.W $0003,X                        ;84ADD6|BD0300  |000003;
                        PHA                                  ;84ADD9|48      |      ;
                        PLB                                  ;84ADDA|AB      |      ;
                        REP #$20                             ;84ADDB|C220    |      ;
@@ -4393,6 +4644,7 @@ TitleScreen_LittleYoshiBob:
                        PLX                                  ;84ADE1|FA      |      ;
                        PLP                                  ;84ADE2|28      |      ;
                        RTL                                  ;84ADE3|6B      |      ;
+ 
  
        CODE_FN_84ADE4:
                        PHP                                  ;84ADE4|08      |      ;
@@ -12116,7 +12368,7 @@ GameState_InitPuzzleCredits:
                        REP #$20                             ;84F19A|C220    |      ;
                        JSL.L CODE_FL_80A145                 ;84F19C|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;84F1A0|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;84F1A4|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;84F1A4|22F79C80|809CF7;
                        JSL.L InitVS_ClearMoreRAM            ;84F1A8|22F1948B|8B94F1;
                        LDA.W #$0000                         ;84F1AC|A90000  |      ;
                        STA.L $7ED1E0                        ;84F1AF|8FE0D17E|7ED1E0;
@@ -12155,9 +12407,9 @@ GameState_PuzzleCredits:
                        RTL                                  ;84F1E0|6B      |      ;
 StageClearCredits_Pointers:
                        dw CODE_JP_84F2E4                    ;84F1E1|        |84F2E4;
-                       dw UNREACH_84F21E                    ;84F1E3|        |84F21E;
+                       dw CODE_84F21E                       ;84F1E3|        |84F21E;
                        dw CODE_84F2F0                       ;84F1E5|        |84F2F0;
-                       dw UNREACH_84F246                    ;84F1E7|        |84F246;
+                       dw CODE_84F246                       ;84F1E7|        |84F246;
                        dw CODE_84F25C                       ;84F1E9|        |84F25C;
 PuzzleCredits_Pointers:
                        dw CODE_JP_84F2E4                    ;84F1EB|        |84F2E4;
@@ -12184,9 +12436,12 @@ PuzzleCredits_Pointers:
  
                      + RTS                                  ;84F21D|60      |      ;
  
-       UNREACH_84F21E:
-                       db $20,$FF,$F2,$22,$C6,$DA,$86,$20   ;84F21E|        |84F2FF;
-                       db $EC,$F3,$4C,$DA,$F2               ;84F226|        |004CF3;
+          CODE_84F21E:
+                       JSR.W CODE_FN_84F2FF                 ;84F21E|20FFF2  |84F2FF;
+                       JSL.L CODE_FL_86DAC6                 ;84F221|22C6DA86|86DAC6;
+                       JSR.W CODE_FN_84F3EC                 ;84F225|20ECF3  |84F3EC;
+                       JMP.W CODE_JP_84F2DA                 ;84F228|4CDAF2  |84F2DA;
+ 
  
           CODE_84F22B:
                        JSR.W CODE_FN_84F2FF                 ;84F22B|20FFF2  |84F2FF;
@@ -12198,9 +12453,11 @@ PuzzleCredits_Pointers:
                        JSL.L CODE_FL_8BF119                 ;84F23F|2219F18B|8BF119;
                        JMP.W CODE_JP_84F2DA                 ;84F243|4CDAF2  |84F2DA;
  
-       UNREACH_84F246:
-                       db $22,$D0,$DD,$86,$20,$34,$F4,$20   ;84F246|        |86DDD0;
-                       db $F5,$F1,$60                       ;84F24E|        |0000F1;
+          CODE_84F246:
+                       JSL.L CODE_FL_86DDD0                 ;84F246|22D0DD86|86DDD0;
+                       JSR.W CODE_FN_84F434                 ;84F24A|2034F4  |84F434;
+                       JSR.W CODE_FN_84F1F5                 ;84F24D|20F5F1  |84F1F5;
+                       RTS                                  ;84F250|60      |      ;
  
           CODE_84F251:
                        JSL.L CODE_FL_8AD1B3                 ;84F251|22B3D18A|8AD1B3;
@@ -12279,6 +12536,7 @@ PuzzleCredits_Pointers:
                        INC A                                ;84F2DE|1A      |      ;
                        STA.L $7ED1E0                        ;84F2DF|8FE0D17E|7ED1E0;
                        RTS                                  ;84F2E3|60      |      ;
+ 
  
        CODE_JP_84F2E4:
                        SEP #$20                             ;84F2E4|E220    |      ;
@@ -12382,6 +12640,7 @@ PuzzleCredits_Pointers:
                        STA.W $01EB                          ;84F3E7|8DEB01  |0001EB;
                        PLP                                  ;84F3EA|28      |      ;
                        RTS                                  ;84F3EB|60      |      ;
+ 
  
        CODE_FN_84F3EC:
                        LDA.W #$0200                         ;84F3EC|A90002  |      ;

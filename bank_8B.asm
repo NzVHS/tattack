@@ -39,7 +39,7 @@
                        REP #$20                             ;8B804E|C220    |      ;
                        JSL.L CODE_FL_80A145                 ;8B8050|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;8B8054|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8B8058|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8B8058|22F79C80|809CF7;
                        JSL.L InitVS_InitRAM                 ;8B805C|22D6948B|8B94D6;
                        JSL.L InitVS_ClearMoreRAM            ;8B8060|22F1948B|8B94F1;
                        LDA.W #$0004                         ;8B8064|A90400  |      ;
@@ -243,13 +243,17 @@
                        db $4C,$C3,$82                       ;8B822C|        |8B82C3;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B822F|222DBB80|80BB2D;
-                       db $F7,$FE,$92,$F6,$88,$7E           ;8B8233|        |      ;
+                       dl CompPalette_VS                    ;8B8233|        |92FEF7;
+                       dl $7E88F6                           ;8B8236|        |7E88F6;
                        JSL.L CODE_FL_80BB2D                 ;8B8239|222DBB80|80BB2D;
-                       db $8E,$81,$93,$00,$41,$7F           ;8B823D|        |      ;
+                       dl CompGFX_VSTextbox                 ;8B823D|        |93818E;
+                       dl $7F4100                           ;8B8240|        |7F4100;
                        JSL.L CODE_FL_80BB2D                 ;8B8243|222DBB80|80BB2D;
-                       db $AD,$B4,$91,$60,$91,$7F           ;8B8247|        |      ;
+                       dl DATA8_91B4AD                      ;8B8247|        |91B4AD;
+                       dl $7F9160                           ;8B824A|        |7F9160;
                        JSL.L CODE_FL_80BB2D                 ;8B824D|222DBB80|80BB2D;
-                       db $BB,$C0,$91,$60,$B1,$7F           ;8B8251|        |      ;
+                       dl CompGFX_MenuandOptions            ;8B8251|        |91C0BB;
+                       dl $7FB160                           ;8B8254|        |7FB160;
                        PHB                                  ;8B8257|8B      |      ;
                        PHK                                  ;8B8258|4B      |      ;
                        PLB                                  ;8B8259|AB      |      ;
@@ -260,15 +264,18 @@
                        db $60,$91,$7F,$00,$80,$80,$00,$20   ;8B8264|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B826C|222DBB80|80BB2D;
-                       db $81,$82,$93,$80,$50,$7F           ;8B8270|        |      ;
+                       dl DATA8_938281                      ;8B8270|        |938281;
+                       dl $7F5080                           ;8B8273|        |7F5080;
                        LDX.W #$5080                         ;8B8276|A28050  |      ;
                        JSL.L CODE_FL_8B9E45                 ;8B8279|22459E8B|8B9E45;
                        JSL.L CODE_FL_80BB2D                 ;8B827D|222DBB80|80BB2D;
-                       db $8D,$FD,$92,$80,$58,$7F           ;8B8281|        |      ;
+                       dl DATA8_92FD8D                      ;8B8281|        |92FD8D;
+                       dl $7F5880                           ;8B8284|        |7F5880;
                        LDX.W #$5880                         ;8B8287|A28058  |      ;
                        JSL.L CODE_FL_8B9E45                 ;8B828A|22459E8B|8B9E45;
                        JSL.L CODE_FL_80BB2D                 ;8B828E|222DBB80|80BB2D;
-                       db $B0,$80,$93,$00,$20,$7E           ;8B8292|        |      ;
+                       dl DATA8_9380B0                      ;8B8292|        |9380B0;
+                       dl $7E2000                           ;8B8295|        |7E2000;
                        JSL.L CODE_FL_8B9E81                 ;8B8298|22819E8B|8B9E81;
                        LDA.L VS_Difficulty-$7E0000          ;8B829C|AF801A00|001A80;
                        JSL.L CODE_FL_8B955D                 ;8B82A0|225D958B|8B955D;
@@ -287,13 +294,17 @@
  
        CODE_JP_8B82C3:
                        JSL.L CODE_FL_80BB2D                 ;8B82C3|222DBB80|80BB2D;
-                       db $D5,$FB,$92,$F6,$88,$7E           ;8B82C7|        |      ;
+                       dl DATA8_92FBD5                      ;8B82C7|        |92FBD5;
+                       dl $7E88F6                           ;8B82CA|        |7E88F6;
                        JSL.L CODE_FL_80BB2D                 ;8B82CD|222DBB80|80BB2D;
-                       db $AD,$B4,$91,$60,$91,$7F           ;8B82D1|        |      ;
+                       dl DATA8_91B4AD                      ;8B82D1|        |91B4AD;
+                       dl $7F9160                           ;8B82D4|        |7F9160;
                        JSL.L CODE_FL_80BB2D                 ;8B82D7|222DBB80|80BB2D;
-                       db $BB,$C0,$91,$60,$B1,$7F           ;8B82DB|        |      ;
+                       dl CompGFX_MenuandOptions            ;8B82DB|        |91C0BB;
+                       dl $7FB160                           ;8B82DE|        |7FB160;
                        JSL.L CODE_FL_80BB2D                 ;8B82E1|222DBB80|80BB2D;
-                       db $8E,$81,$93,$60,$A1,$7F           ;8B82E5|        |      ;
+                       dl CompGFX_VSTextbox                 ;8B82E5|        |93818E;
+                       dl $7FA160                           ;8B82E8|        |7FA160;
                        PHB                                  ;8B82EB|8B      |      ;
                        PHK                                  ;8B82EC|4B      |      ;
                        PLB                                  ;8B82ED|AB      |      ;
@@ -304,7 +315,8 @@
                        db $60,$91,$7F,$00,$80,$80,$00,$20   ;8B82F8|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8300|222DBB80|80BB2D;
-                       db $81,$82,$93,$80,$50,$7F           ;8B8304|        |      ;
+                       dl DATA8_938281                      ;8B8304|        |938281;
+                       dl $7F5080                           ;8B8307|        |7F5080;
                        LDX.W #$5080                         ;8B830A|A28050  |      ;
                        JSL.L CODE_FL_8B9E45                 ;8B830D|22459E8B|8B9E45;
                        LDY.W #$0440                         ;8B8311|A04004  |      ;
@@ -329,7 +341,8 @@
                        db $C0,$2B,$7E,$40,$04,$80,$E0,$7D   ;8B8339|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8341|222DBB80|80BB2D;
-                       db $8D,$FD,$92,$80,$58,$7F           ;8B8345|        |      ;
+                       dl DATA8_92FD8D                      ;8B8345|        |92FD8D;
+                       dl $7F5880                           ;8B8348|        |7F5880;
                        LDX.W #$5880                         ;8B834B|A28058  |      ;
                        JSL.L CODE_FL_8B9E45                 ;8B834E|22459E8B|8B9E45;
                        LDY.W #$0440                         ;8B8352|A04004  |      ;
@@ -359,9 +372,11 @@
                        LDA.W VS_Difficulty                  ;8B8385|AD801A  |7E1A80;
                        JSL.L CODE_FL_8B950C                 ;8B8388|220C958B|8B950C;
                        JSL.L CODE_FL_80BB2D                 ;8B838C|222DBB80|80BB2D;
-                       db $D5,$FB,$92,$80,$60,$7F           ;8B8390|        |      ;
+                       dl DATA8_92FBD5                      ;8B8390|        |92FBD5;
+                       dl $7F6080                           ;8B8393|        |7F6080;
                        JSL.L CODE_FL_80BB2D                 ;8B8396|222DBB80|80BB2D;
-                       db $69,$EB,$91,$60,$91,$7F           ;8B839A|        |      ;
+                       dl CompGFX_CharacterPortraits2       ;8B839A|        |91EB69;
+                       dl $7F9160                           ;8B839D|        |7F9160;
                        PHB                                  ;8B83A0|8B      |      ;
                        PHK                                  ;8B83A1|4B      |      ;
                        PLB                                  ;8B83A2|AB      |      ;
@@ -372,7 +387,8 @@
                        db $60,$91,$7F,$00,$1A,$80,$00,$00   ;8B83AD|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B83B5|222DBB80|80BB2D;
-                       db $D2,$84,$92,$60,$91,$7F           ;8B83B9|        |      ;
+                       dl CompGFX_VSYoshi                   ;8B83B9|        |9284D2;
+                       dl $7F9160                           ;8B83BC|        |7F9160;
                        PHB                                  ;8B83BF|8B      |      ;
                        PHK                                  ;8B83C0|4B      |      ;
                        PLB                                  ;8B83C1|AB      |      ;
@@ -393,7 +409,8 @@
                        DEY                                  ;8B83E5|88      |      ;
                        BNE -                                ;8B83E6|D0F2    |8B83DA;
                        JSL.L CODE_FL_80BB2D                 ;8B83E8|222DBB80|80BB2D;
-                       db $02,$B9,$92,$00,$37,$7F           ;8B83EC|        |      ;
+                       dl CompGFX_VSStageNames              ;8B83EC|        |92B902;
+                       dl $7F3700                           ;8B83EF|        |7F3700;
                        PHB                                  ;8B83F2|8B      |      ;
                        PHK                                  ;8B83F3|4B      |      ;
                        PLB                                  ;8B83F4|AB      |      ;
@@ -404,7 +421,8 @@
                        db $00,$37,$7F,$00,$0A,$80,$00,$10   ;8B83FF|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8407|222DBB80|80BB2D;
-                       db $30,$98,$92,$60,$91,$7F           ;8B840B|        |      ;
+                       dl DATA8_929830                      ;8B840B|        |929830;
+                       dl $7F9160                           ;8B840E|        |7F9160;
                        PHB                                  ;8B8411|8B      |      ;
                        PHK                                  ;8B8412|4B      |      ;
                        PLB                                  ;8B8413|AB      |      ;
@@ -419,9 +437,8 @@
                        db $80,$00,$60                       ;8B8423|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8426|222DBB80|80BB2D;
-                       TDC                                  ;8B842A|7B      |      ;
-                       XCE                                  ;8B842B|FB      |      ;
-                       db $91,$60,$91,$7F                   ;8B842C|        |      ;
+                       dl DATA8_91FB7B                      ;8B842A|        |91FB7B;
+                       dl $7F9160                           ;8B842D|        |7F9160;
                        JSL.L CODE_FL_8B9E9E                 ;8B8430|229E9E8B|8B9E9E;
                        PHB                                  ;8B8434|8B      |      ;
                        PHK                                  ;8B8435|4B      |      ;
@@ -505,25 +522,32 @@
                      + LDA.L VS_Stage                       ;8B853D|AFE2D17E|7ED1E2;
                        BNE +                                ;8B8541|D01A    |8B855D;
                        JSL.L CODE_FL_80BB2D                 ;8B8543|222DBB80|80BB2D;
-                       db $70,$EC,$92,$F6,$86,$7E           ;8B8547|        |      ;
+                       dl DATA8_92EC70                      ;8B8547|        |92EC70;
+                       dl $7E86F6                           ;8B854A|        |7E86F6;
                        JSL.L CODE_FL_80BB2D                 ;8B854D|222DBB80|80BB2D;
-                       db $2D,$EA,$92,$1C,$4C,$7E           ;8B8551|        |      ;
+                       dl DATA8_92EA2D                      ;8B8551|        |92EA2D;
+                       dl $7E4C1C                           ;8B8554|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8B8557|2277928B|8B9277;
                        BRA ++                               ;8B855B|801A    |8B8577;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B855D|222DBB80|80BB2D;
-                       db $80,$EA,$92,$F6,$86,$7E           ;8B8561|        |      ;
+                       dl DATA8_92EA80                      ;8B8561|        |92EA80;
+                       dl $7E86F6                           ;8B8564|        |7E86F6;
                        JSL.L CODE_FL_80BB2D                 ;8B8567|222DBB80|80BB2D;
-                       db $06,$EA,$92,$1C,$4C,$7E           ;8B856B|        |      ;
+                       dl DATA8_92EA06                      ;8B856B|        |92EA06;
+                       dl $7E4C1C                           ;8B856E|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8B8571|2277928B|8B9277;
                        BRA ++                               ;8B8575|8000    |8B8577;
  
                     ++ JSL.L CODE_FL_80BB2D                 ;8B8577|222DBB80|80BB2D;
-                       db $70,$EC,$92,$80,$84,$7F           ;8B857B|        |      ;
+                       dl DATA8_92EC70                      ;8B857B|        |92EC70;
+                       dl $7F8480                           ;8B857E|        |7F8480;
                        JSL.L CODE_FL_80BB2D                 ;8B8581|222DBB80|80BB2D;
-                       db $80,$EA,$92,$80,$86,$7F           ;8B8585|        |      ;
+                       dl DATA8_92EA80                      ;8B8585|        |92EA80;
+                       dl $7F8680                           ;8B8588|        |7F8680;
                        JSL.L CODE_FL_80BB2D                 ;8B858B|222DBB80|80BB2D;
-                       db $2D,$EA,$92,$80,$88,$7F           ;8B858F|        |      ;
+                       dl DATA8_92EA2D                      ;8B858F|        |92EA2D;
+                       dl $7F8880                           ;8B8592|        |7F8880;
                        PHB                                  ;8B8595|8B      |      ;
                        PEA.W $7F00                          ;8B8596|F4007F  |7E7F00;
                        PLB                                  ;8B8599|AB      |      ;
@@ -532,7 +556,8 @@
                        JSL.L CODE_FL_8B9A3D                 ;8B859E|223D9A8B|8B9A3D;
                        PLB                                  ;8B85A2|AB      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B85A3|222DBB80|80BB2D;
-                       db $06,$EA,$92,$80,$8C,$7F           ;8B85A7|        |      ;
+                       dl DATA8_92EA06                      ;8B85A7|        |92EA06;
+                       dl $7F8C80                           ;8B85AA|        |7F8C80;
                        PHB                                  ;8B85AD|8B      |      ;
                        PEA.W $7F00                          ;8B85AE|F4007F  |7E7F00;
                        PLB                                  ;8B85B1|AB      |      ;
@@ -541,7 +566,8 @@
                        JSL.L CODE_FL_8B9A3D                 ;8B85B6|223D9A8B|8B9A3D;
                        PLB                                  ;8B85BA|AB      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B85BB|222DBB80|80BB2D;
-                       db $7A,$99,$92,$60,$91,$7F           ;8B85BF|        |      ;
+                       dl CompGFX_VSBackground              ;8B85BF|        |92997A;
+                       dl $7F9160                           ;8B85C2|        |7F9160;
                        PHB                                  ;8B85C5|8B      |      ;
                        PHK                                  ;8B85C6|4B      |      ;
                        PLB                                  ;8B85C7|AB      |      ;
@@ -552,7 +578,8 @@
                        db $60,$91,$7F,$00,$20,$80,$00,$50   ;8B85D2|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B85DA|222DBB80|80BB2D;
-                       db $05,$AA,$92,$60,$91,$7F           ;8B85DE|        |      ;
+                       dl CompGFX_VSCloudsPath              ;8B85DE|        |92AA05;
+                       dl $7F9160                           ;8B85E1|        |7F9160;
                        PHB                                  ;8B85E4|8B      |      ;
                        PHK                                  ;8B85E5|4B      |      ;
                        PLB                                  ;8B85E6|AB      |      ;
@@ -563,7 +590,8 @@
                        db $60,$91,$7F,$00,$08,$80,$00,$3C   ;8B85F1|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B85F9|222DBB80|80BB2D;
-                       db $67,$AC,$92,$60,$91,$7F           ;8B85FD|        |      ;
+                       dl DATA8_92AC67                      ;8B85FD|        |92AC67;
+                       dl $7F9160                           ;8B8600|        |7F9160;
                        PHB                                  ;8B8603|8B      |      ;
                        PHK                                  ;8B8604|4B      |      ;
                        PLB                                  ;8B8605|AB      |      ;
@@ -575,7 +603,8 @@
  
                      + JSL.L CODE_FL_8BA590                 ;8B8618|2290A58B|8BA590;
                        JSL.L CODE_FL_80BB2D                 ;8B861C|222DBB80|80BB2D;
-                       db $F8,$EE,$92,$00,$28,$7E           ;8B8620|        |      ;
+                       dl DATA8_92EEF8                      ;8B8620|        |92EEF8;
+                       dl $7E2800                           ;8B8623|        |7E2800;
                        JSL.L CODE_FL_8BA318                 ;8B8626|2218A38B|8BA318;
                        JSL.L CODE_FL_8BA371                 ;8B862A|2271A38B|8BA371;
                        LDA.L VS_Stage                       ;8B862E|AFE2D17E|7ED1E2;
@@ -599,11 +628,13 @@
                        db $00,$28,$7E,$C0,$03,$80,$00,$78   ;8B8656|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B865E|222DBB80|80BB2D;
-                       db $BA,$EE,$92,$80,$90,$7F           ;8B8662|        |      ;
+                       dl DATA8_92EEBA                      ;8B8662|        |92EEBA;
+                       dl $7F9080                           ;8B8665|        |7F9080;
                        LDA.L $7ED39F                        ;8B8668|AF9FD37E|7ED39F;
                        JSL.L CODE_FL_8BA5C6                 ;8B866C|22C6A58B|8BA5C6;
                        JSL.L CODE_FL_80BB2D                 ;8B8670|222DBB80|80BB2D;
-                       db $41,$EE,$92,$00,$30,$7E           ;8B8674|        |      ;
+                       dl DATA8_92EE41                      ;8B8674|        |92EE41;
+                       dl $7E3000                           ;8B8677|        |7E3000;
                        PHB                                  ;8B867A|8B      |      ;
                        PHK                                  ;8B867B|4B      |      ;
                        PLB                                  ;8B867C|AB      |      ;
@@ -614,7 +645,8 @@
                        db $00,$30,$7E,$00,$08,$80,$00,$68   ;8B8687|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B868F|222DBB80|80BB2D;
-                       db $A7,$83,$93,$3B,$53,$7E           ;8B8693|        |      ;
+                       dl DATA8_9383A7                      ;8B8693|        |9383A7;
+                       dl $7E533B                           ;8B8696|        |7E533B;
                        LDA.W #$7E00                         ;8B8699|A9007E  |      ;
                        STA.W $19BD                          ;8B869C|8DBD19  |7E19BD;
                        LDA.W #$533B                         ;8B869F|A93B53  |      ;
@@ -622,11 +654,14 @@
                        JSL.L CODE_FL_899DE6                 ;8B86A5|22E69D89|899DE6;
                        JSL.L CODE_FL_899E12                 ;8B86A9|22129E89|899E12;
                        JSL.L CODE_FL_80BB2D                 ;8B86AD|222DBB80|80BB2D;
-                       db $D3,$BE,$92,$60,$91,$7F           ;8B86B1|        |      ;
+                       dl CompGFX_VSStages                  ;8B86B1|        |92BED3;
+                       dl $7F9160                           ;8B86B4|        |7F9160;
                        JSL.L CODE_FL_80BB2D                 ;8B86B7|222DBB80|80BB2D;
-                       db $2E,$ED,$92,$80,$62,$7F           ;8B86BB|        |      ;
+                       dl DATA8_92ED2E                      ;8B86BB|        |92ED2E;
+                       dl $7F6280                           ;8B86BE|        |7F6280;
                        JSL.L CODE_FL_80BB2D                 ;8B86C1|222DBB80|80BB2D;
-                       db $B3,$E7,$92,$60,$D9,$7F           ;8B86C5|        |      ;
+                       dl DATA8_92E7B3                      ;8B86C5|        |92E7B3;
+                       dl $7FD960                           ;8B86C8|        |7FD960;
                        REP #$30                             ;8B86CB|C230    |      ;
                        LDA.W #$7E00                         ;8B86CD|A9007E  |      ;
                        STA.B $97                            ;8B86D0|8597    |000097;
@@ -725,9 +760,11 @@
                        JMP.W CODE_JP_8B88FF                 ;8B87C7|4CFF88  |8B88FF;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B87CA|222DBB80|80BB2D;
-                       db $70,$EC,$92,$60,$91,$7F           ;8B87CE|        |      ;
+                       dl DATA8_92EC70                      ;8B87CE|        |92EC70;
+                       dl $7F9160                           ;8B87D1|        |7F9160;
                        JSL.L CODE_FL_80BB2D                 ;8B87D4|222DBB80|80BB2D;
-                       db $3D,$EB,$92,$F6,$86,$7E           ;8B87D8|        |      ;
+                       dl DATA8_92EB3D                      ;8B87D8|        |92EB3D;
+                       dl $7E86F6                           ;8B87DB|        |7E86F6;
                        LDY.W #$001E                         ;8B87DE|A01E00  |      ;
                        LDX.W #$0000                         ;8B87E1|A20000  |      ;
  
@@ -739,7 +776,8 @@
                        DEY                                  ;8B87EF|88      |      ;
                        BNE -                                ;8B87F0|D0F2    |8B87E4;
                        JSL.L CODE_FL_80BB2D                 ;8B87F2|222DBB80|80BB2D;
-                       db $D5,$AF,$92,$60,$91,$7F           ;8B87F6|        |      ;
+                       dl DATA8_92AFD5                      ;8B87F6|        |92AFD5;
+                       dl $7F9160                           ;8B87F9|        |7F9160;
                        PHB                                  ;8B87FC|8B      |      ;
                        PHK                                  ;8B87FD|4B      |      ;
                        PLB                                  ;8B87FE|AB      |      ;
@@ -750,7 +788,8 @@
                        db $60,$91,$7F,$00,$10,$80,$00,$38   ;8B8809|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8811|222DBB80|80BB2D;
-                       db $E5,$E6,$95,$60,$91,$7F           ;8B8815|        |      ;
+                       dl DATA8_95E6E5                      ;8B8815|        |95E6E5;
+                       dl $7F9160                           ;8B8818|        |7F9160;
                        PHB                                  ;8B881B|8B      |      ;
                        PHK                                  ;8B881C|4B      |      ;
                        PLB                                  ;8B881D|AB      |      ;
@@ -762,7 +801,8 @@
  
                      + JSL.L CODE_FL_8BA5AB                 ;8B8830|22ABA58B|8BA5AB;
                        JSL.L CODE_FL_80BB2D                 ;8B8834|222DBB80|80BB2D;
-                       db $BE,$F4,$92,$00,$28,$7E           ;8B8838|        |      ;
+                       dl DATA8_92F4BE                      ;8B8838|        |92F4BE;
+                       dl $7E2800                           ;8B883B|        |7E2800;
                        JSL.L CODE_FL_8BA340                 ;8B883E|2240A38B|8BA340;
                        JSL.L CODE_FL_8BA3B9                 ;8B8842|22B9A38B|8BA3B9;
                        PHB                                  ;8B8846|8B      |      ;
@@ -775,7 +815,8 @@
                        db $00,$28,$7E,$C0,$03,$80,$00,$78   ;8B8853|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B885B|222DBB80|80BB2D;
-                       db $8C,$F3,$92,$60,$91,$7F           ;8B885F|        |      ;
+                       dl DATA8_92F38C                      ;8B885F|        |92F38C;
+                       dl $7F9160                           ;8B8862|        |7F9160;
                        LDX.W #$9160                         ;8B8865|A26091  |      ;
                        JSL.L CODE_FL_8B9E63                 ;8B8868|22639E8B|8B9E63;
                        LDX.W #$9960                         ;8B886C|A26099  |      ;
@@ -799,7 +840,8 @@
                        db $60,$99,$7F,$00,$08,$80,$00,$74   ;8B8895|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B889D|222DBB80|80BB2D;
-                       db $40,$F5,$92,$00,$30,$7E           ;8B88A1|        |      ;
+                       dl DATA8_92F540                      ;8B88A1|        |92F540;
+                       dl $7E3000                           ;8B88A4|        |7E3000;
                        PHB                                  ;8B88A7|8B      |      ;
                        PHK                                  ;8B88A8|4B      |      ;
                        PLB                                  ;8B88A9|AB      |      ;
@@ -810,7 +852,8 @@
                        db $00,$30,$7E,$00,$08,$80,$00,$68   ;8B88B4|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B88BC|222DBB80|80BB2D;
-                       db $D7,$E9,$92,$1C,$4C,$7E           ;8B88C0|        |      ;
+                       dl DATA8_92E9D7                      ;8B88C0|        |92E9D7;
+                       dl $7E4C1C                           ;8B88C3|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8B88C6|2277928B|8B9277;
                        REP #$30                             ;8B88CA|C230    |      ;
                        LDA.W #$7E00                         ;8B88CC|A9007E  |      ;
@@ -867,7 +910,8 @@
  
        CODE_FN_8B8953:
                        JSL.L CODE_FL_80BB2D                 ;8B8953|222DBB80|80BB2D;
-                       db $1F,$9D,$93,$00,$28,$7E           ;8B8957|        |      ;
+                       dl DATA8_939D1F                      ;8B8957|        |939D1F;
+                       dl $7E2800                           ;8B895A|        |7E2800;
                        PHB                                  ;8B895D|8B      |      ;
                        PHK                                  ;8B895E|4B      |      ;
                        PLB                                  ;8B895F|AB      |      ;
@@ -878,13 +922,15 @@
                        db $00,$28,$7E,$C0,$03,$80,$00,$78   ;8B896A|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8972|222DBB80|80BB2D;
-                       db $E7,$9A,$93,$1C,$4C,$7E           ;8B8976|        |      ;
+                       dl DATA8_939AE7                      ;8B8976|        |939AE7;
+                       dl $7E4C1C                           ;8B8979|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8B897C|2277928B|8B9277;
                        RTS                                  ;8B8980|60      |      ;
                        JSR.W CODE_FN_8B8953                 ;8B8981|205389  |8B8953;
                        JSR.W CODE_FN_8B8A3E                 ;8B8984|203E8A  |8B8A3E;
                        JSL.L CODE_FL_80BB2D                 ;8B8987|222DBB80|80BB2D;
-                       db $EC,$86,$93,$60,$91,$7F           ;8B898B|        |      ;
+                       dl DATA8_9386EC                      ;8B898B|        |9386EC;
+                       dl $7F9160                           ;8B898E|        |7F9160;
                        PHB                                  ;8B8991|8B      |      ;
                        PHK                                  ;8B8992|4B      |      ;
                        PLB                                  ;8B8993|AB      |      ;
@@ -903,9 +949,11 @@
                        BNE -                                ;8B89B2|D0F9    |8B89AD;
                        REP #$20                             ;8B89B4|C220    |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B89B6|222DBB80|80BB2D;
-                       db $70,$EC,$92,$60,$C1,$7F           ;8B89BA|        |      ;
+                       dl DATA8_92EC70                      ;8B89BA|        |92EC70;
+                       dl $7FC160                           ;8B89BD|        |7FC160;
                        JSL.L CODE_FL_80BB2D                 ;8B89C0|222DBB80|80BB2D;
-                       db $2D,$EA,$92,$80,$88,$7F           ;8B89C4|        |      ;
+                       dl DATA8_92EA2D                      ;8B89C4|        |92EA2D;
+                       dl $7F8880                           ;8B89C7|        |7F8880;
                        PHB                                  ;8B89CA|8B      |      ;
                        PEA.W $7F00                          ;8B89CB|F4007F  |007F00;
                        PLB                                  ;8B89CE|AB      |      ;
@@ -914,19 +962,26 @@
                        JSL.L CODE_FL_8B9A3D                 ;8B89D3|223D9A8B|8B9A3D;
                        PLB                                  ;8B89D7|AB      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B89D8|222DBB80|80BB2D;
-                       db $F8,$EE,$92,$60,$91,$7F           ;8B89DC|        |      ;
+                       dl DATA8_92EEF8                      ;8B89DC|        |92EEF8;
+                       dl $7F9160                           ;8B89DF|        |7F9160;
                        JSL.L CODE_FL_80BB2D                 ;8B89E2|222DBB80|80BB2D;
-                       db $3B,$F1,$92,$60,$99,$7F           ;8B89E6|        |      ;
+                       dl DATA8_92F13B                      ;8B89E6|        |92F13B;
+                       dl $7F9960                           ;8B89E9|        |7F9960;
                        JSL.L CODE_FL_80BB2D                 ;8B89EC|222DBB80|80BB2D;
-                       db $7A,$99,$92,$60,$A1,$7F           ;8B89F0|        |      ;
+                       dl CompGFX_VSBackground              ;8B89F0|        |92997A;
+                       dl $7FA160                           ;8B89F3|        |7FA160;
                        JSL.L CODE_FL_80BB2D                 ;8B89F6|222DBB80|80BB2D;
-                       db $37,$89,$93,$20,$E1,$7F           ;8B89FA|        |      ;
+                       dl DATA8_938937                      ;8B89FA|        |938937;
+                       dl $7FE120                           ;8B89FD|        |7FE120;
                        JSL.L CODE_FL_80BB2D                 ;8B8A00|222DBB80|80BB2D;
-                       db $29,$91,$8E,$20,$C3,$7F           ;8B8A04|        |      ;
+                       dl DATA8_8E9129                      ;8B8A04|        |8E9129;
+                       dl $7FC320                           ;8B8A07|        |7FC320;
                        JSL.L CODE_FL_80BB2D                 ;8B8A0A|222DBB80|80BB2D;
-                       db $CA,$FE,$8D,$60,$C3,$7F           ;8B8A0E|        |      ;
+                       dl DATA8_8DFECA                      ;8B8A0E|        |8DFECA;
+                       dl $7FC360                           ;8B8A11|        |7FC360;
                        JSL.L CODE_FL_80BB2D                 ;8B8A14|222DBB80|80BB2D;
-                       db $2C,$8F,$93,$3B,$53,$7E           ;8B8A18|        |      ;
+                       dl DATA8_938F2C                      ;8B8A18|        |938F2C;
+                       dl $7E533B                           ;8B8A1B|        |7E533B;
                        LDA.W #$7E00                         ;8B8A1E|A9007E  |      ;
                        STA.W $19BD                          ;8B8A21|8DBD19  |0019BD;
                        LDA.W #$533B                         ;8B8A24|A93B53  |      ;
@@ -961,10 +1016,12 @@
                        BNE -                                ;8B8A62|D0F6    |8B8A5A;
                        RTS                                  ;8B8A64|60      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B8A65|222DBB80|80BB2D;
-                       db $A9,$93,$93,$00,$41,$7F           ;8B8A69|        |      ;
+                       dl DATA8_9393A9                      ;8B8A69|        |9393A9;
+                       dl $7F4100                           ;8B8A6C|        |7F4100;
                        RTS                                  ;8B8A6F|60      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B8A70|222DBB80|80BB2D;
-                       db $A9,$93,$93,$60,$91,$7F           ;8B8A74|        |      ;
+                       dl DATA8_9393A9                      ;8B8A74|        |9393A9;
+                       dl $7F9160                           ;8B8A77|        |7F9160;
                        PHB                                  ;8B8A7A|8B      |      ;
                        PHK                                  ;8B8A7B|4B      |      ;
                        PLB                                  ;8B8A7C|AB      |      ;
@@ -975,10 +1032,12 @@
                        db $60,$91,$7F,$00,$06,$80,$00,$0D   ;8B8A87|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8A8F|222DBB80|80BB2D;
-                       db $34,$97,$93,$00,$41,$7F           ;8B8A93|        |      ;
+                       dl DATA8_939734                      ;8B8A93|        |939734;
+                       dl $7F4100                           ;8B8A96|        |7F4100;
                        RTS                                  ;8B8A99|60      |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B8A9A|222DBB80|80BB2D;
-                       db $34,$97,$93,$60,$91,$7F           ;8B8A9E|        |      ;
+                       dl DATA8_939734                      ;8B8A9E|        |939734;
+                       dl $7F9160                           ;8B8AA1|        |7F9160;
                        PHB                                  ;8B8AA4|8B      |      ;
                        PHK                                  ;8B8AA5|4B      |      ;
                        PLB                                  ;8B8AA6|AB      |      ;
@@ -989,7 +1048,8 @@
                        db $60,$91,$7F,$00,$06,$80,$00,$0D   ;8B8AB1|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8AB9|222DBB80|80BB2D;
-                       db $61,$91,$93,$00,$41,$7F           ;8B8ABD|        |      ;
+                       dl DATA8_939161                      ;8B8ABD|        |939161;
+                       dl $7F4100                           ;8B8AC0|        |7F4100;
                        RTS                                  ;8B8AC3|60      |      ;
                        LDA.W #$0000                         ;8B8AC4|A90000  |      ;
                        LDY.W #$0040                         ;8B8AC7|A04000  |      ;
@@ -1002,7 +1062,8 @@
                        DEY                                  ;8B8AD4|88      |      ;
                        BNE -                                ;8B8AD5|D0F6    |8B8ACD;
                        JSL.L CODE_FL_80BB2D                 ;8B8AD7|222DBB80|80BB2D;
-                       db $3D,$EB,$92,$80,$84,$7F           ;8B8ADB|        |      ;
+                       dl DATA8_92EB3D                      ;8B8ADB|        |92EB3D;
+                       dl $7F8480                           ;8B8ADE|        |7F8480;
                        LDA.W #$0000                         ;8B8AE1|A90000  |      ;
                        LDY.W #$0200                         ;8B8AE4|A00002  |      ;
                        LDX.W #$0000                         ;8B8AE7|A20000  |      ;
@@ -1014,7 +1075,8 @@
                        DEY                                  ;8B8AF1|88      |      ;
                        BNE -                                ;8B8AF2|D0F6    |8B8AEA;
                        JSL.L CODE_FL_80BB2D                 ;8B8AF4|222DBB80|80BB2D;
-                       db $E7,$9A,$93,$80,$88,$7F           ;8B8AF8|        |      ;
+                       dl DATA8_939AE7                      ;8B8AF8|        |939AE7;
+                       dl $7F8880                           ;8B8AFB|        |7F8880;
                        PHB                                  ;8B8AFE|8B      |      ;
                        PEA.W $7F00                          ;8B8AFF|F4007F  |007F00;
                        PLB                                  ;8B8B02|AB      |      ;
@@ -1045,13 +1107,15 @@
                        db $00,$28,$7E,$C0,$03,$80,$00,$78   ;8B8B33|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8B3B|222DBB80|80BB2D;
-                       db $E7,$9A,$93,$1C,$4C,$7E           ;8B8B3F|        |      ;
+                       dl DATA8_939AE7                      ;8B8B3F|        |939AE7;
+                       dl $7E4C1C                           ;8B8B42|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8B8B45|2277928B|8B9277;
                        RTS                                  ;8B8B49|60      |      ;
  
        CODE_FN_8B8B4A:
                        JSL.L CODE_FL_80BB2D                 ;8B8B4A|222DBB80|80BB2D;
-                       db $61,$91,$93,$60,$91,$7F           ;8B8B4E|        |      ;
+                       dl DATA8_939161                      ;8B8B4E|        |939161;
+                       dl $7F9160                           ;8B8B51|        |7F9160;
                        PHB                                  ;8B8B54|8B      |      ;
                        PHK                                  ;8B8B55|4B      |      ;
                        PLB                                  ;8B8B56|AB      |      ;
@@ -1062,7 +1126,8 @@
                        db $60,$91,$7F,$00,$06,$80,$00,$0D   ;8B8B61|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8B8B69|222DBB80|80BB2D;
-                       db $C5,$9B,$93,$00,$28,$7E           ;8B8B6D|        |      ;
+                       dl DATA8_939BC5                      ;8B8B6D|        |939BC5;
+                       dl $7E2800                           ;8B8B70|        |7E2800;
                        JSL.L CODE_FL_8BA340                 ;8B8B73|2240A38B|8BA340;
                        JSL.L CODE_FL_8BA3B9                 ;8B8B77|22B9A38B|8BA3B9;
                        RTS                                  ;8B8B7B|60      |      ;
@@ -1315,7 +1380,8 @@
                        PHP                                  ;8B8E02|08      |      ;
                        REP #$30                             ;8B8E03|C230    |      ;
                        JSL.L CODE_FL_80BB2D                 ;8B8E05|222DBB80|80BB2D;
-                       db $20,$A2,$93,$1C,$39,$7E           ;8B8E09|        |      ;
+                       dl DATA8_93A220                      ;8B8E09|        |93A220;
+                       dl $7E391C                           ;8B8E0C|        |7E391C;
                        LDX.W #$391C                         ;8B8E0F|A21C39  |      ;
                        JSL.L CODE_FL_8B9E27                 ;8B8E12|22279E8B|8B9E27;
                        LDA.W #$D400                         ;8B8E16|A900D4  |      ;
@@ -3641,7 +3707,8 @@
  
        CODE_FL_8BA371:
                        JSL.L CODE_FL_80BB2D                 ;8BA371|222DBB80|80BB2D;
-                       db $AB,$9A,$93,$60,$91,$7F           ;8BA375|        |      ;
+                       dl DATA8_939AAB                      ;8BA375|        |939AAB;
+                       dl $7F9160                           ;8BA378|        |7F9160;
                        PHB                                  ;8BA37B|8B      |      ;
                        PHK                                  ;8BA37C|4B      |      ;
                        PLB                                  ;8BA37D|AB      |      ;
@@ -4143,7 +4210,7 @@
                        REP #$20                             ;8BA845|C220    |      ;
                        JSL.L CODE_FL_80A145                 ;8BA847|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;8BA84B|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BA84F|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BA84F|22F79C80|809CF7;
                        LDA.W #$0000                         ;8BA853|A90000  |      ;
                        STA.L $7ED1E0                        ;8BA856|8FE0D17E|7ED1E0;
                        LDA.L $7ED32D                        ;8BA85A|AF2DD37E|7ED32D;
@@ -4172,7 +4239,7 @@
                        REP #$20                             ;8BA88F|C220    |      ;
                        JSL.L CODE_FL_80A145                 ;8BA891|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;8BA895|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BA899|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BA899|22F79C80|809CF7;
                        LDA.W #$0000                         ;8BA89D|A90000  |      ;
                        STA.L $7ED1E0                        ;8BA8A0|8FE0D17E|7ED1E0;
                        STA.L $001A82                        ;8BA8A4|8F821A00|001A82;
@@ -5102,7 +5169,7 @@
  
                      + RTL                                  ;8BB7CB|6B      |      ;
                        JSL.L CODE_FL_809115                 ;8BB7CC|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BB7D0|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BB7D0|22F79C80|809CF7;
                        LDA.L $7ED1E0                        ;8BB7D4|AFE0D17E|7ED1E0;
                        INC A                                ;8BB7D8|1A      |      ;
                        STA.L $7ED1E0                        ;8BB7D9|8FE0D17E|7ED1E0;
@@ -5110,7 +5177,7 @@
                        LDA.W #$0000                         ;8BB7DE|A90000  |      ;
                        STA.L $7ED1E0                        ;8BB7E1|8FE0D17E|7ED1E0;
                        JSL.L CODE_FL_809115                 ;8BB7E5|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BB7E9|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BB7E9|22F79C80|809CF7;
                        LDA.W #$0007                         ;8BB7ED|A90700  |      ;
                        STA.L Game_State-$7E0000             ;8BB7F0|8FA00200|0002A0;
                        RTL                                  ;8BB7F4|6B      |      ;
@@ -10229,7 +10296,7 @@
                        REP #$20                             ;8BF1C2|C220    |      ;
                        JSL.L CODE_FL_80A145                 ;8BF1C4|2245A180|80A145;
                        JSL.L CODE_FL_809115                 ;8BF1C8|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BF1CC|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BF1CC|22F79C80|809CF7;
                        LDA.W #$0000                         ;8BF1D0|A90000  |      ;
                        STA.L $7ED1E0                        ;8BF1D3|8FE0D17E|7ED1E0;
                        LDA.W #$000B                         ;8BF1D7|A90B00  |      ;
@@ -10246,7 +10313,7 @@ GameState_InitVSCredits:
                        JSL.L CODE_FL_80A145                 ;8BF1EE|2245A180|80A145;
                        REP #$20                             ;8BF1F2|C220    |      ;
                        JSL.L CODE_FL_809115                 ;8BF1F4|22159180|809115;
-                       JSL.L CODE_FL_809CF7                 ;8BF1F8|22F79C80|809CF7;
+                       JSL.L BlankScreen                    ;8BF1F8|22F79C80|809CF7;
                        JSL.L InitVS_ClearMoreRAM            ;8BF1FC|22F1948B|8B94F1;
                        LDA.W #$0000                         ;8BF200|A90000  |      ;
                        STA.L $7ED1E0                        ;8BF203|8FE0D17E|7ED1E0;
@@ -10390,12 +10457,15 @@ GameState_InitVSCredits:
                        JSL.L CODE_FL_80A1E0                 ;8BF33E|22E0A180|80A1E0;
                        JSL.L CODE_FL_80A1F1                 ;8BF342|22F1A180|80A1F1;
                        JSL.L CODE_FL_80BB2D                 ;8BF346|222DBB80|80BB2D;
-                       db $70,$EC,$92,$F6,$86,$7E           ;8BF34A|        |      ;
+                       dl DATA8_92EC70                      ;8BF34A|        |92EC70;
+                       dl $7E86F6                           ;8BF34D|        |7E86F6;
                        JSL.L CODE_FL_80BB2D                 ;8BF350|222DBB80|80BB2D;
-                       db $2D,$EA,$92,$1C,$4C,$7E           ;8BF354|        |      ;
+                       dl DATA8_92EA2D                      ;8BF354|        |92EA2D;
+                       dl $7E4C1C                           ;8BF357|        |7E4C1C;
                        JSL.L CODE_FL_8B9277                 ;8BF35A|2277928B|8B9277;
                        JSL.L CODE_FL_80BB2D                 ;8BF35E|222DBB80|80BB2D;
-                       db $D2,$84,$92,$60,$91,$7F           ;8BF362|        |      ;
+                       dl CompGFX_VSYoshi                   ;8BF362|        |9284D2;
+                       dl $7F9160                           ;8BF365|        |7F9160;
                        PHB                                  ;8BF368|8B      |      ;
                        PHK                                  ;8BF369|4B      |      ;
                        PLB                                  ;8BF36A|AB      |      ;
@@ -10406,7 +10476,8 @@ GameState_InitVSCredits:
                        db $60,$91,$7F,$00,$20,$80,$00,$10   ;8BF375|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8BF37D|222DBB80|80BB2D;
-                       db $7A,$99,$92,$60,$91,$7F           ;8BF381|        |      ;
+                       dl CompGFX_VSBackground              ;8BF381|        |92997A;
+                       dl $7F9160                           ;8BF384|        |7F9160;
                        PHB                                  ;8BF387|8B      |      ;
                        PHK                                  ;8BF388|4B      |      ;
                        PLB                                  ;8BF389|AB      |      ;
@@ -10417,7 +10488,8 @@ GameState_InitVSCredits:
                        db $60,$91,$7F,$00,$20,$80,$00,$50   ;8BF394|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8BF39C|222DBB80|80BB2D;
-                       db $05,$AA,$92,$60,$91,$7F           ;8BF3A0|        |      ;
+                       dl CompGFX_VSCloudsPath              ;8BF3A0|        |92AA05;
+                       dl $7F9160                           ;8BF3A3|        |7F9160;
                        PHB                                  ;8BF3A6|8B      |      ;
                        PHK                                  ;8BF3A7|4B      |      ;
                        PLB                                  ;8BF3A8|AB      |      ;
@@ -10428,7 +10500,8 @@ GameState_InitVSCredits:
                        db $60,$91,$7F,$00,$08,$80,$00,$3C   ;8BF3B3|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8BF3BB|222DBB80|80BB2D;
-                       db $67,$AC,$92,$60,$91,$7F           ;8BF3BF|        |      ;
+                       dl DATA8_92AC67                      ;8BF3BF|        |92AC67;
+                       dl $7F9160                           ;8BF3C2|        |7F9160;
                        PHB                                  ;8BF3C5|8B      |      ;
                        PHK                                  ;8BF3C6|4B      |      ;
                        PLB                                  ;8BF3C7|AB      |      ;
@@ -10439,7 +10512,8 @@ GameState_InitVSCredits:
                        db $60,$91,$7F,$00,$06,$80,$00,$0D   ;8BF3D2|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8BF3DA|222DBB80|80BB2D;
-                       db $3B,$F1,$92,$00,$28,$7E           ;8BF3DE|        |      ;
+                       dl DATA8_92F13B                      ;8BF3DE|        |92F13B;
+                       dl $7E2800                           ;8BF3E1|        |7E2800;
                        PHB                                  ;8BF3E4|8B      |      ;
                        PHK                                  ;8BF3E5|4B      |      ;
                        PLB                                  ;8BF3E6|AB      |      ;
@@ -10450,7 +10524,8 @@ GameState_InitVSCredits:
                        db $00,$28,$7E,$C0,$03,$80,$00,$78   ;8BF3F1|        |      ;
  
                      + JSL.L CODE_FL_80BB2D                 ;8BF3F9|222DBB80|80BB2D;
-                       db $52,$85,$93,$3B,$53,$7E           ;8BF3FD|        |      ;
+                       dl DATA8_938552                      ;8BF3FD|        |938552;
+                       dl $7E533B                           ;8BF400|        |7E533B;
                        LDA.W #$7E00                         ;8BF403|A9007E  |      ;
                        STA.W $19BD                          ;8BF406|8DBD19  |0019BD;
                        LDA.W #$533B                         ;8BF409|A93B53  |      ;
