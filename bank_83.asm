@@ -682,6 +682,8 @@
                        PLX                                  ;838652|FA      |      ;
                        RTS                                  ;838653|60      |      ;
                        db $20,$F0,$85,$6B                   ;838654|        |8385F0;
+ 
+          CODE_838658:
                        INC.W $1A6E                          ;838658|EE6E1A  |831A6E;
                        RTS                                  ;83865B|60      |      ;
  
@@ -1549,7 +1551,7 @@
                        RTS                                  ;838DCD|60      |      ;
  
        CODE_FN_838DCE:
-                       JSL.L CODE_FL_80BB2D                 ;838DCE|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;838DCE|222DBB80|80BB2D;
                        dl DATA8_91B122                      ;838DD2|        |91B122;
                        dl $7F5D00                           ;838DD5|        |7F5D00;
                        LDX.W #$0000                         ;838DD8|A20000  |      ;
@@ -1574,7 +1576,7 @@
                        db $0D,$07                           ;838E02|        |      ;
  
                      + PHY                                  ;838E04|5A      |      ;
-                       JSL.L CODE_FL_80BB2D                 ;838E05|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;838E05|222DBB80|80BB2D;
                        dl DATA8_91B321                      ;838E09|        |91B321;
                        dl $7F5D00                           ;838E0C|        |7F5D00;
                        PLY                                  ;838E0F|7A      |      ;
@@ -1607,7 +1609,7 @@
                        db $0E,$07                           ;838E46|        |      ;
  
                      + PHY                                  ;838E48|5A      |      ;
-                       JSL.L CODE_FL_80BB2D                 ;838E49|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;838E49|222DBB80|80BB2D;
                        dl DATA8_93CA0F                      ;838E4D|        |93CA0F;
                        dl $7F5D00                           ;838E50|        |7F5D00;
                        PLY                                  ;838E53|7A      |      ;
@@ -1619,7 +1621,7 @@
                        db $15,$18                           ;838E60|        |      ;
  
                      + PHY                                  ;838E62|5A      |      ;
-                       JSL.L CODE_FL_80BB2D                 ;838E63|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;838E63|222DBB80|80BB2D;
                        dl DATA8_93CB69                      ;838E67|        |93CB69;
                        dl $7F5D00                           ;838E6A|        |7F5D00;
                        PLY                                  ;838E6D|7A      |      ;
@@ -3464,12 +3466,15 @@ Menu_DrawPasswordUnderscore:
                        LDA.L $001A70                        ;839DE4|AF701A00|001A70;
                        ASL A                                ;839DE8|0A      |      ;
                        TAX                                  ;839DE9|AA      |      ;
-                       JSR.W (DATA8_839DEF,X)               ;839DEA|FCEF9D  |839DEF;
+                       JSR.W (PTR16_839DEF,X)               ;839DEA|FCEF9D  |839DEF;
                        PLB                                  ;839DED|AB      |      ;
                        RTS                                  ;839DEE|60      |      ;
+         PTR16_839DEF:
+                       dw CODE_839DF5                       ;839DEF|        |839DF5;
+                       dw CODE_JP_839E28                    ;839DF1|        |839E28;
+                       dw CODE_839E2F                       ;839DF3|        |839E2F;
  
-         DATA8_839DEF:
-                       db $F5,$9D,$28,$9E,$2F,$9E           ;839DEF|        |      ;
+          CODE_839DF5:
                        SEP #$20                             ;839DF5|E220    |      ;
                        LDA.W $96A2                          ;839DF7|ADA296  |7E96A2;
                        BEQ +                                ;839DFA|F003    |839DFF;
@@ -3494,6 +3499,8 @@ Menu_DrawPasswordUnderscore:
                        REP #$20                             ;839E28|C220    |      ;
                        JSL.L CODE_FL_849406                 ;839E2A|22069484|849406;
                        RTS                                  ;839E2E|60      |      ;
+ 
+          CODE_839E2F:
                        JSL.L CODE_FL_8499C4                 ;839E2F|22C49984|8499C4;
                        RTS                                  ;839E33|60      |      ;
                        db $40,$F4,$86                       ;839E34|        |      ;
@@ -3583,7 +3590,7 @@ Menu_DrawPasswordUnderscore:
                        STA.L $7E962C                        ;839F08|8F2C967E|7E962C;
                        RTS                                  ;839F0C|60      |      ;
  
-    Move_MenuLipYoshi:
+       Move_MenuYoshi:
                        ASL A                                ;839F0D|0A      |      ;
                        ASL A                                ;839F0E|0A      |      ;
                        TAX                                  ;839F0F|AA      |      ;
@@ -4176,9 +4183,17 @@ Menu_DrawPasswordUnderscore:
                        db $16,$00,$14,$01,$76,$02           ;83A3A7|        |      ;
  
                      + RTS                                  ;83A3AD|60      |      ;
-                       db $20,$72,$A3,$A2,$B9,$A3,$20,$55   ;83A3AE|        |83A372;
-                       db $A1,$80,$07,$8C,$02,$F8,$AF,$16   ;83A3B6|        |000080;
-                       db $15,$01,$60                       ;83A3BE|        |000001;
+ 
+       CODE_FN_83A3AE:
+                       JSR.W CODE_FN_83A372                 ;83A3AE|2072A3  |83A372;
+                       LDX.W #$A3B9                         ;83A3B1|A2B9A3  |      ;
+                       JSR.W CODE_FN_83A155                 ;83A3B4|2055A1  |83A155;
+                       BRA +                                ;83A3B7|8007    |83A3C0;
+ 
+                       db $8C,$02,$F8,$AF,$16,$15,$01       ;83A3B9|        |      ;
+ 
+                     + RTS                                  ;83A3C0|60      |      ;
+ 
  
        CODE_FN_83A3C1:
                        LDX.W #$A3C9                         ;83A3C1|A2C9A3  |      ;
@@ -4348,6 +4363,8 @@ Menu_DrawPasswordUnderscore:
  
                      + RTS                                  ;83A55B|60      |      ;
  
+ 
+          CODE_83A55C:
                        LDY.W #$A564                         ;83A55C|A064A5  |      ;
                        JSR.W CODE_FN_8388AE                 ;83A55F|20AE88  |8388AE;
                        BRA +                                ;83A562|800A    |83A56E;
@@ -4355,6 +4372,8 @@ Menu_DrawPasswordUnderscore:
                        db $04,$00                           ;83A56C|        |      ;
  
                      + RTS                                  ;83A56E|60      |      ;
+ 
+          CODE_83A56F:
                        LDY.W #$A577                         ;83A56F|A077A5  |      ;
                        JSR.W CODE_FN_8388AE                 ;83A572|20AE88  |8388AE;
                        BRA +                                ;83A575|800A    |83A581;
@@ -4362,6 +4381,8 @@ Menu_DrawPasswordUnderscore:
                        db $02,$00                           ;83A57F|        |      ;
  
                      + RTS                                  ;83A581|60      |      ;
+ 
+          CODE_83A582:
                        LDY.W #$A58A                         ;83A582|A08AA5  |      ;
                        JSR.W CODE_FN_8388AE                 ;83A585|20AE88  |8388AE;
                        BRA +                                ;83A588|800A    |83A594;
@@ -4575,18 +4596,24 @@ Menu_DrawPasswordUnderscore:
                        db $73,$83,$08                       ;83A6EF|        |      ;
  
                      + RTS                                  ;83A6F2|60      |      ;
+ 
+          CODE_83A6F3:
                        LDY.W #$A6FB                         ;83A6F3|A0FBA6  |      ;
                        JSR.W CODE_FN_838BBA                 ;83A6F6|20BA8B  |838BBA;
                        BRA +                                ;83A6F9|8003    |83A6FE;
                        db $4D,$9B,$0C                       ;83A6FB|        |      ;
  
                      + RTS                                  ;83A6FE|60      |      ;
+ 
+          CODE_83A6FF:
                        LDY.W #$A707                         ;83A6FF|A007A7  |      ;
                        JSR.W CODE_FN_838BBA                 ;83A702|20BA8B  |838BBA;
                        BRA +                                ;83A705|8003    |83A70A;
                        db $4D,$6B,$0C                       ;83A707|        |      ;
  
                      + RTS                                  ;83A70A|60      |      ;
+ 
+          CODE_83A70B:
                        LDY.W #$A713                         ;83A70B|A013A7  |      ;
                        JSR.W CODE_FN_838BBA                 ;83A70E|20BA8B  |838BBA;
                        BRA +                                ;83A711|8003    |83A716;
@@ -4668,7 +4695,7 @@ Menu_DrawPasswordUnderscore:
                      + RTS                                  ;83A788|60      |      ;
  
        CODE_FN_83A789:
-                       JSL.L CODE_FL_80BB2D                 ;83A789|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83A789|222DBB80|80BB2D;
                        dl DATA8_939E79                      ;83A78D|        |939E79;
                        dl $7F5D00                           ;83A790|        |7F5D00;
                        LDY.W #$A79B                         ;83A793|A09BA7  |      ;
@@ -4927,7 +4954,7 @@ Menu_DrawPasswordUnderscore:
        CODE_FN_83A9AB:
                        JSR.W CODE_FN_83A911                 ;83A9AB|2011A9  |83A911;
                        JSR.W CODE_FN_83A9FF                 ;83A9AE|20FFA9  |83A9FF;
-                       JSL.L CODE_FL_80BB2D                 ;83A9B1|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83A9B1|222DBB80|80BB2D;
                        dl DATA8_91AF64                      ;83A9B5|        |91AF64;
                        dl $7E86F6                           ;83A9B8|        |7E86F6;
                        JSR.W CODE_FN_83AA20                 ;83A9BB|2020AA  |83AA20;
@@ -4940,7 +4967,7 @@ Menu_DrawPasswordUnderscore:
        CODE_FN_83A9C7:
                        JSR.W CODE_FN_83A911                 ;83A9C7|2011A9  |83A911;
                        JSR.W CODE_FN_83A9FF                 ;83A9CA|20FFA9  |83A9FF;
-                       JSL.L CODE_FL_80BB2D                 ;83A9CD|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83A9CD|222DBB80|80BB2D;
                        dl CompPalette_VS                    ;83A9D1|        |92FEF7;
                        dl $7E86F6                           ;83A9D4|        |7E86F6;
                        JSR.W CODE_FN_83AA20                 ;83A9D7|2020AA  |83AA20;
@@ -4953,7 +4980,7 @@ Menu_DrawPasswordUnderscore:
        CODE_FN_83A9E3:
                        JSR.W CODE_FN_83A911                 ;83A9E3|2011A9  |83A911;
                        JSR.W CODE_FN_83A9FF                 ;83A9E6|20FFA9  |83A9FF;
-                       JSL.L CODE_FL_80BB2D                 ;83A9E9|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83A9E9|222DBB80|80BB2D;
                        dl DATA8_93A662                      ;83A9ED|        |93A662;
                        dl $7E86F6                           ;83A9F0|        |7E86F6;
                        JSR.W CODE_FN_83AA20                 ;83A9F3|2020AA  |83AA20;
@@ -4987,7 +5014,7 @@ Menu_DrawPasswordUnderscore:
  
        CODE_FN_83AA41:
                        JSR.W CODE_FN_83A9FF                 ;83AA41|20FFA9  |83A9FF;
-                       JSL.L CODE_FL_80BB2D                 ;83AA44|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83AA44|222DBB80|80BB2D;
                        dl DATA8_92FBD5                      ;83AA48|        |92FBD5;
                        dl $7E86F6                           ;83AA4B|        |7E86F6;
                        JSR.W CODE_FN_83AA20                 ;83AA4E|2020AA  |83AA20;
@@ -4995,7 +5022,7 @@ Menu_DrawPasswordUnderscore:
                        RTS                                  ;83AA54|60      |      ;
  
        CODE_FN_83AA55:
-                       JSL.L CODE_FL_80BB2D                 ;83AA55|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83AA55|222DBB80|80BB2D;
                        dl DATA8_93A662                      ;83AA59|        |93A662;
                        dl $7E86F6                           ;83AA5C|        |7E86F6;
                        JSR.W CODE_FN_83A88B                 ;83AA5F|208BA8  |83A88B;
@@ -5329,7 +5356,7 @@ Menu_DrawPasswordUnderscore:
                      + RTS                                  ;83ACF6|60      |      ;
  
        CODE_FN_83ACF7:
-                       JSL.L CODE_FL_80BB2D                 ;83ACF7|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83ACF7|222DBB80|80BB2D;
                        dl DATA8_93A599                      ;83ACFB|        |93A599;
                        dl $7F5D00                           ;83ACFE|        |7F5D00;
                        PHB                                  ;83AD01|8B      |      ;
@@ -5616,6 +5643,8 @@ Menu_DrawPasswordUnderscore:
                        DEX                                  ;83AF7A|CA      |      ;
                        BPL -                                ;83AF7B|10F4    |83AF71;
                        RTS                                  ;83AF7D|60      |      ;
+ 
+          CODE_83AF7E:
                        LDY.W #$AF89                         ;83AF7E|A089AF  |      ;
                        LDX.W #$3144                         ;83AF81|A24431  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AF84|204C9F  |839F4C;
@@ -5623,6 +5652,8 @@ Menu_DrawPasswordUnderscore:
                        db $0D,$06,$26                       ;83AF89|        |      ;
  
                      + RTS                                  ;83AF8C|60      |      ;
+ 
+          CODE_83AF8D:
                        LDY.W #$AF98                         ;83AF8D|A098AF  |      ;
                        LDX.W #$3162                         ;83AF90|A26231  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AF93|204C9F  |839F4C;
@@ -5630,6 +5661,8 @@ Menu_DrawPasswordUnderscore:
                        db $0D,$06,$26                       ;83AF98|        |      ;
  
                      + RTS                                  ;83AF9B|60      |      ;
+ 
+          CODE_83AF9C:
                        LDY.W #$AFA7                         ;83AF9C|A0A7AF  |      ;
                        LDX.W #$3344                         ;83AF9F|A24433  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AFA2|204C9F  |839F4C;
@@ -5637,6 +5670,8 @@ Menu_DrawPasswordUnderscore:
                        db $0D,$06,$26                       ;83AFA7|        |      ;
  
                      + RTS                                  ;83AFAA|60      |      ;
+ 
+          CODE_83AFAB:
                        LDY.W #$AFB6                         ;83AFAB|A0B6AF  |      ;
                        LDX.W #$3362                         ;83AFAE|A26233  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AFB1|204C9F  |839F4C;
@@ -5644,6 +5679,8 @@ Menu_DrawPasswordUnderscore:
                        db $0D,$06,$26                       ;83AFB6|        |      ;
  
                      + RTS                                  ;83AFB9|60      |      ;
+ 
+          CODE_83AFBA:
                        LDY.W #$AFC5                         ;83AFBA|A0C5AF  |      ;
                        LDX.W #$3544                         ;83AFBD|A24435  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AFC0|204C9F  |839F4C;
@@ -5651,6 +5688,8 @@ Menu_DrawPasswordUnderscore:
                        db $0D,$06,$26                       ;83AFC5|        |      ;
  
                      + RTS                                  ;83AFC8|60      |      ;
+ 
+          CODE_83AFC9:
                        LDY.W #$AFD4                         ;83AFC9|A0D4AF  |      ;
                        LDX.W #$3562                         ;83AFCC|A26235  |      ;
                        JSR.W CODE_FN_839F4C                 ;83AFCF|204C9F  |839F4C;
@@ -5679,22 +5718,25 @@ Menu_DrawPasswordUnderscore:
                      + LDA.W #$0000                         ;83AFF2|A90000  |      ;
  
                     ++ PHX                                  ;83AFF5|DA      |      ;
-                       JSR.W (DATA8_83AFFF,X)               ;83AFF6|FCFFAF  |83AFFF;
+                       JSR.W (PTR16_83AFFF,X)               ;83AFF6|FCFFAF  |83AFFF;
                        PLX                                  ;83AFF9|FA      |      ;
                        DEX                                  ;83AFFA|CA      |      ;
                        DEX                                  ;83AFFB|CA      |      ;
                        BPL -                                ;83AFFC|10E7    |83AFE5;
                        RTS                                  ;83AFFE|60      |      ;
- 
-         DATA8_83AFFF:
-                       db $7E,$AF,$8D,$AF,$9C,$AF,$AB,$AF   ;83AFFF|        |      ;
-                       db $BA,$AF,$C9,$AF                   ;83B007|        |      ;
+         PTR16_83AFFF:
+                       dw CODE_83AF7E                       ;83AFFF|        |83AF7E;
+                       dw CODE_83AF8D                       ;83B001|        |83AF8D;
+                       dw CODE_83AF9C                       ;83B003|        |83AF9C;
+                       dw CODE_83AFAB                       ;83B005|        |83AFAB;
+                       dw CODE_83AFBA                       ;83B007|        |83AFBA;
+                       dw CODE_83AFC9                       ;83B009|        |83AFC9;
  
        CODE_FN_83B00B:
-                       JSL.L CODE_FL_80BB2D                 ;83B00B|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83B00B|222DBB80|80BB2D;
                        dl DATA8_93A3A8                      ;83B00F|        |93A3A8;
                        dl $7F5D00                           ;83B012|        |7F5D00;
-                       JSL.L CODE_FL_80BB2D                 ;83B015|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83B015|222DBB80|80BB2D;
                        dl DATA8_94A93B                      ;83B019|        |94A93B;
                        dl $7F5E00                           ;83B01C|        |7F5E00;
                        LDY.W #$B027                         ;83B01F|A027B0  |      ;
@@ -5769,32 +5811,47 @@ Menu_DrawPasswordUnderscore:
                        ASL A                                ;83B0AC|0A      |      ;
                        TAX                                  ;83B0AD|AA      |      ;
                        LDA.W #$0000                         ;83B0AE|A90000  |      ;
-                       JSR.W (DATA8_83B0BE,X)               ;83B0B1|FCBEB0  |83B0BE;
+                       JSR.W (PTR16_83B0BE,X)               ;83B0B1|FCBEB0  |83B0BE;
                        RTS                                  ;83B0B4|60      |      ;
  
        CODE_FN_83B0B5:
                        ASL A                                ;83B0B5|0A      |      ;
                        TAX                                  ;83B0B6|AA      |      ;
                        LDA.W #$0012                         ;83B0B7|A91200  |      ;
-                       JSR.W (DATA8_83B0BE,X)               ;83B0BA|FCBEB0  |83B0BE;
+                       JSR.W (PTR16_83B0BE,X)               ;83B0BA|FCBEB0  |83B0BE;
                        RTS                                  ;83B0BD|60      |      ;
+         PTR16_83B0BE:
+                       dw CODE_83B0CA                       ;83B0BE|        |83B0CA;
+                       dw CODE_83B0CE                       ;83B0C0|        |83B0CE;
+                       dw CODE_83B0D2                       ;83B0C2|        |83B0D2;
+                       dw CODE_83B0D6                       ;83B0C4|        |83B0D6;
+                       dw CODE_83B0DF                       ;83B0C6|        |83B0DF;
+                       dw CODE_83B0E3                       ;83B0C8|        |83B0E3;
  
-         DATA8_83B0BE:
-                       db $CA,$B0,$CE,$B0,$D2,$B0,$D6,$B0   ;83B0BE|        |      ;
-                       db $DF,$B0,$E3,$B0                   ;83B0C6|        |      ;
+          CODE_83B0CA:
                        JSR.W CODE_FN_83B0EC                 ;83B0CA|20ECB0  |83B0EC;
                        RTS                                  ;83B0CD|60      |      ;
+ 
+          CODE_83B0CE:
                        JSR.W CODE_FN_83B0FB                 ;83B0CE|20FBB0  |83B0FB;
                        RTS                                  ;83B0D1|60      |      ;
+ 
+          CODE_83B0D2:
                        JSR.W CODE_FN_83B10A                 ;83B0D2|200AB1  |83B10A;
                        RTS                                  ;83B0D5|60      |      ;
+ 
+          CODE_83B0D6:
                        PHA                                  ;83B0D6|48      |      ;
                        JSR.W CODE_FN_83B128                 ;83B0D7|2028B1  |83B128;
                        PLA                                  ;83B0DA|68      |      ;
                        JSR.W CODE_FN_83B119                 ;83B0DB|2019B1  |83B119;
                        RTS                                  ;83B0DE|60      |      ;
+ 
+          CODE_83B0DF:
                        JSR.W CODE_FN_83B137                 ;83B0DF|2037B1  |83B137;
                        RTS                                  ;83B0E2|60      |      ;
+ 
+          CODE_83B0E3:
                        PHA                                  ;83B0E3|48      |      ;
                        JSR.W CODE_FN_83B155                 ;83B0E4|2055B1  |83B155;
                        PLA                                  ;83B0E7|68      |      ;
@@ -5966,6 +6023,8 @@ Menu_DrawPasswordUnderscore:
                        LDA.W #$002E                         ;83B234|A92E00  |      ;
                        STA.L $7E35C0                        ;83B237|8FC0357E|7E35C0;
                        RTS                                  ;83B23B|60      |      ;
+ 
+          CODE_83B23C:
                        JSR.W CODE_FN_83B1D3                 ;83B23C|20D3B1  |83B1D3;
                        JSR.W CODE_FN_83B201                 ;83B23F|2001B2  |83B201;
                        RTS                                  ;83B242|60      |      ;
@@ -6027,9 +6086,13 @@ Menu_DrawPasswordUnderscore:
                        LDA.W #$002E                         ;83B2C1|A92E00  |      ;
                        STA.L $7E33C2                        ;83B2C4|8FC2337E|7E33C2;
                        RTS                                  ;83B2C8|60      |      ;
+ 
+          CODE_83B2C9:
                        JSR.W CODE_FN_83B268                 ;83B2C9|2068B2  |83B268;
                        JSR.W CODE_FN_83B296                 ;83B2CC|2096B2  |83B296;
                        RTS                                  ;83B2CF|60      |      ;
+ 
+          CODE_83B2D0:
                        LDY.W #$B2E4                         ;83B2D0|A0E4B2  |      ;
                        LDX.W #$2400                         ;83B2D3|A20024  |      ;
                        JSR.W CODE_FN_839F49                 ;83B2D6|20499F  |839F49;
@@ -6040,6 +6103,8 @@ Menu_DrawPasswordUnderscore:
                        db $0F,$08,$22,$00,$00               ;83B2E4|        |      ;
  
                      + RTS                                  ;83B2E9|60      |      ;
+ 
+          CODE_83B2EA:
                        LDY.W #$B2FE                         ;83B2EA|A0FEB2  |      ;
                        LDX.W #$2422                         ;83B2ED|A22224  |      ;
                        JSR.W CODE_FN_839F49                 ;83B2F0|20499F  |839F49;
@@ -6050,6 +6115,8 @@ Menu_DrawPasswordUnderscore:
                        db $0F,$08,$22,$00,$00               ;83B2FE|        |      ;
  
                      + RTS                                  ;83B303|60      |      ;
+ 
+          CODE_83B304:
                        LDY.W #$B318                         ;83B304|A018B3  |      ;
                        LDX.W #$2204                         ;83B307|A20422  |      ;
                        JSR.W CODE_FN_839F49                 ;83B30A|20499F  |839F49;
@@ -6060,6 +6127,8 @@ Menu_DrawPasswordUnderscore:
                        db $0F,$08,$22,$00,$00               ;83B318|        |      ;
  
                      + RTS                                  ;83B31D|60      |      ;
+ 
+          CODE_83B31E:
                        LDY.W #$B332                         ;83B31E|A032B3  |      ;
                        LDX.W #$2226                         ;83B321|A22622  |      ;
                        JSR.W CODE_FN_839F49                 ;83B324|20499F  |839F49;
@@ -6079,6 +6148,8 @@ Menu_DrawPasswordUnderscore:
                        db $02,$08,$3C,$00,$00               ;83B34B|        |      ;
  
                      + RTS                                  ;83B350|60      |      ;
+ 
+          CODE_83B351:
                        LDY.W #$B365                         ;83B351|A065B3  |      ;
                        LDX.W #$2408                         ;83B354|A20824  |      ;
                        JSR.W CODE_FN_839F49                 ;83B357|20499F  |839F49;
@@ -6089,6 +6160,8 @@ Menu_DrawPasswordUnderscore:
                        db $0F,$08,$22,$00,$00               ;83B365|        |      ;
  
                      + RTS                                  ;83B36A|60      |      ;
+ 
+          CODE_83B36B:
                        LDY.W #$B37F                         ;83B36B|A07FB3  |      ;
                        LDX.W #$242A                         ;83B36E|A22A24  |      ;
                        JSR.W CODE_FN_839F49                 ;83B371|20499F  |839F49;
@@ -6199,6 +6272,8 @@ Menu_DrawPasswordUnderscore:
  
                      + JSR.W CODE_FN_83B3C4                 ;83B453|20C4B3  |83B3C4;
                        RTS                                  ;83B456|60      |      ;
+ 
+          CODE_83B457:
                        LDY.W #$B45F                         ;83B457|A05FB4  |      ;
                        JSR.W CODE_FN_839FC2                 ;83B45A|20C29F  |839FC2;
                        BRA +                                ;83B45D|8004    |83B463;
@@ -6211,15 +6286,23 @@ Menu_DrawPasswordUnderscore:
  
                      + JSR.W CODE_FN_83B3E0                 ;83B46F|20E0B3  |83B3E0;
                        RTS                                  ;83B472|60      |      ;
+ 
+          CODE_83B473:
                        JSR.W CODE_FN_83B3EA                 ;83B473|20EAB3  |83B3EA;
                        JSR.W CODE_FN_83B403                 ;83B476|2003B4  |83B403;
                        RTS                                  ;83B479|60      |      ;
+ 
+          CODE_83B47A:
                        JSR.W CODE_FN_83B403                 ;83B47A|2003B4  |83B403;
                        JSR.W CODE_FN_83B41F                 ;83B47D|201FB4  |83B41F;
                        RTS                                  ;83B480|60      |      ;
+ 
+          CODE_83B481:
                        JSR.W CODE_FN_83B41F                 ;83B481|201FB4  |83B41F;
                        JSR.W CODE_FN_83B43B                 ;83B484|203BB4  |83B43B;
                        RTS                                  ;83B487|60      |      ;
+ 
+       UNREACH_83B488:
                        db $20,$3B,$B4,$20,$57,$B4,$60       ;83B488|        |83B43B;
  
        CODE_FN_83B48F:
@@ -6413,16 +6496,17 @@ Menu_DrawPasswordUnderscore:
                        DEC A                                ;83B5E9|3A      |      ;
                        ASL A                                ;83B5EA|0A      |      ;
                        TAX                                  ;83B5EB|AA      |      ;
-                       JSR.W (UNREACH_83B5FC,X)             ;83B5EC|FCFCB5  |83B5FC;
+                       JSR.W (PTR16_83B5FC,X)               ;83B5EC|FCFCB5  |83B5FC;
                        LDA.L $7E9983                        ;83B5EF|AF83997E|7E9983;
                        SEC                                  ;83B5F3|38      |      ;
                        SBC.W #$0100                         ;83B5F4|E90001  |      ;
                        STA.L $7E9983                        ;83B5F7|8F83997E|7E9983;
  
                      + RTS                                  ;83B5FB|60      |      ;
- 
-       UNREACH_83B5FC:
-                       db $EA,$B3,$03,$B4,$1F,$B4           ;83B5FC|        |      ;
+         PTR16_83B5FC:
+                       dw CODE_FN_83B3EA                    ;83B5FC|        |83B3EA;
+                       dw CODE_FN_83B403                    ;83B5FE|        |83B403;
+                       dw CODE_FN_83B41F                    ;83B600|        |83B41F;
  
        CODE_FN_83B602:
                        LDA.L $7E96E3                        ;83B602|AFE3967E|7E96E3;
@@ -6444,28 +6528,30 @@ Menu_DrawPasswordUnderscore:
                        DEC A                                ;83B630|3A      |      ;
                        ASL A                                ;83B631|0A      |      ;
                        TAX                                  ;83B632|AA      |      ;
-                       JSR.W (DATA8_83B643,X)               ;83B633|FC43B6  |83B643;
+                       JSR.W (PTR16_83B643,X)               ;83B633|FC43B6  |83B643;
                        LDA.L $7E9983                        ;83B636|AF83997E|7E9983;
                        CLC                                  ;83B63A|18      |      ;
                        ADC.W #$0100                         ;83B63B|690001  |      ;
                        STA.L $7E9983                        ;83B63E|8F83997E|7E9983;
  
                      + RTS                                  ;83B642|60      |      ;
- 
-         DATA8_83B643:
-                       db $1F,$B4,$3B,$B4,$57,$B4           ;83B643|        |      ;
+         PTR16_83B643:
+                       dw CODE_FN_83B41F                    ;83B643|        |83B41F;
+                       dw CODE_FN_83B43B                    ;83B645|        |83B43B;
+                       dw CODE_83B457                       ;83B647|        |83B457;
  
        CODE_FN_83B649:
                        LDA.W Character_1P                   ;83B649|ADBA02  |8302BA;
                        INC A                                ;83B64C|1A      |      ;
                        AND.W #$FFFE                         ;83B64D|29FEFF  |      ;
                        TAX                                  ;83B650|AA      |      ;
-                       JSR.W (DATA8_83B655,X)               ;83B651|FC55B6  |83B655;
+                       JSR.W (PTR16_83B655,X)               ;83B651|FC55B6  |83B655;
                        RTS                                  ;83B654|60      |      ;
- 
-         DATA8_83B655:
-                       db $73,$B4,$7A,$B4,$81,$B4           ;83B655|        |      ;
-                       db $88,$B4                           ;83B65B|        |      ;
+         PTR16_83B655:
+                       dw CODE_83B473                       ;83B655|        |83B473;
+                       dw CODE_83B47A                       ;83B657|        |83B47A;
+                       dw CODE_83B481                       ;83B659|        |83B481;
+                       dw UNREACH_83B488                    ;83B65B|        |83B488;
  
        CODE_FN_83B65D:
                        LDX.W #$0048                         ;83B65D|A24800  |      ;
@@ -7367,7 +7453,7 @@ Options_DoVSLevelHard:
                        STA.W $1A70                          ;83BE61|8D701A  |831A70;
                        STA.L BossChars_Available            ;83BE64|8FD2947E|7E94D2;
                        LDA.W #$0000                         ;83BE68|A90000  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83BE6B|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83BE6B|200D9F  |839F0D;
                        JSR.W CODE_FN_838517                 ;83BE6E|201785  |838517;
                        JSR.W CODE_FN_838523                 ;83BE71|202385  |838523;
                        JSR.W CODE_FN_83852F                 ;83BE74|202F85  |83852F;
@@ -7463,7 +7549,7 @@ Options_DoVSLevelHard:
                        RTS                                  ;83BF61|60      |      ;
  
        CODE_FN_83BF62:
-                       JSL.L CODE_FL_80BB2D                 ;83BF62|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83BF62|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;83BF66|        |91C0BB;
                        dl $7F5D00                           ;83BF69|        |7F5D00;
                        PHB                                  ;83BF6C|8B      |      ;
@@ -7475,7 +7561,7 @@ Options_DoVSLevelHard:
                        BRA +                                ;83BF77|8008    |83BF81;
                        db $00,$5D,$7F,$00,$60,$80,$00,$30   ;83BF79|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83BF81|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83BF81|222DBB80|80BB2D;
                        dl CompGFX_MenuYoshi                 ;83BF85|        |93B039;
                        dl $7F5D00                           ;83BF88|        |7F5D00;
                        PHB                                  ;83BF8B|8B      |      ;
@@ -7487,7 +7573,7 @@ Options_DoVSLevelHard:
                        BRA +                                ;83BF96|8008    |83BFA0;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;83BF98|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83BFA0|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83BFA0|222DBB80|80BB2D;
                        dl DATA8_91FA1C                      ;83BFA4|        |91FA1C;
                        dl $7F5D00                           ;83BFA7|        |7F5D00;
                        PHB                                  ;83BFAA|8B      |      ;
@@ -7499,7 +7585,7 @@ Options_DoVSLevelHard:
                        BRA +                                ;83BFB5|8008    |83BFBF;
                        db $00,$5D,$7F,$00,$08,$80,$00,$60   ;83BFB7|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83BFBF|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83BFBF|222DBB80|80BB2D;
                        dl DATA8_91FB7B                      ;83BFC3|        |91FB7B;
                        dl $7F5D00                           ;83BFC6|        |7F5D00;
                        PHB                                  ;83BFC9|8B      |      ;
@@ -7511,7 +7597,7 @@ Options_DoVSLevelHard:
                        BRA +                                ;83BFD4|8008    |83BFDE;
                        db $00,$5D,$7F,$00,$08,$80,$00,$70   ;83BFD6|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83BFDE|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83BFDE|222DBB80|80BB2D;
                        dl CompGFX_CharacterPortraits2       ;83BFE2|        |91EB69;
                        dl $7F8300                           ;83BFE5|        |7F8300;
                        PHB                                  ;83BFE8|8B      |      ;
@@ -7523,7 +7609,7 @@ Options_DoVSLevelHard:
                        BRA +                                ;83BFF3|8008    |83BFFD;
                        db $00,$83,$7F,$00,$20,$80,$00,$00   ;83BFF5|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83BFFD|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83BFFD|222DBB80|80BB2D;
                        dl DATA8_919E8E                      ;83C001|        |919E8E;
                        dl $7F9D00                           ;83C004|        |7F9D00;
                        PHB                                  ;83C007|8B      |      ;
@@ -7535,10 +7621,10 @@ Options_DoVSLevelHard:
                        BRA +                                ;83C012|8008    |83C01C;
                        db $00,$9D,$7F,$00,$20,$80,$00,$20   ;83C014|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83C01C|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83C01C|222DBB80|80BB2D;
                        dl DATA8_91B4AD                      ;83C020|        |91B4AD;
                        dl $7FBD00                           ;83C023|        |7FBD00;
-                       JSL.L CODE_FL_80BB2D                 ;83C026|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83C026|222DBB80|80BB2D;
                        dl DATA8_93FD82                      ;83C02A|        |93FD82;
                        dl $7F9100                           ;83C02D|        |7F9100;
                        PHB                                  ;83C030|8B      |      ;
@@ -7550,14 +7636,14 @@ Options_DoVSLevelHard:
                        BRA +                                ;83C03B|8008    |83C045;
                        db $00,$91,$7F,$00,$0C,$80,$00,$01   ;83C03D|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;83C045|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;83C045|222DBB80|80BB2D;
                        dl DATA8_93A220                      ;83C049|        |93A220;
                        dl $7E391C                           ;83C04C|        |7E391C;
                        JSR.W CODE_FN_839FB6                 ;83C04F|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83C052|2058A0  |83A058;
                        JSR.W CODE_FN_83A083                 ;83C055|2083A0  |83A083;
                        JSR.W CODE_FN_838DCE                 ;83C058|20CE8D  |838DCE;
-                       JSL.L CODE_FL_80BB2D                 ;83C05B|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83C05B|222DBB80|80BB2D;
                        dl DATA8_91AF64                      ;83C05F|        |91AF64;
                        dl $7E86F6                           ;83C062|        |7E86F6;
                        JSR.W CODE_FN_83A10E                 ;83C065|200EA1  |83A10E;
@@ -7574,7 +7660,7 @@ Options_DoVSLevelHard:
  
           CODE_83C085:
                        LDY.W #$0001                         ;83C085|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83C088|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83C088|22CBAE80|80AECB;
                        BCC +                                ;83C08C|9005    |83C093;
                        REP #$20                             ;83C08E|C220    |      ;
                        INC.W Game_State_State               ;83C090|EEA202  |8302A2;
@@ -7586,22 +7672,29 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C096|AD6E1A  |831A6E;
                        ASL A                                ;83C099|0A      |      ;
                        TAX                                  ;83C09A|AA      |      ;
-                       JSR.W (DATA8_83C09F,X)               ;83C09B|FC9FC0  |83C09F;
+                       JSR.W (PTR16_83C09F,X)               ;83C09B|FC9FC0  |83C09F;
                        RTS                                  ;83C09E|60      |      ;
+         PTR16_83C09F:
+                       dw CODE_83C0A5                       ;83C09F|        |83C0A5;
+                       dw CODE_83C0B2                       ;83C0A1|        |83C0B2;
+                       dw CODE_83C0C2                       ;83C0A3|        |83C0C2;
  
-         DATA8_83C09F:
-                       db $A5,$C0,$B2,$C0,$C2,$C0           ;83C09F|        |      ;
+          CODE_83C0A5:
                        INC.W $1A6E                          ;83C0A5|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A24F                 ;83C0A8|204FA2  |83A24F;
                        JSR.W CODE_FN_83A789                 ;83C0AB|2089A7  |83A789;
                        JSR.W CODE_FN_83A058                 ;83C0AE|2058A0  |83A058;
                        RTS                                  ;83C0B1|60      |      ;
+ 
+          CODE_83C0B2:
                        INC.W $1A6E                          ;83C0B2|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A3C1                 ;83C0B5|20C1A3  |83A3C1;
                        JSR.W CODE_FN_83A058                 ;83C0B8|2058A0  |83A058;
                        JSR.W CODE_FN_83A603                 ;83C0BB|2003A6  |83A603;
                        JSR.W CODE_FN_838ABD                 ;83C0BE|20BD8A  |838ABD;
                        RTS                                  ;83C0C1|60      |      ;
+ 
+          CODE_83C0C2:
                        JSR.W CODE_FN_838ABD                 ;83C0C2|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C0C5|AF8D997E|7E998D;
                        BEQ +                                ;83C0C9|F003    |83C0CE;
@@ -7619,12 +7712,13 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C0DB|AD6E1A  |831A6E;
                        ASL A                                ;83C0DE|0A      |      ;
                        TAX                                  ;83C0DF|AA      |      ;
-                       JSR.W (DATA8_83C0E4,X)               ;83C0E0|FCE4C0  |83C0E4;
+                       JSR.W (PTR16_83C0E4,X)               ;83C0E0|FCE4C0  |83C0E4;
                        RTS                                  ;83C0E3|60      |      ;
+         PTR16_83C0E4:
+                       dw CODE_83C0E8                       ;83C0E4|        |83C0E8;
+                       dw DATA8_83C12F                      ;83C0E6|        |83C12F;
  
-         DATA8_83C0E4:
-                       db $E8,$C0                           ;83C0E4|        |      ;
-                       db $2F,$C1                           ;83C0E6|        |FFA9C1;
+          CODE_83C0E8:
                        LDA.W #$FFFF                         ;83C0E8|A9FFFF  |      ;
                        STA.W $02A8                          ;83C0EB|8DA802  |8302A8;
                        LDA.L Main_Menu_Selection            ;83C0EE|AF28957E|7E9528;
@@ -7649,7 +7743,10 @@ Options_DoVSLevelHard:
                        STZ.W $1A70                          ;83C125|9C701A  |831A70;
  
                      + RTS                                  ;83C128|60      |      ;
-                       db $08,$0E,$21,$32,$28,$04,$AF       ;83C129|        |      ;
+                       db $08,$0E,$21,$32,$28,$04           ;83C129|        |      ;
+ 
+         DATA8_83C12F:
+                       db $AF                               ;83C12F|        |      ;
                        db $D4,$95,$7E,$F0,$0B,$9C,$6E,$1A   ;83C130|        |000095;
                        db $A2,$00,$05,$20,$EE,$9F,$80,$03   ;83C138|        |      ;
                        db $20,$02,$A5,$20,$58,$A0,$60       ;83C140|        |83A502;
@@ -7675,7 +7772,7 @@ Options_DoVSLevelHard:
                        LDA.L Main_Menu_Selection            ;83C16F|AF28957E|7E9528;
                        ASL A                                ;83C173|0A      |      ;
                        TAX                                  ;83C174|AA      |      ;
-                       JSR.W (DATA8_83C18E,X)               ;83C175|FC8EC1  |83C18E;
+                       JSR.W (PTR16_83C18E,X)               ;83C175|FC8EC1  |83C18E;
                        LDA.W #$0006                         ;83C178|A90600  |      ;
                        STA.W Game_State_State               ;83C17B|8DA202  |8302A2;
                        JSR.W CODE_FN_83A24F                 ;83C17E|204FA2  |83A24F;
@@ -7684,29 +7781,37 @@ Options_DoVSLevelHard:
                        LDA.W #$0000                         ;83C187|A90000  |      ;
                        STA.W $02A8                          ;83C18A|8DA802  |8302A8;
                        RTS                                  ;83C18D|60      |      ;
+         PTR16_83C18E:
+                       dw CODE_83C198                       ;83C18E|        |83C198;
+                       dw CODE_83C1AA                       ;83C190|        |83C1AA;
+                       dw CODE_83C1AA                       ;83C192|        |83C1AA;
+                       dw CODE_83C1B1                       ;83C194|        |83C1B1;
+                       dw CODE_83C1B8                       ;83C196|        |83C1B8;
  
-         DATA8_83C18E:
-                       db $98,$C1                           ;83C18E|        |      ;
-                       db $AA,$C1                           ;83C190|        |      ;
-                       db $AA,$C1,$B1,$C1                   ;83C192|        |      ;
-                       db $B8,$C1                           ;83C196|        |      ;
+          CODE_83C198:
                        JSR.W CODE_FN_83A262                 ;83C198|2062A2  |83A262;
                        JSR.W CODE_FN_83A32E                 ;83C19B|202EA3  |83A32E;
                        LDA.L $7E9526                        ;83C19E|AF26957E|7E9526;
                        STA.L $7E961E                        ;83C1A2|8F1E967E|7E961E;
                        JSR.W CODE_FN_83A475                 ;83C1A6|2075A4  |83A475;
                        RTS                                  ;83C1A9|60      |      ;
+ 
+          CODE_83C1AA:
                        JSR.W CODE_FN_83A29F                 ;83C1AA|209FA2  |83A29F;
                        JSR.W CODE_FN_83A41B                 ;83C1AD|201BA4  |83A41B;
                        RTS                                  ;83C1B0|60      |      ;
+ 
+          CODE_83C1B1:
                        JSR.W CODE_FN_83A2B5                 ;83C1B1|20B5A2  |83A2B5;
                        JSR.W CODE_FN_83A439                 ;83C1B4|2039A4  |83A439;
                        RTS                                  ;83C1B7|60      |      ;
+ 
+          CODE_83C1B8:
                        JSR.W CODE_FN_83A2CB                 ;83C1B8|20CBA2  |83A2CB;
                        JSR.W CODE_FN_83A457                 ;83C1BB|2057A4  |83A457;
                        JSR.W Options_DoOptionMenu           ;83C1BE|200FBC  |83BC0F;
                        LDA.W #$0002                         ;83C1C1|A90200  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83C1C4|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83C1C4|200D9F  |839F0D;
                        LDA.L $7E9624                        ;83C1C7|AF24967E|7E9624;
                        STA.L $7E9620                        ;83C1CB|8F20967E|7E9620;
                        LDA.L $7E9626                        ;83C1CF|AF26967E|7E9626;
@@ -7716,7 +7821,7 @@ Options_DoVSLevelHard:
  
           CODE_83C1DB:
                        LDY.W #$0001                         ;83C1DB|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83C1DE|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83C1DE|22CBAE80|80AECB;
                        BCC +                                ;83C1E2|9010    |83C1F4;
                        REP #$20                             ;83C1E4|C220    |      ;
                        LDA.L Main_Menu_Selection            ;83C1E6|AF28957E|7E9528;
@@ -7735,12 +7840,17 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C1FC|AD6E1A  |831A6E;
                        ASL A                                ;83C1FF|0A      |      ;
                        TAX                                  ;83C200|AA      |      ;
-                       JSR.W (DATA8_83C205,X)               ;83C201|FC05C2  |83C205;
+                       JSR.W (PTR16_83C205,X)               ;83C201|FC05C2  |83C205;
                        RTS                                  ;83C204|60      |      ;
+         PTR16_83C205:
+                       dw CODE_83C211                       ;83C205|        |83C211;
+                       dw CODE_83C239                       ;83C207|        |83C239;
+                       dw CODE_83C258                       ;83C209|        |83C258;
+                       dw CODE_83C271                       ;83C20B|        |83C271;
+                       dw CODE_83C28A                       ;83C20D|        |83C28A;
+                       dw CODE_83C2EE                       ;83C20F|        |83C2EE;
  
-         DATA8_83C205:
-                       db $11,$C2,$39,$C2,$58,$C2,$71,$C2   ;83C205|        |      ;
-                       db $8A,$C2,$EE,$C2                   ;83C20D|        |      ;
+          CODE_83C211:
                        INC.W $1A6E                          ;83C211|EE6E1A  |831A6E;
                        LDA.W #$0000                         ;83C214|A90000  |      ;
                        JSR.W CODE_FN_83A9AB                 ;83C217|20ABA9  |83A9AB;
@@ -7757,6 +7867,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838523                 ;83C232|202385  |838523;
                        JSR.W CODE_FN_83852F                 ;83C235|202F85  |83852F;
                        RTS                                  ;83C238|60      |      ;
+ 
+          CODE_83C239:
                        INC.W $1A6E                          ;83C239|EE6E1A  |831A6E;
                        JSR.W CODE_FN_8386A8                 ;83C23C|20A886  |8386A8;
                        JSR.W CODE_FN_8386D4                 ;83C23F|20D486  |8386D4;
@@ -7770,6 +7882,8 @@ Options_DoVSLevelHard:
                        db $00,$A7,$7F,$00,$0A,$80,$00,$25   ;83C24F|        |      ;
  
                      + RTS                                  ;83C257|60      |      ;
+ 
+          CODE_83C258:
                        INC.W $1A6E                          ;83C258|EE6E1A  |831A6E;
                        PHB                                  ;83C25B|8B      |      ;
                        PHK                                  ;83C25C|4B      |      ;
@@ -7781,6 +7895,8 @@ Options_DoVSLevelHard:
                        db $00,$B1,$7F,$00,$0C,$80,$00,$2A   ;83C268|        |      ;
  
                      + RTS                                  ;83C270|60      |      ;
+ 
+          CODE_83C271:
                        INC.W $1A6E                          ;83C271|EE6E1A  |831A6E;
                        PHB                                  ;83C274|8B      |      ;
                        PHK                                  ;83C275|4B      |      ;
@@ -7792,13 +7908,15 @@ Options_DoVSLevelHard:
                        db $00,$91,$7F,$00,$0C,$80,$00,$01   ;83C281|        |      ;
  
                      + RTS                                  ;83C289|60      |      ;
+ 
+          CODE_83C28A:
                        INC.W $1A6E                          ;83C28A|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A24F                 ;83C28D|204FA2  |83A24F;
                        JSR.W CODE_FN_83A789                 ;83C290|2089A7  |83A789;
                        LDA.L Main_Menu_Selection            ;83C293|AF28957E|7E9528;
                        ASL A                                ;83C297|0A      |      ;
                        TAX                                  ;83C298|AA      |      ;
-                       JSR.W (DATA8_83C2CA,X)               ;83C299|FCCAC2  |83C2CA;
+                       JSR.W (PTR16_83C2CA,X)               ;83C299|FCCAC2  |83C2CA;
                        PHB                                  ;83C29C|8B      |      ;
                        PHK                                  ;83C29D|4B      |      ;
                        PLB                                  ;83C29E|AB      |      ;
@@ -7819,28 +7937,37 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_838ABD                 ;83C2C6|20BD8A  |838ABD;
                        RTS                                  ;83C2C9|60      |      ;
+         PTR16_83C2CA:
+                       dw CODE_83C2D0                       ;83C2CA|        |83C2D0;
+                       dw CODE_83C2DA                       ;83C2CC|        |83C2DA;
+                       dw CODE_83C2E4                       ;83C2CE|        |83C2E4;
  
-         DATA8_83C2CA:
-                       db $D0,$C2,$DA,$C2,$E4,$C2           ;83C2CA|        |      ;
+          CODE_83C2D0:
                        JSR.W CODE_FN_83A262                 ;83C2D0|2062A2  |83A262;
                        JSR.W CODE_FN_83A3DF                 ;83C2D3|20DFA3  |83A3DF;
                        JSR.W CODE_FN_83A60F                 ;83C2D6|200FA6  |83A60F;
                        RTS                                  ;83C2D9|60      |      ;
+ 
+          CODE_83C2DA:
                        JSR.W CODE_FN_83A289                 ;83C2DA|2089A2  |83A289;
                        JSR.W CODE_FN_83A3FD                 ;83C2DD|20FDA3  |83A3FD;
                        JSR.W CODE_FN_83A61B                 ;83C2E0|201BA6  |83A61B;
                        RTS                                  ;83C2E3|60      |      ;
+ 
+          CODE_83C2E4:
                        JSR.W CODE_FN_83A29F                 ;83C2E4|209FA2  |83A29F;
                        JSR.W CODE_FN_83A41B                 ;83C2E7|201BA4  |83A41B;
                        JSR.W CODE_FN_83A627                 ;83C2EA|2027A6  |83A627;
                        RTS                                  ;83C2ED|60      |      ;
+ 
+          CODE_83C2EE:
                        JSR.W CODE_FN_838ABD                 ;83C2EE|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C2F1|AF8D997E|7E998D;
                        BNE +                                ;83C2F5|D01A    |83C311;
                        LDA.L Main_Menu_Selection            ;83C2F7|AF28957E|7E9528;
                        ASL A                                ;83C2FB|0A      |      ;
                        TAX                                  ;83C2FC|AA      |      ;
-                       JSR.W (DATA8_83C312,X)               ;83C2FD|FC12C3  |83C312;
+                       JSR.W (PTR16_83C312,X)               ;83C2FD|FC12C3  |83C312;
                        LDA.W #$0000                         ;83C300|A90000  |      ;
                        STA.W $1A6E                          ;83C303|8D6E1A  |831A6E;
                        STA.W $1A70                          ;83C306|8D701A  |831A70;
@@ -7848,15 +7975,22 @@ Options_DoVSLevelHard:
                        STA.L $7E945A                        ;83C30D|8F5A947E|7E945A;
  
                      + RTS                                  ;83C311|60      |      ;
+         PTR16_83C312:
+                       dw CODE_83C318                       ;83C312|        |83C318;
+                       dw CODE_83C31F                       ;83C314|        |83C31F;
+                       dw CODE_83C326                       ;83C316|        |83C326;
  
-         DATA8_83C312:
-                       db $18,$C3,$1F,$C3,$26,$C3           ;83C312|        |      ;
+          CODE_83C318:
                        LDA.W #$0009                         ;83C318|A90900  |      ;
                        STA.W Game_State_State               ;83C31B|8DA202  |8302A2;
                        RTS                                  ;83C31E|60      |      ;
+ 
+          CODE_83C31F:
                        LDA.W #$000F                         ;83C31F|A90F00  |      ;
                        STA.W Game_State_State               ;83C322|8DA202  |8302A2;
                        RTS                                  ;83C325|60      |      ;
+ 
+          CODE_83C326:
                        LDA.W #$0022                         ;83C326|A92200  |      ;
                        STA.W Game_State_State               ;83C329|8DA202  |8302A2;
                        RTS                                  ;83C32C|60      |      ;
@@ -7865,12 +7999,14 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C32D|AD6E1A  |831A6E;
                        ASL A                                ;83C330|0A      |      ;
                        TAX                                  ;83C331|AA      |      ;
-                       JSR.W (DATA8_83C336,X)               ;83C332|FC36C3  |83C336;
+                       JSR.W (PTR16_83C336,X)               ;83C332|FC36C3  |83C336;
                        RTS                                  ;83C335|60      |      ;
- 
-         DATA8_83C336:
-                       db $40,$C3,$4F,$C3,$EB,$C3,$6C,$C4   ;83C336|        |      ;
-                       db $B1,$C4                           ;83C33E|        |      ;
+         PTR16_83C336:
+                       dw CODE_FN_83C340                    ;83C336|        |83C340;
+                       dw CODE_83C34F                       ;83C338|        |83C34F;
+                       dw CODE_83C3EB                       ;83C33A|        |83C3EB;
+                       dw CODE_83C46C                       ;83C33C|        |83C46C;
+                       dw CODE_83C4B1                       ;83C33E|        |83C4B1;
  
        CODE_FN_83C340:
                        LDA.W #$0002                         ;83C340|A90200  |      ;
@@ -7880,17 +8016,23 @@ Options_DoVSLevelHard:
                        INC.W $1A6E                          ;83C34B|EE6E1A  |831A6E;
  
                      + RTS                                  ;83C34E|60      |      ;
+ 
+          CODE_83C34F:
                        INC.W $1A6E                          ;83C34F|EE6E1A  |831A6E;
                        LDA.L Main_Menu_Selection            ;83C352|AF28957E|7E9528;
                        ASL A                                ;83C356|0A      |      ;
                        TAX                                  ;83C357|AA      |      ;
-                       JSR.W (DATA8_83C35F,X)               ;83C358|FC5FC3  |83C35F;
+                       JSR.W (PTR16_83C35F,X)               ;83C358|FC5FC3  |83C35F;
                        JSR.W CODE_FN_8388FF                 ;83C35B|20FF88  |8388FF;
                        RTS                                  ;83C35E|60      |      ;
+         PTR16_83C35F:
+                       dw CODE_83C369                       ;83C35F|        |83C369;
+                       dw CODE_83C382                       ;83C361|        |83C382;
+                       dw CODE_83C39B                       ;83C363|        |83C39B;
+                       dw CODE_83C3AE                       ;83C365|        |83C3AE;
+                       dw CODE_83C3C8                       ;83C367|        |83C3C8;
  
-         DATA8_83C35F:
-                       db $69,$C3,$82,$C3,$9B,$C3,$AE,$C3   ;83C35F|        |      ;
-                       db $C8,$C3                           ;83C367|        |      ;
+          CODE_83C369:
                        LDA.W #$0000                         ;83C369|A90000  |      ;
                        STA.W $02A8                          ;83C36C|8DA802  |8302A8;
                        LDY.W #$C377                         ;83C36F|A077C3  |      ;
@@ -7900,6 +8042,8 @@ Options_DoVSLevelHard:
                        db $06,$00                           ;83C37F|        |      ;
  
                      + RTS                                  ;83C381|60      |      ;
+ 
+          CODE_83C382:
                        LDA.W #$0002                         ;83C382|A90200  |      ;
                        STA.W $02A8                          ;83C385|8DA802  |8302A8;
                        LDY.W #$C390                         ;83C388|A090C3  |      ;
@@ -7909,6 +8053,8 @@ Options_DoVSLevelHard:
                        db $04,$00                           ;83C398|        |      ;
  
                      + RTS                                  ;83C39A|60      |      ;
+ 
+          CODE_83C39B:
                        LDY.W #$C3A3                         ;83C39B|A0A3C3  |      ;
                        JSR.W CODE_FN_8388AE                 ;83C39E|20AE88  |8388AE;
                        BRA +                                ;83C3A1|800A    |83C3AD;
@@ -7916,6 +8062,8 @@ Options_DoVSLevelHard:
                        db $04,$00                           ;83C3AB|        |      ;
  
                      + RTS                                  ;83C3AD|60      |      ;
+ 
+          CODE_83C3AE:
                        LDY.W #$C3B6                         ;83C3AE|A0B6C3  |      ;
                        JSR.W CODE_FN_8388AE                 ;83C3B1|20AE88  |8388AE;
                        BRA +                                ;83C3B4|800A    |83C3C0;
@@ -7925,6 +8073,8 @@ Options_DoVSLevelHard:
                      + LDA.W #$0000                         ;83C3C0|A90000  |      ;
                        STA.L $7E96DB                        ;83C3C3|8FDB967E|7E96DB;
                        RTS                                  ;83C3C7|60      |      ;
+ 
+          CODE_83C3C8:
                        LDY.W #$C3D0                         ;83C3C8|A0D0C3  |      ;
                        JSR.W CODE_FN_8388AE                 ;83C3CB|20AE88  |8388AE;
                        BRA +                                ;83C3CE|800A    |83C3DA;
@@ -7932,11 +8082,13 @@ Options_DoVSLevelHard:
                        db $01,$00                           ;83C3D8|        |      ;
  
                      + LDA.W #$0002                         ;83C3DA|A90200  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83C3DD|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83C3DD|200D9F  |839F0D;
                        LDA.W #$0000                         ;83C3E0|A90000  |      ;
                        STA.L $7E96DB                        ;83C3E3|8FDB967E|7E96DB;
                        JSR.W CODE_FN_83849D                 ;83C3E7|209D84  |83849D;
                        RTS                                  ;83C3EA|60      |      ;
+ 
+          CODE_83C3EB:
                        JSR.W CODE_FN_8388FF                 ;83C3EB|20FF88  |8388FF;
                        LDA.L $7E998D                        ;83C3EE|AF8D997E|7E998D;
                        BNE +                                ;83C3F2|D015    |83C409;
@@ -7946,20 +8098,26 @@ Options_DoVSLevelHard:
                        LDA.L Main_Menu_Selection            ;83C3FD|AF28957E|7E9528;
                        ASL A                                ;83C401|0A      |      ;
                        TAX                                  ;83C402|AA      |      ;
-                       JSR.W (DATA8_83C40A,X)               ;83C403|FC0AC4  |83C40A;
+                       JSR.W (PTR16_83C40A,X)               ;83C403|FC0AC4  |83C40A;
                        JSR.W CODE_FN_83A058                 ;83C406|2058A0  |83A058;
  
                      + RTS                                  ;83C409|60      |      ;
+         PTR16_83C40A:
+                       dw CODE_83C414                       ;83C40A|        |83C414;
+                       dw CODE_83C424                       ;83C40C|        |83C424;
+                       dw CODE_83C436                       ;83C40E|        |83C436;
+                       dw CODE_83C448                       ;83C410|        |83C448;
+                       dw CODE_83C45A                       ;83C412|        |83C45A;
  
-         DATA8_83C40A:
-                       db $14,$C4,$24,$C4,$36,$C4,$48,$C4   ;83C40A|        |      ;
-                       db $5A,$C4                           ;83C412|        |      ;
+          CODE_83C414:
                        INC.W $1A6E                          ;83C414|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A262                 ;83C417|2062A2  |83A262;
                        JSR.W CODE_FN_83A3DF                 ;83C41A|20DFA3  |83A3DF;
                        JSR.W CODE_FN_83A60F                 ;83C41D|200FA6  |83A60F;
                        JSR.W CODE_FN_838ABD                 ;83C420|20BD8A  |838ABD;
                        RTS                                  ;83C423|60      |      ;
+ 
+          CODE_83C424:
                        JSR.W CODE_FN_83A289                 ;83C424|2089A2  |83A289;
                        LDY.W #$C42F                         ;83C427|A02FC4  |      ;
                        JSR.W CODE_FN_838C7D                 ;83C42A|207D8C  |838C7D;
@@ -7968,6 +8126,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_838CB5                 ;83C432|20B58C  |838CB5;
                        RTS                                  ;83C435|60      |      ;
+ 
+          CODE_83C436:
                        JSR.W CODE_FN_83A29F                 ;83C436|209FA2  |83A29F;
                        LDY.W #$C441                         ;83C439|A041C4  |      ;
                        JSR.W CODE_FN_838C7D                 ;83C43C|207D8C  |838C7D;
@@ -7976,6 +8136,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_838CB5                 ;83C444|20B58C  |838CB5;
                        RTS                                  ;83C447|60      |      ;
+ 
+          CODE_83C448:
                        JSR.W CODE_FN_83A2B5                 ;83C448|20B5A2  |83A2B5;
                        LDY.W #$C453                         ;83C44B|A053C4  |      ;
                        JSR.W CODE_FN_838C7D                 ;83C44E|207D8C  |838C7D;
@@ -7984,6 +8146,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_838CB5                 ;83C456|20B58C  |838CB5;
                        RTS                                  ;83C459|60      |      ;
+ 
+          CODE_83C45A:
                        JSR.W CODE_FN_83A2CB                 ;83C45A|20CBA2  |83A2CB;
                        LDY.W #$C465                         ;83C45D|A065C4  |      ;
                        JSR.W CODE_FN_838C7D                 ;83C460|207D8C  |838C7D;
@@ -7992,6 +8156,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_838CB5                 ;83C468|20B58C  |838CB5;
                        RTS                                  ;83C46B|60      |      ;
+ 
+          CODE_83C46C:
                        JSR.W CODE_FN_838CB5                 ;83C46C|20B58C  |838CB5;
                        LDA.L $7E998D                        ;83C46F|AF8D997E|7E998D;
                        BNE +                                ;83C473|D012    |83C487;
@@ -7999,28 +8165,40 @@ Options_DoVSLevelHard:
                        LDA.L Main_Menu_Selection            ;83C478|AF28957E|7E9528;
                        ASL A                                ;83C47C|0A      |      ;
                        TAX                                  ;83C47D|AA      |      ;
-                       JSR.W (UNREACH_83C488,X)             ;83C47E|FC88C4  |83C488;
+                       JSR.W (PTR16_83C488,X)               ;83C47E|FC88C4  |83C488;
                        JSR.W CODE_FN_83A058                 ;83C481|2058A0  |83A058;
                        JSR.W CODE_FN_838ABD                 ;83C484|20BD8A  |838ABD;
  
                      + RTS                                  ;83C487|60      |      ;
+         PTR16_83C488:
+                       dw CODE_83C492                       ;83C488|        |83C492;
+                       dw CODE_83C492                       ;83C48A|        |83C492;
+                       dw CODE_83C499                       ;83C48C|        |83C499;
+                       dw CODE_83C4A0                       ;83C48E|        |83C4A0;
+                       dw CODE_83C4A7                       ;83C490|        |83C4A7;
  
-       UNREACH_83C488:
-                       db $92,$C4                           ;83C488|        |0000C4;
-                       db $92,$C4,$99,$C4,$A0,$C4,$A7,$C4   ;83C48A|        |      ;
+          CODE_83C492:
                        JSR.W CODE_FN_83A3FD                 ;83C492|20FDA3  |83A3FD;
                        JSR.W CODE_FN_83A61B                 ;83C495|201BA6  |83A61B;
                        RTS                                  ;83C498|60      |      ;
+ 
+          CODE_83C499:
                        JSR.W CODE_FN_83A41B                 ;83C499|201BA4  |83A41B;
                        JSR.W CODE_FN_83A627                 ;83C49C|2027A6  |83A627;
                        RTS                                  ;83C49F|60      |      ;
+ 
+          CODE_83C4A0:
                        JSR.W CODE_FN_83A439                 ;83C4A0|2039A4  |83A439;
                        JSR.W CODE_FN_83A627                 ;83C4A3|2027A6  |83A627;
                        RTS                                  ;83C4A6|60      |      ;
+ 
+          CODE_83C4A7:
                        JSR.W CODE_FN_83A457                 ;83C4A7|2057A4  |83A457;
                        JSR.W Options_DoOptionMenu           ;83C4AA|200FBC  |83BC0F;
                        JSR.W CODE_FN_83A633                 ;83C4AD|2033A6  |83A633;
                        RTS                                  ;83C4B0|60      |      ;
+ 
+          CODE_83C4B1:
                        JSR.W CODE_FN_838ABD                 ;83C4B1|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C4B4|AF8D997E|7E998D;
                        BNE +                                ;83C4B8|D020    |83C4DA;
@@ -8066,12 +8244,14 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C51F|AD6E1A  |831A6E;
                        ASL A                                ;83C522|0A      |      ;
                        TAX                                  ;83C523|AA      |      ;
-                       JSR.W (DATA8_83C528,X)               ;83C524|FC28C5  |83C528;
+                       JSR.W (PTR16_83C528,X)               ;83C524|FC28C5  |83C528;
                        RTS                                  ;83C527|60      |      ;
- 
-         DATA8_83C528:
-                       db $32,$C5,$4A,$C5,$71,$C5,$9A,$C5   ;83C528|        |      ;
-                       db $AD,$C5                           ;83C530|        |      ;
+         PTR16_83C528:
+                       dw CODE_FN_83C532                    ;83C528|        |83C532;
+                       dw CODE_83C54A                       ;83C52A|        |83C54A;
+                       dw CODE_83C571                       ;83C52C|        |83C571;
+                       dw CODE_83C59A                       ;83C52E|        |83C59A;
+                       dw CODE_83C5AD                       ;83C530|        |83C5AD;
  
        CODE_FN_83C532:
                        LDA.L Main_Menu_Selection            ;83C532|AF28957E|7E9528;
@@ -8085,22 +8265,30 @@ Options_DoVSLevelHard:
                      + INC.W $1A6E                          ;83C546|EE6E1A  |831A6E;
  
                     ++ RTS                                  ;83C549|60      |      ;
+ 
+          CODE_83C54A:
                        INC.W $1A6E                          ;83C54A|EE6E1A  |831A6E;
                        LDA.L Main_Menu_Selection            ;83C54D|AF28957E|7E9528;
                        ASL A                                ;83C551|0A      |      ;
                        TAX                                  ;83C552|AA      |      ;
-                       JSR.W (DATA8_83C55A,X)               ;83C553|FC5AC5  |83C55A;
+                       JSR.W (PTR16_83C55A,X)               ;83C553|FC5AC5  |83C55A;
                        JSR.W CODE_FN_838BF1                 ;83C556|20F18B  |838BF1;
                        RTS                                  ;83C559|60      |      ;
+         PTR16_83C55A:
+                       dw CODE_83A6F3                       ;83C55A|        |83A6F3;
+                       dw CODE_83A6FF                       ;83C55C|        |83A6FF;
+                       dw CODE_83A70B                       ;83C55E|        |83A70B;
+                       dw CODE_83A70B                       ;83C560|        |83A70B;
+                       dw CODE_83C564                       ;83C562|        |83C564;
  
-         DATA8_83C55A:
-                       db $F3,$A6,$FF,$A6,$0B,$A7,$0B,$A7   ;83C55A|        |      ;
-                       db $64,$C5                           ;83C562|        |      ;
+          CODE_83C564:
                        JSR.W CODE_FN_83A717                 ;83C564|2017A7  |83A717;
                        LDA.W #$0000                         ;83C567|A90000  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83C56A|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83C56A|200D9F  |839F0D;
                        JSR.W CODE_FN_838490                 ;83C56D|209084  |838490;
                        RTS                                  ;83C570|60      |      ;
+ 
+          CODE_83C571:
                        JSR.W CODE_FN_838BF1                 ;83C571|20F18B  |838BF1;
                        LDA.L $7E998D                        ;83C574|AF8D997E|7E998D;
                        BNE +                                ;83C578|D015    |83C58F;
@@ -8110,14 +8298,18 @@ Options_DoVSLevelHard:
                        LDA.L Main_Menu_Selection            ;83C583|AF28957E|7E9528;
                        ASL A                                ;83C587|0A      |      ;
                        TAX                                  ;83C588|AA      |      ;
-                       JSR.W (DATA8_83C590,X)               ;83C589|FC90C5  |83C590;
+                       JSR.W (PTR16_83C590,X)               ;83C589|FC90C5  |83C590;
                        JSR.W CODE_FN_83A058                 ;83C58C|2058A0  |83A058;
  
                      + RTS                                  ;83C58F|60      |      ;
+         PTR16_83C590:
+                       dw CODE_FN_83A262                    ;83C590|        |83A262;
+                       dw CODE_FN_83A289                    ;83C592|        |83A289;
+                       dw CODE_FN_83A29F                    ;83C594|        |83A29F;
+                       dw CODE_FN_83A2B5                    ;83C596|        |83A2B5;
+                       dw CODE_FN_83A2CB                    ;83C598|        |83A2CB;
  
-         DATA8_83C590:
-                       db $62,$A2,$89,$A2,$9F,$A2,$B5,$A2   ;83C590|        |      ;
-                       db $CB,$A2                           ;83C598|        |      ;
+          CODE_83C59A:
                        INC.W $1A6E                          ;83C59A|EE6E1A  |831A6E;
                        STZ.W $1A70                          ;83C59D|9C701A  |831A70;
                        JSR.W CODE_FN_83A3C1                 ;83C5A0|20C1A3  |83A3C1;
@@ -8125,6 +8317,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A6A5                 ;83C5A6|20A5A6  |83A6A5;
                        JSR.W CODE_FN_838ABD                 ;83C5A9|20BD8A  |838ABD;
                        RTS                                  ;83C5AC|60      |      ;
+ 
+          CODE_83C5AD:
                        JSR.W CODE_FN_838ABD                 ;83C5AD|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C5B0|AF8D997E|7E998D;
                        BNE +                                ;83C5B4|D009    |83C5BF;
@@ -8138,12 +8332,16 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C5C0|AD6E1A  |831A6E;
                        ASL A                                ;83C5C3|0A      |      ;
                        TAX                                  ;83C5C4|AA      |      ;
-                       JSR.W (DATA8_83C5C9,X)               ;83C5C5|FCC9C5  |83C5C9;
+                       JSR.W (PTR16_83C5C9,X)               ;83C5C5|FCC9C5  |83C5C9;
                        RTS                                  ;83C5C8|60      |      ;
+         PTR16_83C5C9:
+                       dw CODE_83C5D3                       ;83C5C9|        |83C5D3;
+                       dw CODE_83C54A                       ;83C5CB|        |83C54A;
+                       dw CODE_83C571                       ;83C5CD|        |83C571;
+                       dw CODE_83C5ED                       ;83C5CF|        |83C5ED;
+                       dw CODE_83C5FA                       ;83C5D1|        |83C5FA;
  
-         DATA8_83C5C9:
-                       db $D3,$C5,$4A,$C5,$71,$C5,$ED,$C5   ;83C5C9|        |      ;
-                       db $FA,$C5                           ;83C5D1|        |      ;
+          CODE_83C5D3:
                        JSR.W CODE_FN_83C532                 ;83C5D3|2032C5  |83C532;
                        LDA.W #$0000                         ;83C5D6|A90000  |      ;
                        STA.L $7E96DB                        ;83C5D9|8FDB967E|7E96DB;
@@ -8151,32 +8349,41 @@ Options_DoVSLevelHard:
                        CMP.W #$0002                         ;83C5E1|C90200  |      ;
                        BPL +                                ;83C5E4|1006    |83C5EC;
                        LDA.W #$0002                         ;83C5E6|A90200  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83C5E9|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83C5E9|200D9F  |839F0D;
  
                      + RTS                                  ;83C5EC|60      |      ;
+ 
+          CODE_83C5ED:
                        INC.W $1A6E                          ;83C5ED|EE6E1A  |831A6E;
                        LDX.W #$0180                         ;83C5F0|A28001  |      ;
                        JSR.W CODE_FN_839FEE                 ;83C5F3|20EE9F  |839FEE;
                        JSR.W CODE_FN_83A058                 ;83C5F6|2058A0  |83A058;
                        RTS                                  ;83C5F9|60      |      ;
+ 
+          CODE_83C5FA:
                        INC.W $1A6E                          ;83C5FA|EE6E1A  |831A6E;
                        JSR.W CODE_FN_839FB6                 ;83C5FD|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83C600|2058A0  |83A058;
                        LDA.L Main_Menu_Selection            ;83C603|AF28957E|7E9528;
                        ASL A                                ;83C607|0A      |      ;
                        TAX                                  ;83C608|AA      |      ;
-                       JSR.W (DATA8_83C610,X)               ;83C609|FC10C6  |83C610;
+                       JSR.W (PTR16_83C610,X)               ;83C609|FC10C6  |83C610;
                        STZ.W $1A6E                          ;83C60C|9C6E1A  |831A6E;
                        RTS                                  ;83C60F|60      |      ;
+         PTR16_83C610:
+                       dw CODE_83C616                       ;83C610|        |83C616;
+                       dw CODE_83C628                       ;83C612|        |83C628;
+                       dw CODE_83C63D                       ;83C614|        |83C63D;
  
-         DATA8_83C610:
-                       db $16,$C6,$28,$C6,$3D,$C6           ;83C610|        |      ;
+          CODE_83C616:
                        INC.W Game_State                     ;83C616|EEA002  |8302A0;
                        LDA.W #$0002                         ;83C619|A90200  |      ;
                        STA.W Game_State_State               ;83C61C|8DA202  |8302A2;
                        LDA.L Game1P_Selection               ;83C61F|AF2A957E|7E952A;
                        STA.L $7E38FE                        ;83C623|8FFE387E|7E38FE;
                        RTS                                  ;83C627|60      |      ;
+ 
+          CODE_83C628:
                        INC.W Game_State                     ;83C628|EEA002  |8302A0;
                        LDA.W #$0002                         ;83C62B|A90200  |      ;
                        STA.W Game_State_State               ;83C62E|8DA202  |8302A2;
@@ -8184,6 +8391,8 @@ Options_DoVSLevelHard:
                        EOR.W #$0001                         ;83C635|490100  |      ;
                        STA.L $7E38FE                        ;83C638|8FFE387E|7E38FE;
                        RTS                                  ;83C63C|60      |      ;
+ 
+          CODE_83C63D:
                        LDA.W #$0025                         ;83C63D|A92500  |      ;
                        STA.W Game_State_State               ;83C640|8DA202  |8302A2;
                        RTS                                  ;83C643|60      |      ;
@@ -8197,21 +8406,25 @@ Options_DoVSLevelHard:
                        LDA.L Main_Menu_Selection            ;83C652|AF28957E|7E9528;
                        ASL A                                ;83C656|0A      |      ;
                        TAX                                  ;83C657|AA      |      ;
-                       JSR.W (DATA8_83C662,X)               ;83C658|FC62C6  |83C662;
+                       JSR.W (PTR16_83C662,X)               ;83C658|FC62C6  |83C662;
                        JSL.L CODE_FL_80A145                 ;83C65B|2245A180|80A145;
  
                      + REP #$20                             ;83C65F|C220    |      ;
                        RTS                                  ;83C661|60      |      ;
+         PTR16_83C662:
+                       dw CODE_83C66C                       ;83C662|        |83C66C;
+                       dw CODE_83C676                       ;83C664|        |83C676;
+                       dw CODE_83C676                       ;83C666|        |83C676;
+                       dw CODE_83C6AA                       ;83C668|        |83C6AA;
+                       dw CODE_83C6DB                       ;83C66A|        |83C6DB;
  
-         DATA8_83C662:
-                       db $6C,$C6                           ;83C662|        |      ;
-                       db $76,$C6                           ;83C664|        |0000C6;
-                       db $76,$C6,$AA,$C6                   ;83C666|        |      ;
-                       db $DB,$C6                           ;83C66A|        |      ;
+          CODE_83C66C:
                        LDA.W #$0006                         ;83C66C|A90600  |      ;
                        STA.W Game_State                     ;83C66F|8DA002  |8302A0;
                        STZ.W Game_State_State               ;83C672|9CA202  |8302A2;
                        RTS                                  ;83C675|60      |      ;
+ 
+          CODE_83C676:
                        PHP                                  ;83C676|08      |      ;
                        REP #$30                             ;83C677|C230    |      ;
                        LDA.L HowtoPlay_Selection            ;83C679|AF32957E|7E9532;
@@ -8236,6 +8449,8 @@ Options_DoVSLevelHard:
                        RTS                                  ;83C69D|60      |      ;
                        db $BB,$AE,$8A,$C1,$AE,$8A,$C7,$AE   ;83C69E|        |      ;
                        db $8A,$CD,$AE,$8A                   ;83C6A6|        |      ;
+ 
+          CODE_83C6AA:
                        PHP                                  ;83C6AA|08      |      ;
                        REP #$30                             ;83C6AB|C230    |      ;
                        LDA.L HowtoImprove_Selection         ;83C6AD|AF3A957E|7E953A;
@@ -8262,6 +8477,8 @@ Options_DoVSLevelHard:
  
          DATA8_83C6D3:
                        db $D7,$86,$F6,$D7,$86,$0B,$D8,$86   ;83C6D3|        |      ;
+ 
+          CODE_83C6DB:
                        JSL.L CODE_FL_86D87F                 ;83C6DB|227FD886|86D87F;
                        RTS                                  ;83C6DF|60      |      ;
  
@@ -8301,12 +8518,17 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C742|AD6E1A  |831A6E;
                        ASL A                                ;83C745|0A      |      ;
                        TAX                                  ;83C746|AA      |      ;
-                       JSR.W (DATA8_83C74B,X)               ;83C747|FC4BC7  |83C74B;
+                       JSR.W (PTR16_83C74B,X)               ;83C747|FC4BC7  |83C74B;
                        RTS                                  ;83C74A|60      |      ;
+         PTR16_83C74B:
+                       dw CODE_83C211                       ;83C74B|        |83C211;
+                       dw CODE_83C239                       ;83C74D|        |83C239;
+                       dw CODE_83C258                       ;83C74F|        |83C258;
+                       dw CODE_83C271                       ;83C751|        |83C271;
+                       dw CODE_83C757                       ;83C753|        |83C757;
+                       dw CODE_83C7A4                       ;83C755|        |83C7A4;
  
-         DATA8_83C74B:
-                       db $11,$C2,$39,$C2,$58,$C2,$71,$C2   ;83C74B|        |      ;
-                       db $57,$C7,$A4,$C7                   ;83C753|        |      ;
+          CODE_83C757:
                        INC.W $1A6E                          ;83C757|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A24F                 ;83C75A|204FA2  |83A24F;
                        JSR.W CODE_FN_83A262                 ;83C75D|2062A2  |83A262;
@@ -8342,6 +8564,8 @@ Options_DoVSLevelHard:
                      + RTS                                  ;83C79F|60      |      ;
                        db $E1,$A2                           ;83C7A0|        |      ;
                        db $18,$A3                           ;83C7A2|        |      ;
+ 
+          CODE_83C7A4:
                        JSR.W CODE_FN_838ABD                 ;83C7A4|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C7A7|AF8D997E|7E998D;
                        BNE +                                ;83C7AB|D017    |83C7C4;
@@ -8362,12 +8586,17 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C7C5|AD6E1A  |831A6E;
                        ASL A                                ;83C7C8|0A      |      ;
                        TAX                                  ;83C7C9|AA      |      ;
-                       JSR.W (DATA8_83C7CE,X)               ;83C7CA|FCCEC7  |83C7CE;
+                       JSR.W (PTR16_83C7CE,X)               ;83C7CA|FCCEC7  |83C7CE;
                        RTS                                  ;83C7CD|60      |      ;
+         PTR16_83C7CE:
+                       dw CODE_83C7DA                       ;83C7CE|        |83C7DA;
+                       dw CODE_83C80B                       ;83C7D0|        |83C80B;
+                       dw CODE_83C821                       ;83C7D2|        |83C821;
+                       dw CODE_83C861                       ;83C7D4|        |83C861;
+                       dw CODE_83C871                       ;83C7D6|        |83C871;
+                       dw CODE_83C881                       ;83C7D8|        |83C881;
  
-         DATA8_83C7CE:
-                       db $DA,$C7,$0B,$C8,$21,$C8,$61,$C8   ;83C7CE|        |      ;
-                       db $71,$C8,$81,$C8                   ;83C7D6|        |      ;
+          CODE_83C7DA:
                        JSR.W CODE_FN_83C340                 ;83C7DA|2040C3  |83C340;
                        LDA.W #$0000                         ;83C7DD|A90000  |      ;
                        STA.L $7E96DB                        ;83C7E0|8FDB967E|7E96DB;
@@ -8387,6 +8616,8 @@ Options_DoVSLevelHard:
  
                     ++ STA.L $7E961E                        ;83C806|8F1E967E|7E961E;
                        RTS                                  ;83C80A|60      |      ;
+ 
+          CODE_83C80B:
                        INC.W $1A6E                          ;83C80B|EE6E1A  |831A6E;
                        LDA.L Game1P_Selection               ;83C80E|AF2A957E|7E952A;
                        ASL A                                ;83C812|0A      |      ;
@@ -8396,7 +8627,11 @@ Options_DoVSLevelHard:
           CODE_83C817:
                        JSR.W CODE_FN_8388FF                 ;83C817|20FF88  |8388FF;
                        RTS                                  ;83C81A|60      |      ;
-                       db $5C,$A5,$6F,$A5,$82,$A5           ;83C81B|        |      ;
+                       dw CODE_83A55C                       ;83C81B|        |83A55C;
+                       dw CODE_83A56F                       ;83C81D|        |83A56F;
+                       dw CODE_83A582                       ;83C81F|        |83A582;
+ 
+          CODE_83C821:
                        JSR.W CODE_FN_8388FF                 ;83C821|20FF88  |8388FF;
                        LDA.L $7E998D                        ;83C824|AF8D997E|7E998D;
                        BNE +                                ;83C828|D01B    |83C845;
@@ -8414,16 +8649,26 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838CB5                 ;83C842|20B58C  |838CB5;
  
                      + RTS                                  ;83C845|60      |      ;
-                       db $4C,$C8,$53,$C8,$5A,$C8           ;83C846|        |      ;
+                       dw CODE_83C84C                       ;83C846|        |83C84C;
+                       dw CODE_83C853                       ;83C848|        |83C853;
+                       dw CODE_83C85A                       ;83C84A|        |83C85A;
+ 
+          CODE_83C84C:
                        JSR.W CODE_FN_83A2E1                 ;83C84C|20E1A2  |83A2E1;
                        JSR.W CODE_FN_83A5C1                 ;83C84F|20C1A5  |83A5C1;
                        RTS                                  ;83C852|60      |      ;
+ 
+          CODE_83C853:
                        JSR.W CODE_FN_83A318                 ;83C853|2018A3  |83A318;
                        JSR.W CODE_FN_83A5CD                 ;83C856|20CDA5  |83A5CD;
                        RTS                                  ;83C859|60      |      ;
+ 
+          CODE_83C85A:
                        JSR.W CODE_FN_83A32E                 ;83C85A|202EA3  |83A32E;
                        JSR.W CODE_FN_83A5D9                 ;83C85D|20D9A5  |83A5D9;
                        RTS                                  ;83C860|60      |      ;
+ 
+          CODE_83C861:
                        JSR.W CODE_FN_838CB5                 ;83C861|20B58C  |838CB5;
                        LDA.L $7E998D                        ;83C864|AF8D997E|7E998D;
                        BEQ +                                ;83C868|F003    |83C86D;
@@ -8433,12 +8678,16 @@ Options_DoVSLevelHard:
  
        CODE_JP_83C870:
                        RTS                                  ;83C870|60      |      ;
+ 
+          CODE_83C871:
                        INC.W $1A6E                          ;83C871|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A058                 ;83C874|2058A0  |83A058;
                        JSR.W CODE_FN_83A475                 ;83C877|2075A4  |83A475;
                        JSR.W CODE_FN_83A63F                 ;83C87A|203FA6  |83A63F;
                        JSR.W CODE_FN_838ABD                 ;83C87D|20BD8A  |838ABD;
                        RTS                                  ;83C880|60      |      ;
+ 
+          CODE_83C881:
                        JSR.W CODE_FN_838ABD                 ;83C881|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C884|AF8D997E|7E998D;
                        BNE +                                ;83C888|D015    |83C89F;
@@ -8484,17 +8733,20 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C8E4|AD6E1A  |831A6E;
                        ASL A                                ;83C8E7|0A      |      ;
                        TAX                                  ;83C8E8|AA      |      ;
-                       JSR.W (DATA8_83C8ED,X)               ;83C8E9|FCEDC8  |83C8ED;
+                       JSR.W (PTR16_83C8ED,X)               ;83C8E9|FCEDC8  |83C8ED;
                        RTS                                  ;83C8EC|60      |      ;
- 
-         DATA8_83C8ED:
-                       db $F3,$C8,$FD,$C8,$1F,$C9           ;83C8ED|        |      ;
+         PTR16_83C8ED:
+                       dw CODE_FN_83C8F3                    ;83C8ED|        |83C8F3;
+                       dw CODE_83C8FD                       ;83C8EF|        |83C8FD;
+                       dw CODE_83C91F                       ;83C8F1|        |83C91F;
  
        CODE_FN_83C8F3:
                        INC.W $1A6E                          ;83C8F3|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A723                 ;83C8F6|2023A7  |83A723;
                        JSR.W CODE_FN_838BF1                 ;83C8F9|20F18B  |838BF1;
                        RTS                                  ;83C8FC|60      |      ;
+ 
+          CODE_83C8FD:
                        JSR.W CODE_FN_838BF1                 ;83C8FD|20F18B  |838BF1;
                        LDA.L $7E998D                        ;83C900|AF8D997E|7E998D;
                        BEQ +                                ;83C904|F003    |83C909;
@@ -8510,6 +8762,8 @@ Options_DoVSLevelHard:
  
        CODE_JP_83C91E:
                        RTS                                  ;83C91E|60      |      ;
+ 
+          CODE_83C91F:
                        JSR.W CODE_FN_838ABD                 ;83C91F|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83C922|AF8D997E|7E998D;
                        BNE +                                ;83C926|D00C    |83C934;
@@ -8524,15 +8778,21 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83C935|AD6E1A  |831A6E;
                        ASL A                                ;83C938|0A      |      ;
                        TAX                                  ;83C939|AA      |      ;
-                       JSR.W (DATA8_83C93E,X)               ;83C93A|FC3EC9  |83C93E;
+                       JSR.W (PTR16_83C93E,X)               ;83C93A|FC3EC9  |83C93E;
                        RTS                                  ;83C93D|60      |      ;
+         PTR16_83C93E:
+                       dw CODE_83C946                       ;83C93E|        |83C946;
+                       dw CODE_83C950                       ;83C940|        |83C950;
+                       dw CODE_83C969                       ;83C942|        |83C969;
+                       dw CODE_83C976                       ;83C944|        |83C976;
  
-         DATA8_83C93E:
-                       db $46,$C9,$50,$C9,$69,$C9,$76,$C9   ;83C93E|        |      ;
+          CODE_83C946:
                        JSR.W CODE_FN_83C8F3                 ;83C946|20F3C8  |83C8F3;
                        LDA.W #$0002                         ;83C949|A90200  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83C94C|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83C94C|200D9F  |839F0D;
                        RTS                                  ;83C94F|60      |      ;
+ 
+          CODE_83C950:
                        JSR.W CODE_FN_838BF1                 ;83C950|20F18B  |838BF1;
                        LDA.L $7E998D                        ;83C953|AF8D997E|7E998D;
                        BNE +                                ;83C957|D00F    |83C968;
@@ -8543,11 +8803,15 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83C965|2058A0  |83A058;
  
                      + RTS                                  ;83C968|60      |      ;
+ 
+          CODE_83C969:
                        INC.W $1A6E                          ;83C969|EE6E1A  |831A6E;
                        LDX.W #$0180                         ;83C96C|A28001  |      ;
                        JSR.W CODE_FN_839FEE                 ;83C96F|20EE9F  |839FEE;
                        JSR.W CODE_FN_83A058                 ;83C972|2058A0  |83A058;
                        RTS                                  ;83C975|60      |      ;
+ 
+          CODE_83C976:
                        JSR.W CODE_FN_839FB6                 ;83C976|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83C979|2058A0  |83A058;
                        LDA.L Game1P_Selection               ;83C97C|AF2A957E|7E952A;
@@ -8570,25 +8834,31 @@ Options_DoVSLevelHard:
           CODE_83C9A2:
                        JSR.W (CODE_83C9A2,X)                ;83C9A2|FCA2C9  |83C9A2;
                        RTS                                  ;83C9A5|60      |      ;
-                       db $AC,$C9,$EE,$C9,$17,$CA           ;83C9A6|        |      ;
+                       dw CODE_83C9AC                       ;83C9A6|        |83C9AC;
+                       dw CODE_83C9EE                       ;83C9A8|        |83C9EE;
+                       dw CODE_83CA17                       ;83C9AA|        |83CA17;
+ 
+          CODE_83C9AC:
                        LDA.L StageClear_MenuSelection       ;83C9AC|AF2E957E|7E952E;
                        ASL A                                ;83C9B0|0A      |      ;
                        TAX                                  ;83C9B1|AA      |      ;
-                       JSR.W (DATA8_83C9B6,X)               ;83C9B2|FCB6C9  |83C9B6;
+                       JSR.W (PTR16_83C9B6,X)               ;83C9B2|FCB6C9  |83C9B6;
                        RTS                                  ;83C9B5|60      |      ;
+         PTR16_83C9B6:
+                       dw CODE_83C9CE                       ;83C9B6|        |83C9CE;
+                       dw CODE_83C9BA                       ;83C9B8|        |83C9BA;
  
-         DATA8_83C9B6:
-                       db $CE,$C9                           ;83C9B6|        |      ;
-                       db $BA,$C9                           ;83C9B8|        |      ;
- 
-                     - LDA.W #$0000                         ;83C9BA|A90000  |      ;
+          CODE_83C9BA:
+                       LDA.W #$0000                         ;83C9BA|A90000  |      ;
                        STA.L $7E943A                        ;83C9BD|8F3A947E|7E943A;
                        STA.L $7E94E6                        ;83C9C1|8FE6947E|7E94E6;
                        STA.L $7E961E                        ;83C9C5|8F1E967E|7E961E;
                        JSL.L InitStageClear                 ;83C9C9|2207AA87|87AA07;
                        RTS                                  ;83C9CD|60      |      ;
+ 
+          CODE_83C9CE:
                        LDA.L $7E94E6                        ;83C9CE|AFE6947E|7E94E6;
-                       BEQ -                                ;83C9D2|F0E6    |83C9BA;
+                       BEQ CODE_83C9BA                      ;83C9D2|F0E6    |83C9BA;
                        LDA.L $7E94F6                        ;83C9D4|AFF6947E|7E94F6;
                        BEQ +                                ;83C9D8|F013    |83C9ED;
                        LDA.L $7E94F4                        ;83C9DA|AFF4947E|7E94F4;
@@ -8598,46 +8868,55 @@ Options_DoVSLevelHard:
                        db $94,$7E                           ;83C9EB|        |00007E;
  
                      + RTS                                  ;83C9ED|60      |      ;
+ 
+          CODE_83C9EE:
                        LDA.L Puzzle_MenuSelection           ;83C9EE|AF30957E|7E9530;
                        ASL A                                ;83C9F2|0A      |      ;
                        TAX                                  ;83C9F3|AA      |      ;
-                       JSR.W (DATA8_83C9F8,X)               ;83C9F4|FCF8C9  |83C9F8;
+                       JSR.W (PTR16_83C9F8,X)               ;83C9F4|FCF8C9  |83C9F8;
                        RTS                                  ;83C9F7|60      |      ;
+         PTR16_83C9F8:
+                       dw CODE_83CA10                       ;83C9F8|        |83CA10;
+                       dw CODE_83C9FC                       ;83C9FA|        |83C9FC;
  
-         DATA8_83C9F8:
-                       db $10,$CA                           ;83C9F8|        |      ;
-                       db $FC,$C9                           ;83C9FA|        |83A9C9;
- 
-                     - LDA.W #$0000                         ;83C9FC|A90000  |      ;
+          CODE_83C9FC:
+                       LDA.W #$0000                         ;83C9FC|A90000  |      ;
                        STA.L $7E943C                        ;83C9FF|8F3C947E|7E943C;
                        STA.L $7E94D6                        ;83CA03|8FD6947E|7E94D6;
                        STA.L $7E961E                        ;83CA07|8F1E967E|7E961E;
                        JSL.L CODE_FL_87AB2D                 ;83CA0B|222DAB87|87AB2D;
                        RTS                                  ;83CA0F|60      |      ;
+ 
+          CODE_83CA10:
                        LDA.L $7E94D6                        ;83CA10|AFD6947E|7E94D6;
-                       BEQ -                                ;83CA14|F0E6    |83C9FC;
+                       BEQ CODE_83C9FC                      ;83CA14|F0E6    |83C9FC;
                        RTS                                  ;83CA16|60      |      ;
+ 
+          CODE_83CA17:
                        LDA.L VS_MenuSelection               ;83CA17|AF3C957E|7E953C;
                        ASL A                                ;83CA1B|0A      |      ;
                        TAX                                  ;83CA1C|AA      |      ;
-                       JSR.W (DATA8_83CA21,X)               ;83CA1D|FC21CA  |83CA21;
+                       JSR.W (PTR16_83CA21,X)               ;83CA1D|FC21CA  |83CA21;
                        RTS                                  ;83CA20|60      |      ;
+         PTR16_83CA21:
+                       dw CODE_83CA25                       ;83CA21|        |83CA25;
+                       dw CODE_83CA41                       ;83CA23|        |83CA41;
  
-         DATA8_83CA21:
-                       db $25,$CA,$41,$CA                   ;83CA21|        |      ;
+          CODE_83CA25:
                        LDA.L $7E9526                        ;83CA25|AF26957E|7E9526;
-                       BEQ +                                ;83CA29|F016    |83CA41;
+                       BEQ CODE_83CA41                      ;83CA29|F016    |83CA41;
                        STA.W $1A82                          ;83CA2B|8D821A  |001A82;
                        JSL.L CODE_FL_838382                 ;83CA2E|22828383|838382;
                        JSL.L CODE_FL_86F1CE                 ;83CA32|22CEF186|86F1CE;
                        JSL.L CODE_FL_86F276                 ;83CA36|2276F286|86F276;
                        LDA.W $0338                          ;83CA3A|AD3803  |000338;
-                       BEQ ++                               ;83CA3D|F001    |83CA40;
+                       BEQ +                                ;83CA3D|F001    |83CA40;
                        db $00                               ;83CA3F|        |      ;
  
-                    ++ RTS                                  ;83CA40|60      |      ;
+                     + RTS                                  ;83CA40|60      |      ;
  
-                     + LDA.W #$0000                         ;83CA41|A90000  |      ;
+          CODE_83CA41:
+                       LDA.W #$0000                         ;83CA41|A90000  |      ;
                        STA.L $7E9526                        ;83CA44|8F26957E|7E9526;
                        STA.L $7E961E                        ;83CA48|8F1E967E|7E961E;
                        STA.W $1A82                          ;83CA4C|8D821A  |831A82;
@@ -8647,18 +8926,25 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CA50|AD6E1A  |831A6E;
                        ASL A                                ;83CA53|0A      |      ;
                        TAX                                  ;83CA54|AA      |      ;
-                       JSR.W (DATA8_83CA59,X)               ;83CA55|FC59CA  |83CA59;
+                       JSR.W (PTR16_83CA59,X)               ;83CA55|FC59CA  |83CA59;
                        RTS                                  ;83CA58|60      |      ;
+         PTR16_83CA59:
+                       dw CODE_83CA65                       ;83CA59|        |83CA65;
+                       dw CODE_83CA75                       ;83CA5B|        |83CA75;
+                       dw CODE_83CAAA                       ;83CA5D|        |83CAAA;
+                       dw CODE_83CABA                       ;83CA5F|        |83CABA;
+                       dw CODE_83CAC4                       ;83CA61|        |83CAC4;
+                       dw CODE_83CAD3                       ;83CA63|        |83CAD3;
  
-         DATA8_83CA59:
-                       db $65,$CA,$75,$CA,$AA,$CA,$BA,$CA   ;83CA59|        |      ;
-                       db $C4,$CA,$D3,$CA                   ;83CA61|        |      ;
+          CODE_83CA65:
                        INC.W $1A6E                          ;83CA65|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A595                 ;83CA68|2095A5  |83A595;
                        JSR.W CODE_FN_8388FF                 ;83CA6B|20FF88  |8388FF;
                        LDA.W #$0001                         ;83CA6E|A90100  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83CA71|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83CA71|200D9F  |839F0D;
                        RTS                                  ;83CA74|60      |      ;
+ 
+          CODE_83CA75:
                        JSR.W CODE_FN_8388FF                 ;83CA75|20FF88  |8388FF;
                        LDA.L $7E998D                        ;83CA78|AF8D997E|7E998D;
                        BEQ +                                ;83CA7C|F003    |83CA81;
@@ -8681,7 +8967,11 @@ Options_DoVSLevelHard:
  
        UNREACH_83CAA0:
                        db $00,$00,$00,$00                   ;83CAA0|        |      ;
-                       db $E1,$A2,$18,$A3,$2E,$A3           ;83CAA4|        |      ;
+                       dw CODE_FN_83A2E1                    ;83CAA4|        |83A2E1;
+                       dw CODE_FN_83A318                    ;83CAA6|        |83A318;
+                       dw CODE_FN_83A32E                    ;83CAA8|        |83A32E;
+ 
+          CODE_83CAAA:
                        JSR.W CODE_FN_838CB5                 ;83CAAA|20B58C  |838CB5;
                        LDA.L $7E998D                        ;83CAAD|AF8D997E|7E998D;
                        BEQ +                                ;83CAB1|F003    |83CAB6;
@@ -8691,15 +8981,21 @@ Options_DoVSLevelHard:
  
        CODE_JP_83CAB9:
                        RTS                                  ;83CAB9|60      |      ;
+ 
+          CODE_83CABA:
                        INC.W $1A6E                          ;83CABA|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A4C6                 ;83CABD|20C6A4  |83A4C6;
                        JSR.W CODE_FN_83A058                 ;83CAC0|2058A0  |83A058;
                        RTS                                  ;83CAC3|60      |      ;
+ 
+          CODE_83CAC4:
                        INC.W $1A6E                          ;83CAC4|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A4E4                 ;83CAC7|20E4A4  |83A4E4;
                        JSR.W CODE_FN_83A058                 ;83CACA|2058A0  |83A058;
                        JSR.W CODE_FN_83A65D                 ;83CACD|205DA6  |83A65D;
                        JSR.W CODE_FN_838ABD                 ;83CAD0|20BD8A  |838ABD;
+ 
+          CODE_83CAD3:
                        JSR.W CODE_FN_838ABD                 ;83CAD3|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83CAD6|AF8D997E|7E998D;
                        BNE +                                ;83CADA|D024    |83CB00;
@@ -8723,11 +9019,13 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CB01|AD6E1A  |831A6E;
                        ASL A                                ;83CB04|0A      |      ;
                        TAX                                  ;83CB05|AA      |      ;
-                       JSR.W (DATA8_83CB0A,X)               ;83CB06|FC0ACB  |83CB0A;
+                       JSR.W (PTR16_83CB0A,X)               ;83CB06|FC0ACB  |83CB0A;
                        RTS                                  ;83CB09|60      |      ;
+         PTR16_83CB0A:
+                       dw CODE_83CB0E                       ;83CB0A|        |83CB0E;
+                       dw CODE_83CD0A                       ;83CB0C|        |83CD0A;
  
-         DATA8_83CB0A:
-                       db $0E,$CB,$0A,$CD                   ;83CB0A|        |      ;
+          CODE_83CB0E:
                        LDA.W #$000D                         ;83CB0E|A90D00  |      ;
                        STA.L $7E95D8                        ;83CB11|8FD8957E|7E95D8;
                        LDA.W #$000D                         ;83CB15|A90D00  |      ;
@@ -8817,11 +9115,12 @@ Options_DoVSLevelHard:
                      + LDA.L $7E96E7                        ;83CBF1|AFE7967E|7E96E7;
                        ASL A                                ;83CBF5|0A      |      ;
                        TAX                                  ;83CBF6|AA      |      ;
-                       JSR.W (DATA8_83CBFD,X)               ;83CBF7|FCFDCB  |83CBFD;
+                       JSR.W (PTR16_83CBFD,X)               ;83CBF7|FCFDCB  |83CBFD;
                        JMP.W CODE_JP_83CD00                 ;83CBFA|4C00CD  |83CD00;
- 
-         DATA8_83CBFD:
-                       db $03,$CC,$0A,$CC,$24,$CC           ;83CBFD|        |      ;
+         PTR16_83CBFD:
+                       dw CODE_FN_83CC03                    ;83CBFD|        |83CC03;
+                       dw CODE_FN_83CC0A                    ;83CBFF|        |83CC0A;
+                       dw CODE_83CC24                       ;83CC01|        |83CC24;
  
        CODE_FN_83CC03:
                        INC.W Game_State_State               ;83CC03|EEA202  |8302A2;
@@ -8841,6 +9140,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8384CD                 ;83CC20|20CD84  |8384CD;
  
                      + RTS                                  ;83CC23|60      |      ;
+ 
+          CODE_83CC24:
                        LDA.L Game1P_Selection               ;83CC24|AF2A957E|7E952A;
                        CMP.W #$0004                         ;83CC28|C90400  |      ;
                        BNE +                                ;83CC2B|D025    |83CC52;
@@ -8932,6 +9233,8 @@ Options_DoVSLevelHard:
                        JSR.W Menu_DrawPasswordUnderscore    ;83CD03|201698  |839816;
                        JSR.W CODE_FN_83AB9F                 ;83CD06|209FAB  |83AB9F;
                        RTS                                  ;83CD09|60      |      ;
+ 
+          CODE_83CD0A:
                        LDA.B $B7                            ;83CD0A|A5B7    |0000B7;
                        BIT.W #$9080                         ;83CD0C|898090  |      ;
                        BEQ +                                ;83CD0F|F003    |83CD14;
@@ -8943,20 +9246,24 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CD15|AD6E1A  |831A6E;
                        ASL A                                ;83CD18|0A      |      ;
                        TAX                                  ;83CD19|AA      |      ;
-                       JSR.W (DATA8_83CD1E,X)               ;83CD1A|FC1ECD  |83CD1E;
+                       JSR.W (PTR16_83CD1E,X)               ;83CD1A|FC1ECD  |83CD1E;
                        RTS                                  ;83CD1D|60      |      ;
- 
-         DATA8_83CD1E:
-                       db $28,$CD,$38,$CD,$54,$CD,$64,$CD   ;83CD1E|        |      ;
-                       db $74,$CD                           ;83CD26|        |      ;
+         PTR16_83CD1E:
+                       dw CODE_FN_83CD28                    ;83CD1E|        |83CD28;
+                       dw CODE_83CD38                       ;83CD20|        |83CD38;
+                       dw CODE_83CD54                       ;83CD22|        |83CD54;
+                       dw CODE_83CD64                       ;83CD24|        |83CD64;
+                       dw CODE_83CD74                       ;83CD26|        |83CD74;
  
        CODE_FN_83CD28:
                        INC.W $1A6E                          ;83CD28|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A741                 ;83CD2B|2041A7  |83A741;
                        JSR.W CODE_FN_838BF1                 ;83CD2E|20F18B  |838BF1;
                        LDA.W #$0000                         ;83CD31|A90000  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83CD34|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83CD34|200D9F  |839F0D;
                        RTS                                  ;83CD37|60      |      ;
+ 
+          CODE_83CD38:
                        JSR.W CODE_FN_838BF1                 ;83CD38|20F18B  |838BF1;
                        LDA.L $7E998D                        ;83CD3B|AF8D997E|7E998D;
                        BEQ +                                ;83CD3F|F003    |83CD44;
@@ -8970,18 +9277,24 @@ Options_DoVSLevelHard:
  
        CODE_JP_83CD53:
                        RTS                                  ;83CD53|60      |      ;
+ 
+          CODE_83CD54:
                        INC.W $1A6E                          ;83CD54|EE6E1A  |831A6E;
                        LDX.W #$03C0                         ;83CD57|A2C003  |      ;
                        JSR.W CODE_FN_839FEE                 ;83CD5A|20EE9F  |839FEE;
                        JSR.W CODE_FN_83A344                 ;83CD5D|2044A3  |83A344;
                        JSR.W CODE_FN_83A058                 ;83CD60|2058A0  |83A058;
                        RTS                                  ;83CD63|60      |      ;
+ 
+          CODE_83CD64:
                        INC.W $1A6E                          ;83CD64|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A475                 ;83CD67|2075A4  |83A475;
                        JSR.W CODE_FN_83A058                 ;83CD6A|2058A0  |83A058;
                        JSR.W CODE_FN_83A6D5                 ;83CD6D|20D5A6  |83A6D5;
                        JSR.W CODE_FN_838ABD                 ;83CD70|20BD8A  |838ABD;
                        RTS                                  ;83CD73|60      |      ;
+ 
+          CODE_83CD74:
                        JSR.W CODE_FN_838ABD                 ;83CD74|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83CD77|AF8D997E|7E998D;
                        BNE +                                ;83CD7B|D024    |83CDA1;
@@ -9010,16 +9323,23 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CDA7|AD6E1A  |831A6E;
                        ASL A                                ;83CDAA|0A      |      ;
                        TAX                                  ;83CDAB|AA      |      ;
-                       JSR.W (DATA8_83CDB0,X)               ;83CDAC|FCB0CD  |83CDB0;
+                       JSR.W (PTR16_83CDB0,X)               ;83CDAC|FCB0CD  |83CDB0;
                        RTS                                  ;83CDAF|60      |      ;
+         PTR16_83CDB0:
+                       dw CODE_83CDBC                       ;83CDB0|        |83CDBC;
+                       dw CODE_83CD38                       ;83CDB2|        |83CD38;
+                       dw CODE_83CD54                       ;83CDB4|        |83CD54;
+                       dw CODE_83CDC6                       ;83CDB6|        |83CDC6;
+                       dw CODE_83CDE0                       ;83CDB8|        |83CDE0;
+                       dw CODE_83CDF0                       ;83CDBA|        |83CDF0;
  
-         DATA8_83CDB0:
-                       db $BC,$CD,$38,$CD,$54,$CD,$C6,$CD   ;83CDB0|        |      ;
-                       db $E0,$CD,$F0,$CD                   ;83CDB8|        |      ;
+          CODE_83CDBC:
                        JSR.W CODE_FN_83CD28                 ;83CDBC|2028CD  |83CD28;
                        LDA.W #$0002                         ;83CDBF|A90200  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83CDC2|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83CDC2|200D9F  |839F0D;
                        RTS                                  ;83CDC5|60      |      ;
+ 
+          CODE_83CDC6:
                        INC.W $1A6E                          ;83CDC6|EE6E1A  |831A6E;
                        LDX.W #$0300                         ;83CDC9|A20003  |      ;
                        JSR.W CODE_FN_839FEE                 ;83CDCC|20EE9F  |839FEE;
@@ -9031,13 +9351,18 @@ Options_DoVSLevelHard:
           CODE_83CDD8:
                        JSR.W CODE_FN_83A058                 ;83CDD8|2058A0  |83A058;
                        RTS                                  ;83CDDB|60      |      ;
-                       db $E1,$A2,$18,$A3                   ;83CDDC|        |      ;
+                       dw CODE_FN_83A2E1                    ;83CDDC|        |83A2E1;
+                       dw CODE_FN_83A318                    ;83CDDE|        |83A318;
+ 
+          CODE_83CDE0:
                        INC.W $1A6E                          ;83CDE0|EE6E1A  |831A6E;
                        LDX.W #$0240                         ;83CDE3|A24002  |      ;
                        JSR.W CODE_FN_839FEE                 ;83CDE6|20EE9F  |839FEE;
                        JSR.W CODE_FN_83A262                 ;83CDE9|2062A2  |83A262;
                        JSR.W CODE_FN_83A058                 ;83CDEC|2058A0  |83A058;
                        RTS                                  ;83CDEF|60      |      ;
+ 
+          CODE_83CDF0:
                        JSR.W CODE_FN_839FB6                 ;83CDF0|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83CDF3|2058A0  |83A058;
                        INC.W Game_State                     ;83CDF6|EEA002  |8302A0;
@@ -9149,15 +9474,21 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CEF8|AD6E1A  |831A6E;
                        ASL A                                ;83CEFB|0A      |      ;
                        TAX                                  ;83CEFC|AA      |      ;
-                       JSR.W (DATA8_83CF01,X)               ;83CEFD|FC01CF  |83CF01;
+                       JSR.W (PTR16_83CF01,X)               ;83CEFD|FC01CF  |83CF01;
                        RTS                                  ;83CF00|60      |      ;
+         PTR16_83CF01:
+                       dw CODE_83CF09                       ;83CF01|        |83CF09;
+                       dw CODE_838658                       ;83CF03|        |838658;
+                       dw CODE_838658                       ;83CF05|        |838658;
+                       dw CODE_83CF13                       ;83CF07|        |83CF13;
  
-         DATA8_83CF01:
-                       db $09,$CF,$58,$86,$58,$86,$13,$CF   ;83CF01|        |      ;
+          CODE_83CF09:
                        INC.W $1A6E                          ;83CF09|EE6E1A  |831A6E;
                        LDA.W #$0003                         ;83CF0C|A90300  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83CF0F|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83CF0F|200D9F  |839F0D;
                        RTS                                  ;83CF12|60      |      ;
+ 
+          CODE_83CF13:
                        INC.W Game_State_State               ;83CF13|EEA202  |8302A2;
                        STZ.W $1A6E                          ;83CF16|9C6E1A  |831A6E;
                        JSR.W CODE_FN_8384DB                 ;83CF19|20DB84  |8384DB;
@@ -9165,7 +9496,7 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8384F3                 ;83CF1F|20F384  |8384F3;
                        JSR.W CODE_FN_8384FF                 ;83CF22|20FF84  |8384FF;
                        JSR.W CODE_FN_83850B                 ;83CF25|200B85  |83850B;
-                       JSL.L CODE_FL_80BB2D                 ;83CF28|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83CF28|222DBB80|80BB2D;
                        dl DATA8_93CC1F                      ;83CF2C|        |93CC1F;
                        dl $7E2000                           ;83CF2F|        |7E2000;
                        JSR.W CODE_FN_83A058                 ;83CF32|2058A0  |83A058;
@@ -9185,18 +9516,24 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83CF49|AD6E1A  |831A6E;
                        ASL A                                ;83CF4C|0A      |      ;
                        TAX                                  ;83CF4D|AA      |      ;
-                       JSR.W (DATA8_83CF52,X)               ;83CF4E|FC52CF  |83CF52;
+                       JSR.W (PTR16_83CF52,X)               ;83CF4E|FC52CF  |83CF52;
                        RTS                                  ;83CF51|60      |      ;
+         PTR16_83CF52:
+                       dw CODE_83CF5C                       ;83CF52|        |83CF5C;
+                       dw CODE_838658                       ;83CF54|        |838658;
+                       dw CODE_838658                       ;83CF56|        |838658;
+                       dw CODE_838658                       ;83CF58|        |838658;
+                       dw CODE_83CF6C                       ;83CF5A|        |83CF6C;
  
-         DATA8_83CF52:
-                       db $5C,$CF,$58,$86,$58,$86,$58,$86   ;83CF52|        |      ;
-                       db $6C,$CF                           ;83CF5A|        |      ;
+          CODE_83CF5C:
                        INC.W $1A6E                          ;83CF5C|EE6E1A  |831A6E;
                        JSR.W CODE_FN_839FB6                 ;83CF5F|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83CF62|2058A0  |83A058;
                        LDA.W #$0000                         ;83CF65|A90000  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83CF68|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83CF68|200D9F  |839F0D;
                        RTS                                  ;83CF6B|60      |      ;
+ 
+          CODE_83CF6C:
                        LDA.W #$0020                         ;83CF6C|A92000  |      ;
                        STA.W Game_State_State               ;83CF6F|8DA202  |8302A2;
                        LDA.W #$0002                         ;83CF72|A90200  |      ;
@@ -9221,15 +9558,23 @@ Options_DoVSLevelHard:
                        LDA.L Options_Selection              ;83CFA1|AF34957E|7E9534;
                        ASL A                                ;83CFA5|0A      |      ;
                        TAX                                  ;83CFA6|AA      |      ;
-                       JSR.W (DATA8_83CFB6,X)               ;83CFA7|FCB6CF  |83CFB6;
+                       JSR.W (PTR16_83CFB6,X)               ;83CFA7|FCB6CF  |83CFB6;
                        JSR.W CODE_FN_83A058                 ;83CFAA|2058A0  |83A058;
+ 
+          CODE_83CFAD:
                        RTS                                  ;83CFAD|60      |      ;
                        db $29,$29,$29,$29,$0C,$2C,$29,$2A   ;83CFAE|        |      ;
+         PTR16_83CFB6:
+                       dw CODE_83CFC6                       ;83CFB6|        |83CFC6;
+                       dw CODE_83CFE3                       ;83CFB8|        |83CFE3;
+                       dw CODE_83D002                       ;83CFBA|        |83D002;
+                       dw CODE_83D224                       ;83CFBC|        |83D224;
+                       dw CODE_83D2BE                       ;83CFBE|        |83D2BE;
+                       dw CODE_83CFAD                       ;83CFC0|        |83CFAD;
+                       dw CODE_83D51B                       ;83CFC2|        |83D51B;
+                       dw CODE_83CFAD                       ;83CFC4|        |83CFAD;
  
-         DATA8_83CFB6:
-                       db $C6,$CF,$E3,$CF,$02,$D0,$24,$D2   ;83CFB6|        |      ;
-                       db $BE,$D2,$AD,$CF,$1B,$D5           ;83CFBE|        |      ;
-                       db $AD,$CF                           ;83CFC4|        |00A9CF;
+          CODE_83CFC6:
                        LDA.W #$0003                         ;83CFC6|A90300  |      ;
                        STA.B $B1                            ;83CFC9|85B1    |0000B1;
                        LDX.W #$0000                         ;83CFCB|A20000  |      ;
@@ -9242,6 +9587,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W Options_DoLanguage             ;83CFDF|20C7BB  |83BBC7;
                        RTS                                  ;83CFE2|60      |      ;
+ 
+          CODE_83CFE3:
                        LDA.W #$0003                         ;83CFE3|A90300  |      ;
                        STA.B $B1                            ;83CFE6|85B1    |0000B1;
                        LDX.W #$0000                         ;83CFE8|A20000  |      ;
@@ -9254,6 +9601,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W Options_DoMatchPoints          ;83CFFE|20D7BB  |83BBD7;
                        RTS                                  ;83D001|60      |      ;
+ 
+          CODE_83D002:
                        LDA.L $7E9540                        ;83D002|AF40957E|7E9540;
                        BEQ +                                ;83D006|F021    |83D029;
                        LDA.L Sound_Test_Selection           ;83D008|AF3E957E|7E953E;
@@ -9350,6 +9699,8 @@ Options_DoVSLevelHard:
                        db $36,$38,$12,$12,$00,$00,$00,$00   ;83D211|        |      ;
                        db $00,$00,$00,$00,$3A,$3A,$3A,$00   ;83D219|        |      ;
                        db $00,$3C,$3D                       ;83D221|        |      ;
+ 
+          CODE_83D224:
                        LDA.W #$0001                         ;83D224|A90100  |      ;
                        STA.B $B1                            ;83D227|85B1    |0000B1;
                        LDX.W #$0000                         ;83D229|A20000  |      ;
@@ -9393,6 +9744,8 @@ Options_DoVSLevelHard:
                        db $D1,$13,$D2,$14,$D1,$04,$D2,$15   ;83D2AB|        |      ;
                        db $D1,$16,$D1,$17,$D1,$18,$D1,$19   ;83D2B3|        |000016;
                        db $D1,$1A,$D1                       ;83D2BB|        |00001A;
+ 
+          CODE_83D2BE:
                        LDX.W #$0000                         ;83D2BE|A20000  |      ;
                        LDA.L Options_Character_Selection,X  ;83D2C1|BF45937E|7E9345;
                        LDY.W #$D2D1                         ;83D2C5|A0D1D2  |      ;
@@ -9408,11 +9761,15 @@ Options_DoVSLevelHard:
                        LDA.L $001A6E                        ;83D2D8|AF6E1A00|001A6E;
                        ASL A                                ;83D2DC|0A      |      ;
                        TAX                                  ;83D2DD|AA      |      ;
-                       JSR.W (DATA8_83D2E2,X)               ;83D2DE|FCE2D2  |83D2E2;
+                       JSR.W (PTR16_83D2E2,X)               ;83D2DE|FCE2D2  |83D2E2;
                        RTS                                  ;83D2E1|60      |      ;
+         PTR16_83D2E2:
+                       dw CODE_83D2EA                       ;83D2E2|        |83D2EA;
+                       dw CODE_83D324                       ;83D2E4|        |83D324;
+                       dw CODE_83D36B                       ;83D2E6|        |83D36B;
+                       dw CODE_83D39F                       ;83D2E8|        |83D39F;
  
-         DATA8_83D2E2:
-                       db $EA,$D2,$24,$D3,$6B,$D3,$9F,$D3   ;83D2E2|        |      ;
+          CODE_83D2EA:
                        INC.W $1A6E                          ;83D2EA|EE6E1A  |831A6E;
                        LDA.L Options_Selection              ;83D2ED|AF34957E|7E9534;
                        ASL A                                ;83D2F1|0A      |      ;
@@ -9420,8 +9777,10 @@ Options_DoVSLevelHard:
                        JSR.W (LOOSE_OP_83D2F0,X)            ;83D2F3|FCF0D2  |83D2F0;
                        JSR.W CODE_FN_8388FF                 ;83D2F6|20FF88  |8388FF;
                        RTS                                  ;83D2F9|60      |      ;
-                       db $FE,$D2                           ;83D2FA|        |      ;
-                       db $11,$D3                           ;83D2FC|        |0000D3;
+                       dw CODE_83D2FE                       ;83D2FA|        |83D2FE;
+                       dw CODE_83D311                       ;83D2FC|        |83D311;
+ 
+          CODE_83D2FE:
                        LDY.W #$D306                         ;83D2FE|A006D3  |      ;
                        JSR.W CODE_FN_8388AE                 ;83D301|20AE88  |8388AE;
                        BRA +                                ;83D304|800A    |83D310;
@@ -9429,9 +9788,17 @@ Options_DoVSLevelHard:
                        db $02,$00                           ;83D30E|        |      ;
  
                      + RTS                                  ;83D310|60      |      ;
-                       db $A0,$19,$D3,$20,$AE,$88,$80,$0A   ;83D311|        |      ;
-                       db $4D,$00,$98,$00,$9B,$00,$06,$00   ;83D319|        |009800;
-                       db $01,$00,$60                       ;83D321|        |000000;
+ 
+          CODE_83D311:
+                       LDY.W #$D319                         ;83D311|A019D3  |      ;
+                       JSR.W CODE_FN_8388AE                 ;83D314|20AE88  |8388AE;
+                       BRA +                                ;83D317|800A    |83D323;
+                       db $4D,$00,$98,$00,$9B,$00,$06,$00   ;83D319|        |      ;
+                       db $01,$00                           ;83D321|        |      ;
+ 
+                     + RTS                                  ;83D323|60      |      ;
+ 
+          CODE_83D324:
                        JSR.W CODE_FN_8388FF                 ;83D324|20FF88  |8388FF;
                        LDA.L $7E998D                        ;83D327|AF8D997E|7E998D;
                        BNE +                                ;83D32B|D01B    |83D348;
@@ -9449,8 +9816,10 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83D345|2058A0  |83A058;
  
                      + RTS                                  ;83D348|60      |      ;
-                       db $4D,$D3                           ;83D349|        |      ;
-                       db $5C,$D3                           ;83D34B|        |7220D3;
+                       dw CODE_83D34D                       ;83D349|        |83D34D;
+                       dw CODE_83D35C                       ;83D34B|        |83D35C;
+ 
+          CODE_83D34D:
                        JSR.W CODE_FN_83A372                 ;83D34D|2072A3  |83A372;
                        LDY.W #$D358                         ;83D350|A058D3  |      ;
                        JSR.W CODE_FN_838C7D                 ;83D353|207D8C  |838C7D;
@@ -9458,8 +9827,19 @@ Options_DoVSLevelHard:
                        db $48,$78,$07                       ;83D358|        |      ;
  
                      + RTS                                  ;83D35B|60      |      ;
-                       db $20,$AE,$A3,$A0,$67,$D3,$20,$7D   ;83D35C|        |83A3AE;
-                       db $8C,$80,$03,$48,$88,$07,$60       ;83D364|        |000380;
+ 
+          CODE_83D35C:
+                       JSR.W CODE_FN_83A3AE                 ;83D35C|20AEA3  |83A3AE;
+                       LDY.W #$D367                         ;83D35F|A067D3  |      ;
+                       JSR.W CODE_FN_838C7D                 ;83D362|207D8C  |838C7D;
+                       BRA +                                ;83D365|8003    |83D36A;
+ 
+                       db $48,$88,$07                       ;83D367|        |      ;
+ 
+                     + RTS                                  ;83D36A|60      |      ;
+ 
+ 
+          CODE_83D36B:
                        JSR.W CODE_FN_838CB5                 ;83D36B|20B58C  |838CB5;
                        LDA.L $7E998D                        ;83D36E|AF8D997E|7E998D;
                        BNE +                                ;83D372|D012    |83D386;
@@ -9474,17 +9854,23 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838ABD                 ;83D383|20BD8A  |838ABD;
  
                      + RTS                                  ;83D386|60      |      ;
-                       db $8B,$D3                           ;83D387|        |      ;
-                       db $95,$D3                           ;83D389|        |0000D3;
+                       dw CODE_83D38B                       ;83D387|        |83D38B;
+                       dw CODE_83D395                       ;83D389|        |83D395;
+ 
+          CODE_83D38B:
                        JSR.W CODE_FN_83A520                 ;83D38B|2020A5  |83A520;
                        JSR.W Options_DoCPUSwitchMenu        ;83D38E|20C2BC  |83BCC2;
                        JSR.W CODE_FN_83A68D                 ;83D391|208DA6  |83A68D;
                        RTS                                  ;83D394|60      |      ;
-                       JSR.W CODE_FN_83A53E                 ;83D395|203EA5  |83A53E; unreferenced
+ 
+          CODE_83D395:
+                       JSR.W CODE_FN_83A53E                 ;83D395|203EA5  |83A53E;
                        JSR.W Options_DoEtcMenu              ;83D398|200ABD  |83BD0A;
                        JSR.W CODE_FN_83A699                 ;83D39B|2099A6  |83A699;
                        RTS                                  ;83D39E|60      |      ;
  
+ 
+          CODE_83D39F:
                        JSR.W CODE_FN_838ABD                 ;83D39F|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83D3A2|AF8D997E|7E998D;
                        BNE +                                ;83D3A6|D011    |83D3B9;
@@ -9514,15 +9900,21 @@ Options_DoVSLevelHard:
                        LDA.L CPU_Switch_Selection           ;83D3E2|AF36957E|7E9536;
                        ASL A                                ;83D3E6|0A      |      ;
                        TAX                                  ;83D3E7|AA      |      ;
-                       JSR.W (DATA8_83D3F7,X)               ;83D3E8|FCF7D3  |83D3F7;
+                       JSR.W (PTR16_83D3F7,X)               ;83D3E8|FCF7D3  |83D3F7;
                        JSR.W Options_DoCPUSwitchMenu        ;83D3EB|20C2BC  |83BCC2;
                        JSR.W CODE_FN_83A058                 ;83D3EE|2058A0  |83A058;
+ 
+          CODE_83D3F1:
                        RTS                                  ;83D3F1|60      |      ;
                        db $2D,$2D,$2D,$2D,$2E               ;83D3F2|        |      ;
+         PTR16_83D3F7:
+                       dw CODE_83D401                       ;83D3F7|        |83D401;
+                       dw CODE_83D418                       ;83D3F9|        |83D418;
+                       dw CODE_83D42F                       ;83D3FB|        |83D42F;
+                       dw CODE_83D446                       ;83D3FD|        |83D446;
+                       dw CODE_83D3F1                       ;83D3FF|        |83D3F1;
  
-         DATA8_83D3F7:
-                       db $01,$D4,$18,$D4,$2F,$D4,$46,$D4   ;83D3F7|        |      ;
-                       db $F1,$D3                           ;83D3FF|        |0000D3;
+          CODE_83D401:
                        LDX.W #$0000                         ;83D401|A20000  |      ;
                        LDA.L CPU_Selection_1P,X             ;83D404|BF64947E|7E9464;
                        LDY.W #$D414                         ;83D408|A014D4  |      ;
@@ -9532,6 +9924,8 @@ Options_DoVSLevelHard:
                        db $00,$02,$00                       ;83D414|        |      ;
  
                      + RTS                                  ;83D417|60      |      ;
+ 
+          CODE_83D418:
                        LDX.W #$0000                         ;83D418|A20000  |      ;
                        LDA.L CPU_Level_Selection_1P,X       ;83D41B|BF68947E|7E9468;
                        LDY.W #$D42B                         ;83D41F|A02BD4  |      ;
@@ -9541,6 +9935,8 @@ Options_DoVSLevelHard:
                        db $00,$08,$00                       ;83D42B|        |      ;
  
                      + RTS                                  ;83D42E|60      |      ;
+ 
+          CODE_83D42F:
                        LDX.W #$0000                         ;83D42F|A20000  |      ;
                        LDA.L CPU_Selection_2P,X             ;83D432|BF66947E|7E9466;
                        LDY.W #$D442                         ;83D436|A042D4  |      ;
@@ -9550,6 +9946,8 @@ Options_DoVSLevelHard:
                        db $00,$02,$00                       ;83D442|        |      ;
  
                      + RTS                                  ;83D445|60      |      ;
+ 
+          CODE_83D446:
                        LDX.W #$0000                         ;83D446|A20000  |      ;
                        LDA.L CPU_Level_Selection_2P,X       ;83D449|BF6A947E|7E946A;
                        LDY.W #$D459                         ;83D44D|A059D4  |      ;
@@ -9564,11 +9962,14 @@ Options_DoVSLevelHard:
                        LDA.W $1A6E                          ;83D45D|AD6E1A  |831A6E;
                        ASL A                                ;83D460|0A      |      ;
                        TAX                                  ;83D461|AA      |      ;
-                       JSR.W (DATA8_83D466,X)               ;83D462|FC66D4  |83D466;
+                       JSR.W (PTR16_83D466,X)               ;83D462|FC66D4  |83D466;
                        RTS                                  ;83D465|60      |      ;
+         PTR16_83D466:
+                       dw CODE_83D46C                       ;83D466|        |83D46C;
+                       dw CODE_83D49C                       ;83D468|        |83D49C;
+                       dw CODE_83D4BE                       ;83D46A|        |83D4BE;
  
-         DATA8_83D466:
-                       db $6C,$D4,$9C,$D4,$BE,$D4           ;83D466|        |      ;
+          CODE_83D46C:
                        LDA.W $1A6E                          ;83D46C|AD6E1A  |831A6E;
                        INC A                                ;83D46F|1A      |      ;
                        STA.W $1A6E                          ;83D470|8D6E1A  |831A6E;
@@ -9578,16 +9979,22 @@ Options_DoVSLevelHard:
                        JSR.W (LOOSE_OP_83D476,X)            ;83D479|FC76D4  |83D476;
                        JSR.W CODE_FN_838BF1                 ;83D47C|20F18B  |838BF1;
                        RTS                                  ;83D47F|60      |      ;
-                       db $84,$D4                           ;83D480|        |      ;
-                       db $90,$D4                           ;83D482|        |83D458;
+                       dw CODE_83D484                       ;83D480|        |83D484;
+                       dw UNREACH_83D490                    ;83D482|        |83D490;
+ 
+          CODE_83D484:
                        LDY.W #$D48C                         ;83D484|A08CD4  |      ;
                        JSR.W CODE_FN_838BBA                 ;83D487|20BA8B  |838BBA;
                        BRA +                                ;83D48A|8003    |83D48F;
                        db $65,$B3,$0C                       ;83D48C|        |      ;
  
                      + RTS                                  ;83D48F|60      |      ;
+ 
+       UNREACH_83D490:
                        db $A0,$98,$D4,$20,$BA,$8B,$80,$03   ;83D490|        |      ;
                        db $65,$D3,$0C,$60                   ;83D498|        |0000D3;
+ 
+          CODE_83D49C:
                        JSR.W CODE_FN_838BF1                 ;83D49C|20F18B  |838BF1;
                        LDA.L $7E998D                        ;83D49F|AF8D997E|7E998D;
                        BNE +                                ;83D4A3|D018    |83D4BD;
@@ -9601,6 +10008,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83D4BA|2058A0  |83A058;
  
                      + RTS                                  ;83D4BD|60      |      ;
+ 
+          CODE_83D4BE:
                        JSR.W CODE_FN_838ABD                 ;83D4BE|20BD8A  |838ABD;
                        LDA.L $7E998D                        ;83D4C1|AF8D997E|7E998D;
                        BNE +                                ;83D4C5|D009    |83D4D0;
@@ -9621,6 +10030,8 @@ Options_DoVSLevelHard:
                        db $30,$30,$30,$30,$30,$31,$1B,$D5   ;83D509|        |83D53B;
                        db $08,$D5,$33,$D5,$4F,$D5,$6B,$D5   ;83D511|        |      ;
                        db $08,$D5                           ;83D519|        |      ;
+ 
+          CODE_83D51B:
                        LDX.W #$0000                         ;83D51B|A20000  |      ;
                        LDA.W Mark_Selection,X               ;83D51E|BD841A  |831A84;
                        LDY.W #$D52C                         ;83D521|A02CD5  |      ;
@@ -9695,7 +10106,7 @@ Options_DoVSLevelHard:
                        LDA.W #$0000                         ;83D60B|A90000  |      ;
                        STA.L $7E9622                        ;83D60E|8F22967E|7E9622;
                        LDA.W #$0000                         ;83D612|A90000  |      ;
-                       JSR.W Move_MenuLipYoshi              ;83D615|200D9F  |839F0D;
+                       JSR.W Move_MenuYoshi                 ;83D615|200D9F  |839F0D;
                        LDA.W $02A8                          ;83D618|ADA802  |8302A8;
                        ASL A                                ;83D61B|0A      |      ;
                        TAX                                  ;83D61C|AA      |      ;
@@ -9704,45 +10115,61 @@ Options_DoVSLevelHard:
                        RTL                                  ;83D621|6B      |      ;
     GameMenu_Pointers:
                        dw CODE_83D628                       ;83D622|        |83D628;
-                       dw UNREACH_83D63A                    ;83D624|        |83D63A;
+                       dw CODE_83D63A                       ;83D624|        |83D63A;
                        dw CODE_83D642                       ;83D626|        |83D642;
  
           CODE_83D628:
                        LDA.L $7E38FE                        ;83D628|AFFE387E|7E38FE;
                        ASL A                                ;83D62C|0A      |      ;
                        TAX                                  ;83D62D|AA      |      ;
-                       JSR.W (DATA8_83D632,X)               ;83D62E|FC32D6  |83D632;
+                       JSR.W (PTR16_83D632,X)               ;83D62E|FC32D6  |83D632;
                        RTS                                  ;83D631|60      |      ;
+         PTR16_83D632:
+                       dw CODE_83D650                       ;83D632|        |83D650;
+                       dw CODE_83D650                       ;83D634|        |83D650;
+                       dw CODE_83DBE0                       ;83D636|        |83DBE0;
+                       dw CODE_83EAA7                       ;83D638|        |83EAA7;
  
-         DATA8_83D632:
-                       db $50,$D6,$50,$D6,$E0,$DB,$A7,$EA   ;83D632|        |      ;
+          CODE_83D63A:
+                       LDA.W #$0000                         ;83D63A|A90000  |      ;
+                       STA.L VS_MenuSelection               ;83D63D|8F3C957E|7E953C;
+                       RTS                                  ;83D641|60      |      ;
  
-       UNREACH_83D63A:
-                       db $A9,$00,$00,$8F,$3C,$95,$7E,$60   ;83D63A|        |      ;
  
           CODE_83D642:
                        LDA.L $7E38FE                        ;83D642|AFFE387E|7E38FE;
                        ASL A                                ;83D646|0A      |      ;
                        TAX                                  ;83D647|AA      |      ;
-                       JSR.W (DATA8_83D64C,X)               ;83D648|FC4CD6  |83D64C;
+                       JSR.W (PTR16_83D64C,X)               ;83D648|FC4CD6  |83D64C;
                        RTS                                  ;83D64B|60      |      ;
+         PTR16_83D64C:
+                       dw CODE_83F771                       ;83D64C|        |83F771;
+                       dw CODE_83F07E                       ;83D64E|        |83F07E;
  
-         DATA8_83D64C:
-                       db $71,$F7,$7E,$F0                   ;83D64C|        |      ;
+          CODE_83D650:
                        LDA.W Game_State_State               ;83D650|ADA202  |8302A2;
                        ASL A                                ;83D653|0A      |      ;
                        TAX                                  ;83D654|AA      |      ;
-                       JSR.W (DATA8_83D659,X)               ;83D655|FC59D6  |83D659;
+                       JSR.W (PTR16_83D659,X)               ;83D655|FC59D6  |83D659;
                        RTS                                  ;83D658|60      |      ;
+         PTR16_83D659:
+                       dw CODE_83D66F                       ;83D659|        |83D66F;
+                       dw CODE_83C085                       ;83D65B|        |83C085;
+                       dw CODE_83D6BA                       ;83D65D|        |83D6BA;
+                       dw CODE_83D876                       ;83D65F|        |83D876;
+                       dw CODE_83D965                       ;83D661|        |83D965;
+                       dw CODE_83D9E0                       ;83D663|        |83D9E0;
+                       dw CODE_83D9FE                       ;83D665|        |83D9FE;
+                       dw CODE_83DA90                       ;83D667|        |83DA90;
+                       dw CODE_83DB3A                       ;83D669|        |83DB3A;
+                       dw CODE_83DB8D                       ;83D66B|        |83DB8D;
+                       dw CODE_83DBD0                       ;83D66D|        |83DBD0;
  
-         DATA8_83D659:
-                       db $6F,$D6,$85,$C0,$BA,$D6,$76,$D8   ;83D659|        |      ;
-                       db $65,$D9,$E0,$D9,$FE,$D9,$90,$DA   ;83D661|        |      ;
-                       db $3A,$DB,$8D,$DB,$D0,$DB           ;83D669|        |      ;
+          CODE_83D66F:
                        JSR.W CODE_FN_83BE78                 ;83D66F|2078BE  |83BE78;
                        JSL.L CODE_FL_8A87A0                 ;83D672|22A0878A|8A87A0;
                        JSR.W CODE_FN_83BF62                 ;83D676|2062BF  |83BF62;
-                       JSL.L CODE_FL_80BB2D                 ;83D679|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83D679|222DBB80|80BB2D;
                        dl CompPalette_VS                    ;83D67D|        |92FEF7;
                        dl $7E86F6                           ;83D680|        |7E86F6;
                        JSR.W CODE_FN_83A88B                 ;83D683|208BA8  |83A88B;
@@ -9761,11 +10188,13 @@ Options_DoVSLevelHard:
                      + LDA.W $02A8                          ;83D6A7|ADA802  |8302A8;
                        CMP.W #$0002                         ;83D6AA|C90200  |      ;
                        BNE +                                ;83D6AD|D00A    |83D6B9;
-                       JSL.L CODE_FL_80BB2D                 ;83D6AF|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83D6AF|222DBB80|80BB2D;
                        dl DATA8_97DB94                      ;83D6B3|        |97DB94;
                        dl $7E421C                           ;83D6B6|        |7E421C;
  
                      + RTS                                  ;83D6B9|60      |      ;
+ 
+          CODE_83D6BA:
                        LDA.W $1A6E                          ;83D6BA|AD6E1A  |831A6E;
                        ASL A                                ;83D6BD|0A      |      ;
                        TAX                                  ;83D6BE|AA      |      ;
@@ -9810,7 +10239,7 @@ Options_DoVSLevelHard:
                     ++ LDA.W $02A8                          ;83D718|ADA802  |8302A8;
                        CMP.W #$0002                         ;83D71B|C90200  |      ;
                        BNE +                                ;83D71E|D00A    |83D72A;
-                       JSL.L CODE_FL_80BB2D                 ;83D720|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83D720|222DBB80|80BB2D;
                        dl DATA8_97DB94                      ;83D724|        |97DB94;
                        dl $7E421C                           ;83D727|        |7E421C;
  
@@ -9887,7 +10316,7 @@ Options_DoVSLevelHard:
  
           CODE_83D7AA:
                        INC.W $1A6E                          ;83D7AA|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83D7AD|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83D7AD|222DBB80|80BB2D;
                        dl DATA8_939E79                      ;83D7B1|        |939E79;
                        dl $7E2000                           ;83D7B4|        |7E2000;
                        JSR.W CODE_FN_83AB29                 ;83D7B7|2029AB  |83AB29;
@@ -9974,14 +10403,18 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83D872|9C6E1A  |831A6E;
  
                      + RTS                                  ;83D875|60      |      ;
+ 
+          CODE_83D876:
                        LDA.W $1A6E                          ;83D876|AD6E1A  |831A6E;
                        ASL A                                ;83D879|0A      |      ;
                        TAX                                  ;83D87A|AA      |      ;
-                       JSR.W (DATA8_83D87F,X)               ;83D87B|FC7FD8  |83D87F;
+                       JSR.W (PTR16_83D87F,X)               ;83D87B|FC7FD8  |83D87F;
                        RTS                                  ;83D87E|60      |      ;
+         PTR16_83D87F:
+                       dw CODE_83D883                       ;83D87F|        |83D883;
+                       dw CODE_83D8FE                       ;83D881|        |83D8FE;
  
-         DATA8_83D87F:
-                       db $83,$D8,$FE,$D8                   ;83D87F|        |      ;
+          CODE_83D883:
                        LDA.W #$0001                         ;83D883|A90100  |      ;
                        STA.B $B1                            ;83D886|85B1    |0000B1;
                        LDA.W #$0000                         ;83D888|A90000  |      ;
@@ -10033,6 +10466,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AB29                 ;83D8F7|2029AB  |83AB29;
                        JSR.W CODE_FN_83A02C                 ;83D8FA|202CA0  |83A02C;
                        RTS                                  ;83D8FD|60      |      ;
+ 
+          CODE_83D8FE:
                        LDA.W #$0003                         ;83D8FE|A90300  |      ;
                        STA.B $B1                            ;83D901|85B1    |0000B1;
                        LDX.W #$0000                         ;83D903|A20000  |      ;
@@ -10076,14 +10511,20 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AB3E                 ;83D95E|203EAB  |83AB3E;
                        JSR.W CODE_FN_83A02C                 ;83D961|202CA0  |83A02C;
                        RTS                                  ;83D964|60      |      ;
+ 
+          CODE_83D965:
                        LDA.W $1A6E                          ;83D965|AD6E1A  |831A6E;
                        ASL A                                ;83D968|0A      |      ;
                        TAX                                  ;83D969|AA      |      ;
-                       JSR.W (DATA8_83D96E,X)               ;83D96A|FC6ED9  |83D96E;
+                       JSR.W (PTR16_83D96E,X)               ;83D96A|FC6ED9  |83D96E;
                        RTS                                  ;83D96D|60      |      ;
+         PTR16_83D96E:
+                       dw CODE_83D976                       ;83D96E|        |83D976;
+                       dw CODE_83D989                       ;83D970|        |83D989;
+                       dw CODE_83D9AE                       ;83D972|        |83D9AE;
+                       dw CODE_FN_83D9CA                    ;83D974|        |83D9CA;
  
-         DATA8_83D96E:
-                       db $76,$D9,$89,$D9,$AE,$D9,$CA,$D9   ;83D96E|        |      ;
+          CODE_83D976:
                        INC.W $1A6E                          ;83D976|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A759                 ;83D979|2059A7  |83A759;
                        JSR.W CODE_FN_8380FC                 ;83D97C|20FC80  |8380FC;
@@ -10091,6 +10532,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AAB3                 ;83D982|20B3AA  |83AAB3;
                        JSR.W CODE_FN_839861                 ;83D985|206198  |839861;
                        RTS                                  ;83D988|60      |      ;
+ 
+          CODE_83D989:
                        JSR.W CODE_FN_8380FC                 ;83D989|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83D98C|20F18B  |838BF1;
                        JSR.W CODE_FN_83AAB3                 ;83D98F|20B3AA  |83AAB3;
@@ -10105,6 +10548,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83D9AA|2058A0  |83A058;
  
                      + RTS                                  ;83D9AD|60      |      ;
+ 
+          CODE_83D9AE:
                        JSR.W CODE_FN_8380FC                 ;83D9AE|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83D9B1|20F18B  |838BF1;
                        JSR.W CODE_FN_83AAB3                 ;83D9B4|20B3AA  |83AAB3;
@@ -10126,19 +10571,27 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839FB6                 ;83D9D9|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83D9DC|2058A0  |83A058;
                        RTS                                  ;83D9DF|60      |      ;
+ 
+          CODE_83D9E0:
                        LDA.W $1A6E                          ;83D9E0|AD6E1A  |831A6E;
                        ASL A                                ;83D9E3|0A      |      ;
                        TAX                                  ;83D9E4|AA      |      ;
-                       JSR.W (DATA8_83D9E9,X)               ;83D9E5|FCE9D9  |83D9E9;
+                       JSR.W (PTR16_83D9E9,X)               ;83D9E5|FCE9D9  |83D9E9;
                        RTS                                  ;83D9E8|60      |      ;
+         PTR16_83D9E9:
+                       dw CODE_83D976                       ;83D9E9|        |83D976;
+                       dw CODE_83D989                       ;83D9EB|        |83D989;
+                       dw CODE_83D9AE                       ;83D9ED|        |83D9AE;
+                       dw CODE_83D9F1                       ;83D9EF|        |83D9F1;
  
-         DATA8_83D9E9:
-                       db $76,$D9,$89,$D9,$AE,$D9,$F1,$D9   ;83D9E9|        |      ;
+          CODE_83D9F1:
                        JSR.W CODE_FN_83D9CA                 ;83D9F1|20CAD9  |83D9CA;
                        INC.W Game_State                     ;83D9F4|EEA002  |8302A0;
                        LDA.W #$0006                         ;83D9F7|A90600  |      ;
                        STA.W Game_State_State               ;83D9FA|8DA202  |8302A2;
                        RTS                                  ;83D9FD|60      |      ;
+ 
+          CODE_83D9FE:
                        LDA.W $1A6E                          ;83D9FE|AD6E1A  |831A6E;
                        ASL A                                ;83DA01|0A      |      ;
                        TAX                                  ;83DA02|AA      |      ;
@@ -10151,7 +10604,7 @@ Options_DoVSLevelHard:
  
           CODE_83DA0D:
                        INC.W $1A6E                          ;83DA0D|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83DA10|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83DA10|222DBB80|80BB2D;
                        dl DATA8_93A01C                      ;83DA14|        |93A01C;
                        dl $7E2000                           ;83DA17|        |7E2000;
                        JSR.W CODE_FN_83AC1D                 ;83DA1A|201DAC  |83AC1D;
@@ -10198,6 +10651,8 @@ Options_DoVSLevelHard:
                        STA.L $7E95E8                        ;83DA8B|8FE8957E|7E95E8;
  
                      + RTS                                  ;83DA8F|60      |      ;
+ 
+          CODE_83DA90:
                        JSR.W CODE_FN_83DB28                 ;83DA90|2028DB  |83DB28;
                        LDX.W #$0000                         ;83DA93|A20000  |      ;
                        JSR.W CODE_FN_838E7D                 ;83DA96|207D8E  |838E7D;
@@ -10266,14 +10721,18 @@ Options_DoVSLevelHard:
                        ADC.L $7E96E7                        ;83DB32|6FE7967E|7E96E7;
                        STA.W Character_1P                   ;83DB36|8DBA02  |8302BA;
                        RTS                                  ;83DB39|60      |      ;
+ 
+          CODE_83DB3A:
                        LDA.W $1A6E                          ;83DB3A|AD6E1A  |831A6E;
                        ASL A                                ;83DB3D|0A      |      ;
                        TAX                                  ;83DB3E|AA      |      ;
-                       JSR.W (DATA8_83DB43,X)               ;83DB3F|FC43DB  |83DB43;
+                       JSR.W (PTR16_83DB43,X)               ;83DB3F|FC43DB  |83DB43;
                        RTS                                  ;83DB42|60      |      ;
+         PTR16_83DB43:
+                       dw CODE_83DB47                       ;83DB43|        |83DB47;
+                       dw CODE_83DB64                       ;83DB45|        |83DB64;
  
-         DATA8_83DB43:
-                       db $47,$DB,$64,$DB                   ;83DB43|        |      ;
+          CODE_83DB47:
                        INC.W $1A6E                          ;83DB47|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83AC93                 ;83DB4A|2093AC  |83AC93;
                        LDA.W #$0001                         ;83DB4D|A90100  |      ;
@@ -10284,6 +10743,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838BF1                 ;83DB5D|20F18B  |838BF1;
                        JSR.W CODE_FN_83A042                 ;83DB60|2042A0  |83A042;
                        RTS                                  ;83DB63|60      |      ;
+ 
+          CODE_83DB64:
                        JSR.W CODE_FN_8380FC                 ;83DB64|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83DB67|20F18B  |838BF1;
                        LDA.W #$0001                         ;83DB6A|A90100  |      ;
@@ -10299,6 +10760,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83DB89|2058A0  |83A058;
  
                      + RTS                                  ;83DB8C|60      |      ;
+ 
+          CODE_83DB8D:
                        LDA.B $B7                            ;83DB8D|A5B7    |0000B7;
                        BIT.W #$1080                         ;83DB8F|898010  |      ;
                        BNE +                                ;83DB92|D00A    |83DB9E;
@@ -10324,25 +10787,36 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8394D1                 ;83DBC9|20D194  |8394D1;
                        JSR.W CODE_FN_83A058                 ;83DBCC|2058A0  |83A058;
                        RTS                                  ;83DBCF|60      |      ;
+ 
+          CODE_83DBD0:
                        JSR.W CODE_FN_83BE0E                 ;83DBD0|200EBE  |83BE0E;
                        JSR.W CODE_FN_83989D                 ;83DBD3|209D98  |83989D;
                        JSR.W CODE_FN_8394B6                 ;83DBD6|20B694  |8394B6;
                        JSR.W CODE_FN_8394D1                 ;83DBD9|20D194  |8394D1;
                        JSR.W CODE_FN_83A058                 ;83DBDC|2058A0  |83A058;
                        RTS                                  ;83DBDF|60      |      ;
+ 
+          CODE_83DBE0:
                        LDA.L Game_State_State-$7E0000       ;83DBE0|AFA20200|0002A2;
                        ASL A                                ;83DBE4|0A      |      ;
                        TAX                                  ;83DBE5|AA      |      ;
-                       JSR.W (DATA8_83DBEA,X)               ;83DBE6|FCEADB  |83DBEA;
+                       JSR.W (PTR16_83DBEA,X)               ;83DBE6|FCEADB  |83DBEA;
                        RTS                                  ;83DBE9|60      |      ;
+         PTR16_83DBEA:
+                       dw CODE_83DC02                       ;83DBEA|        |83DC02;
+                       dw CODE_83DDBC                       ;83DBEC|        |83DDBC;
+                       dw CODE_83E06C                       ;83DBEE|        |83E06C;
+                       dw CODE_83DDF8                       ;83DBF0|        |83DDF8;
+                       dw CODE_83DEAE                       ;83DBF2|        |83DEAE;
+                       dw CODE_83E299                       ;83DBF4|        |83E299;
+                       dw CODE_83E2D5                       ;83DBF6|        |83E2D5;
+                       dw CODE_83E53A                       ;83DBF8|        |83E53A;
+                       dw CODE_83E655                       ;83DBFA|        |83E655;
+                       dw CODE_83E81A                       ;83DBFC|        |83E81A;
+                       dw UNREACH_83E963                    ;83DBFE|        |83E963;
+                       dw CODE_83E964                       ;83DC00|        |83E964;
  
-         DATA8_83DBEA:
-                       db $02,$DC                           ;83DBEA|        |      ;
-                       db $BC,$DD                           ;83DBEC|        |006CDD;
-                       db $6C,$E0,$F8,$DD,$AE,$DE,$99,$E2   ;83DBEE|        |      ;
-                       db $D5,$E2,$3A,$E5,$55,$E6,$1A,$E8   ;83DBF6|        |      ;
-                       db $63,$E9                           ;83DBFE|        |0000E9;
-                       db $64,$E9                           ;83DC00|        |      ;
+          CODE_83DC02:
                        JSR.W CODE_FN_83BE78                 ;83DC02|2078BE  |83BE78;
                        JSL.L CODE_FL_8A87A0                 ;83DC05|22A0878A|8A87A0;
                        JSR.W CODE_FN_83BF62                 ;83DC09|2062BF  |83BF62;
@@ -10379,7 +10853,7 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83868B                 ;83DC60|208B86  |83868B;
                        JSR.W CODE_FN_8386D4                 ;83DC63|20D486  |8386D4;
                        JSR.W CODE_FN_83E666                 ;83DC66|2066E6  |83E666;
-                       JSL.L CODE_FL_80BB2D                 ;83DC69|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83DC69|222DBB80|80BB2D;
                        dl DATA8_93A3A8                      ;83DC6D|        |93A3A8;
                        dl $7E2000                           ;83DC70|        |7E2000;
                        JSR.W CODE_FN_83ACA4                 ;83DC73|20A4AC  |83ACA4;
@@ -10496,9 +10970,11 @@ Options_DoVSLevelHard:
                        STA.L $7E9973                        ;83DDB4|8F73997E|7E9973;
                        JSR.W CODE_FN_8386C5                 ;83DDB8|20C586  |8386C5;
                        RTS                                  ;83DDBB|60      |      ;
+ 
+          CODE_83DDBC:
                        JSR.W CODE_FN_83AEE0                 ;83DDBC|20E0AE  |83AEE0;
                        LDY.W #$0001                         ;83DDBF|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83DDC2|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83DDC2|22CBAE80|80AECB;
                        BCC +                                ;83DDC6|9014    |83DDDC;
                        REP #$20                             ;83DDC8|C220    |      ;
                        LDA.L $7E9614                        ;83DDCA|AF14967E|7E9614;
@@ -10518,16 +10994,21 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AEB0                 ;83DDF1|20B0AE  |83AEB0;
                        JSR.W CODE_FN_83A0E3                 ;83DDF4|20E3A0  |83A0E3;
                        RTS                                  ;83DDF7|60      |      ;
+ 
+          CODE_83DDF8:
                        LDA.W $1A6E                          ;83DDF8|AD6E1A  |831A6E;
                        ASL A                                ;83DDFB|0A      |      ;
                        TAX                                  ;83DDFC|AA      |      ;
-                       JSR.W (DATA8_83DE01,X)               ;83DDFD|FC01DE  |83DE01;
+                       JSR.W (PTR16_83DE01,X)               ;83DDFD|FC01DE  |83DE01;
                        RTS                                  ;83DE00|60      |      ;
+         PTR16_83DE01:
+                       dw CODE_83DE07                       ;83DE01|        |83DE07;
+                       dw CODE_83DE2D                       ;83DE03|        |83DE2D;
+                       dw CODE_83DE52                       ;83DE05|        |83DE52;
  
-         DATA8_83DE01:
-                       db $07,$DE,$2D,$DE,$52,$DE           ;83DE01|        |      ;
+          CODE_83DE07:
                        LDY.W #$0001                         ;83DE07|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83DE0A|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83DE0A|22CBAE80|80AECB;
                        BCC +                                ;83DE0E|9005    |83DE15;
                        REP #$20                             ;83DE10|C220    |      ;
                        INC.W $1A6E                          ;83DE12|EE6E1A  |831A6E;
@@ -10541,6 +11022,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8398D7                 ;83DE26|20D798  |8398D7;
                        JSR.W CODE_FN_83A058                 ;83DE29|2058A0  |83A058;
                        RTS                                  ;83DE2C|60      |      ;
+ 
+          CODE_83DE2D:
                        INC.W $1A6E                          ;83DE2D|EE6E1A  |831A6E;
                        LDA.W #$0050                         ;83DE30|A95000  |      ;
                        STA.W $1A70                          ;83DE33|8D701A  |831A70;
@@ -10554,6 +11037,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83E69A                 ;83DE4B|209AE6  |83E69A;
                        INC.W $0342                          ;83DE4E|EE4203  |830342;
                        RTS                                  ;83DE51|60      |      ;
+ 
+          CODE_83DE52:
                        LDA.W $1A70                          ;83DE52|AD701A  |831A70;
                        CMP.W #$0050                         ;83DE55|C95000  |      ;
                        BEQ +                                ;83DE58|F007    |83DE61;
@@ -10593,10 +11078,12 @@ Options_DoVSLevelHard:
  
          DATA8_83DEAB:
                        db $05,$06,$07                       ;83DEAB|        |      ;
+ 
+          CODE_83DEAE:
                        LDA.W $1A6E                          ;83DEAE|AD6E1A  |831A6E;
                        ASL A                                ;83DEB1|0A      |      ;
                        TAX                                  ;83DEB2|AA      |      ;
-                       JSR.W (DATA8_83DEEB,X)               ;83DEB3|FCEBDE  |83DEEB;
+                       JSR.W (PTR16_83DEEB,X)               ;83DEB3|FCEBDE  |83DEEB;
                        LDA.W $1A6E                          ;83DEB6|AD6E1A  |831A6E;
                        BEQ +                                ;83DEB9|F02F    |83DEEA;
                        LDA.B $B7                            ;83DEBB|A5B7    |0000B7;
@@ -10609,11 +11096,15 @@ Options_DoVSLevelHard:
                        db $8F,$16,$96,$7E,$22,$53,$85,$83   ;83DEE2|        |7E9616;
  
                      + RTS                                  ;83DEEA|60      |      ;
+         PTR16_83DEEB:
+                       dw CODE_83DEF3                       ;83DEEB|        |83DEF3;
+                       dw CODE_83DF5D                       ;83DEED|        |83DF5D;
+                       dw CODE_83DFC9                       ;83DEEF|        |83DFC9;
+                       dw CODE_83E03E                       ;83DEF1|        |83E03E;
  
-         DATA8_83DEEB:
-                       db $F3,$DE,$5D,$DF,$C9,$DF,$3E,$E0   ;83DEEB|        |      ;
+          CODE_83DEF3:
                        LDY.W #$0001                         ;83DEF3|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83DEF6|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83DEF6|22CBAE80|80AECB;
                        BCC +                                ;83DEFA|900F    |83DF0B;
                        REP #$20                             ;83DEFC|C220    |      ;
                        LDA.W #$0000                         ;83DEFE|A90000  |      ;
@@ -10655,6 +11146,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839565                 ;83DF56|206595  |839565;
                        JSR.W CODE_FN_839573                 ;83DF59|207395  |839573;
                        RTS                                  ;83DF5C|60      |      ;
+ 
+          CODE_83DF5D:
                        LDA.L $7E96E3                        ;83DF5D|AFE3967E|7E96E3;
                        DEC A                                ;83DF61|3A      |      ;
                        STA.L $7E96E3                        ;83DF62|8FE3967E|7E96E3;
@@ -10698,6 +11191,8 @@ Options_DoVSLevelHard:
                        STA.L $7E96E5                        ;83DFC4|8FE5967E|7E96E5;
  
                      + RTS                                  ;83DFC8|60      |      ;
+ 
+          CODE_83DFC9:
                        JSR.W CODE_FN_8386D4                 ;83DFC9|20D486  |8386D4;
                        LDA.L $7E96E5                        ;83DFCC|AFE5967E|7E96E5;
                        INC A                                ;83DFD0|1A      |      ;
@@ -10746,6 +11241,8 @@ Options_DoVSLevelHard:
                        REP #$20                             ;83E038|C220    |      ;
                        JSR.W CODE_FN_839565                 ;83E03A|206595  |839565;
                        RTS                                  ;83E03D|60      |      ;
+ 
+          CODE_83E03E:
                        STZ.W $1A70                          ;83E03E|9C701A  |831A70;
                        STZ.W $1A6E                          ;83E041|9C6E1A  |831A6E;
                        LDA.W #$0005                         ;83E044|A90500  |      ;
@@ -10762,16 +11259,28 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839565                 ;83E065|206595  |839565;
                        JSR.W CODE_FN_83A058                 ;83E068|2058A0  |83A058;
                        RTS                                  ;83E06B|60      |      ;
+ 
+          CODE_83E06C:
                        LDA.W $1A6E                          ;83E06C|AD6E1A  |831A6E;
                        ASL A                                ;83E06F|0A      |      ;
                        TAX                                  ;83E070|AA      |      ;
-                       JSR.W (DATA8_83E075,X)               ;83E071|FC75E0  |83E075;
+                       JSR.W (PTR16_83E075,X)               ;83E071|FC75E0  |83E075;
                        RTS                                  ;83E074|60      |      ;
+         PTR16_83E075:
+                       dw CODE_83E08D                       ;83E075|        |83E08D;
+                       dw CODE_83E0BF                       ;83E077|        |83E0BF;
+                       dw CODE_83D73F                       ;83E079|        |83D73F;
+                       dw CODE_83D75B                       ;83E07B|        |83D75B;
+                       dw CODE_83D774                       ;83E07D|        |83D774;
+                       dw CODE_83D78D                       ;83E07F|        |83D78D;
+                       dw CODE_83E0C9                       ;83E081|        |83E0C9;
+                       dw CODE_83E104                       ;83E083|        |83E104;
+                       dw CODE_83E162                       ;83E085|        |83E162;
+                       dw CODE_83E1AD                       ;83E087|        |83E1AD;
+                       dw CODE_83E202                       ;83E089|        |83E202;
+                       dw CODE_83E22C                       ;83E08B|        |83E22C;
  
-         DATA8_83E075:
-                       db $8D,$E0,$BF,$E0,$3F,$D7,$5B,$D7   ;83E075|        |      ;
-                       db $74,$D7,$8D,$D7,$C9,$E0,$04,$E1   ;83E07D|        |      ;
-                       db $62,$E1,$AD,$E1,$02,$E2,$2C,$E2   ;83E085|        |      ;
+          CODE_83E08D:
                        LDA.W #$0000                         ;83E08D|A90000  |      ;
                        STA.L StageClear_MenuSelection       ;83E090|8F2E957E|7E952E;
                        LDA.L $7E94E6                        ;83E094|AFE6947E|7E94E6;
@@ -10792,12 +11301,16 @@ Options_DoVSLevelHard:
                      + JSR.W CODE_FN_83D6D7                 ;83E0B7|20D7D6  |83D6D7;
                        JSL.L CODE_FL_83839B                 ;83E0BA|229B8383|83839B;
                        RTS                                  ;83E0BE|60      |      ;
+ 
+          CODE_83E0BF:
                        INC.W $1A6E                          ;83E0BF|EE6E1A  |831A6E;
                        LDA.W #$0010                         ;83E0C2|A91000  |      ;
                        JSR.W CODE_FN_83A9E3                 ;83E0C5|20E3A9  |83A9E3;
                        RTS                                  ;83E0C8|60      |      ;
+ 
+          CODE_83E0C9:
                        INC.W $1A6E                          ;83E0C9|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83E0CC|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83E0CC|222DBB80|80BB2D;
                        dl DATA8_93A3A8                      ;83E0D0|        |93A3A8;
                        dl $7E2000                           ;83E0D3|        |7E2000;
                        JSR.W CODE_FN_83ACA4                 ;83E0D6|20A4AC  |83ACA4;
@@ -10820,6 +11333,8 @@ Options_DoVSLevelHard:
                        db $00,$30,$7E,$40,$01,$80,$00,$78   ;83E0FB|        |      ;
  
                      + RTS                                  ;83E103|60      |      ;
+ 
+          CODE_83E104:
                        INC.W $1A6E                          ;83E104|EE6E1A  |831A6E;
                        LDA.W $0346                          ;83E107|AD4603  |830346;
                        CMP.W #$0001                         ;83E10A|C90100  |      ;
@@ -10860,6 +11375,8 @@ Options_DoVSLevelHard:
                        db $40,$31,$7E,$C0,$01,$80,$A0,$78   ;83E159|        |      ;
  
                      + RTS                                  ;83E161|60      |      ;
+ 
+          CODE_83E162:
                        JSR.W CODE_FN_8380FC                 ;83E162|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83E165|20BD8A  |838ABD;
                        JSR.W CODE_FN_83AEB0                 ;83E168|20B0AE  |83AEB0;
@@ -10891,6 +11408,8 @@ Options_DoVSLevelHard:
                        db $00,$33,$7E,$00,$02,$80,$80,$79   ;83E1A4|        |      ;
  
                      + RTS                                  ;83E1AC|60      |      ;
+ 
+          CODE_83E1AD:
                        JSR.W CODE_FN_8380FC                 ;83E1AD|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83E1B0|20BD8A  |838ABD;
                        JSR.W CODE_FN_83AEB0                 ;83E1B3|20B0AE  |83AEB0;
@@ -10925,6 +11444,8 @@ Options_DoVSLevelHard:
                        db $00,$35,$7E,$00,$02,$80,$80,$7A   ;83E1F9|        |      ;
  
                      + RTS                                  ;83E201|60      |      ;
+ 
+          CODE_83E202:
                        JSR.W CODE_FN_8380FC                 ;83E202|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83E205|20BD8A  |838ABD;
                        JSR.W CODE_FN_83AEB0                 ;83E208|20B0AE  |83AEB0;
@@ -10940,6 +11461,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83ACF7                 ;83E228|20F7AC  |83ACF7;
  
                      + RTS                                  ;83E22B|60      |      ;
+ 
+          CODE_83E22C:
                        LDA.W #$0000                         ;83E22C|A90000  |      ;
                        STA.L $7E96E3                        ;83E22F|8FE3967E|7E96E3;
                        STA.L $7E96E5                        ;83E233|8FE5967E|7E96E5;
@@ -10979,17 +11502,21 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AEB0                 ;83E292|20B0AE  |83AEB0;
                        JSR.W CODE_FN_83A058                 ;83E295|2058A0  |83A058;
                        RTS                                  ;83E298|60      |      ;
+ 
+          CODE_83E299:
                        LDA.W $1A6E                          ;83E299|AD6E1A  |831A6E;
                        ASL A                                ;83E29C|0A      |      ;
                        TAX                                  ;83E29D|AA      |      ;
-                       JSR.W (DATA8_83E2AB,X)               ;83E29E|FCABE2  |83E2AB;
+                       JSR.W (PTR16_83E2AB,X)               ;83E29E|FCABE2  |83E2AB;
                        JSR.W CODE_FN_839565                 ;83E2A1|206595  |839565;
                        JSR.W CODE_FN_8395CD                 ;83E2A4|20CD95  |8395CD;
                        JSR.W CODE_FN_83A058                 ;83E2A7|2058A0  |83A058;
                        RTS                                  ;83E2AA|60      |      ;
+         PTR16_83E2AB:
+                       dw CODE_83E2AF                       ;83E2AB|        |83E2AF;
+                       dw CODE_83E2C6                       ;83E2AD|        |83E2C6;
  
-         DATA8_83E2AB:
-                       db $AF,$E2,$C6,$E2                   ;83E2AB|        |      ;
+          CODE_83E2AF:
                        INC.W $1A6E                          ;83E2AF|EE6E1A  |831A6E;
                        LDA.W #$0050                         ;83E2B2|A95000  |      ;
                        STA.W $1A70                          ;83E2B5|8D701A  |831A70;
@@ -10998,6 +11525,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AEB0                 ;83E2BF|20B0AE  |83AEB0;
                        JSR.W CODE_FN_83AFE2                 ;83E2C2|20E2AF  |83AFE2;
                        RTS                                  ;83E2C5|60      |      ;
+ 
+          CODE_83E2C6:
                        DEC.W $1A70                          ;83E2C6|CE701A  |831A70;
                        BPL +                                ;83E2C9|1006    |83E2D1;
                        LDA.W #$000B                         ;83E2CB|A90B00  |      ;
@@ -11005,6 +11534,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_83E5F3                 ;83E2D1|20F3E5  |83E5F3;
                        RTS                                  ;83E2D4|60      |      ;
+ 
+          CODE_83E2D5:
                        LDA.B $B7                            ;83E2D5|A5B7    |0000B7;
                        BIT.W #$1080                         ;83E2D7|898010  |      ;
                        BEQ +                                ;83E2DA|F00E    |83E2EA;
@@ -11017,19 +11548,27 @@ Options_DoVSLevelHard:
                      + LDA.W $1A6E                          ;83E2EA|AD6E1A  |831A6E;
                        ASL A                                ;83E2ED|0A      |      ;
                        TAX                                  ;83E2EE|AA      |      ;
-                       JSR.W (DATA8_83E2FD,X)               ;83E2EF|FCFDE2  |83E2FD;
+                       JSR.W (PTR16_83E2FD,X)               ;83E2EF|FCFDE2  |83E2FD;
                        LDA.W #$0001                         ;83E2F2|A90100  |      ;
                        STA.L $7E995F                        ;83E2F5|8F5F997E|7E995F;
                        JSR.W CODE_FN_839565                 ;83E2F9|206595  |839565;
                        RTS                                  ;83E2FC|60      |      ;
+         PTR16_83E2FD:
+                       dw CODE_83E30B                       ;83E2FD|        |83E30B;
+                       dw CODE_83E315                       ;83E2FF|        |83E315;
+                       dw CODE_83E346                       ;83E301|        |83E346;
+                       dw CODE_83E3C4                       ;83E303|        |83E3C4;
+                       dw CODE_83E432                       ;83E305|        |83E432;
+                       dw CODE_83E48C                       ;83E307|        |83E48C;
+                       dw CODE_83E4E7                       ;83E309|        |83E4E7;
  
-         DATA8_83E2FD:
-                       db $0B,$E3,$15,$E3,$46,$E3,$C4,$E3   ;83E2FD|        |      ;
-                       db $32,$E4,$8C,$E4,$E7,$E4           ;83E305|        |      ;
+          CODE_83E30B:
                        INC.W $1A6E                          ;83E30B|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83ADFD                 ;83E30E|20FDAD  |83ADFD;
                        JSR.W CODE_FN_83A058                 ;83E311|2058A0  |83A058;
                        RTS                                  ;83E314|60      |      ;
+ 
+          CODE_83E315:
                        INC.W $1A6E                          ;83E315|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83AEEB                 ;83E318|20EBAE  |83AEEB;
                        PHB                                  ;83E31B|8B      |      ;
@@ -11051,6 +11590,8 @@ Options_DoVSLevelHard:
                        db $00,$75,$7F,$00,$08,$80,$00,$7C   ;83E33D|        |      ;
  
                      + RTS                                  ;83E345|60      |      ;
+ 
+          CODE_83E346:
                        INC.W $1A6E                          ;83E346|EE6E1A  |831A6E;
                        LDA.W #$0000                         ;83E349|A90000  |      ;
                        STA.L $7E96E5                        ;83E34C|8FE5967E|7E96E5;
@@ -11103,6 +11644,8 @@ Options_DoVSLevelHard:
                        STA.W $021E                          ;83E3BE|8D1E02  |83021E;
                        REP #$20                             ;83E3C1|C220    |      ;
                        RTS                                  ;83E3C3|60      |      ;
+ 
+          CODE_83E3C4:
                        LDA.L $7E96E5                        ;83E3C4|AFE5967E|7E96E5;
                        DEC A                                ;83E3C8|3A      |      ;
                        CMP.W #$FFE0                         ;83E3C9|C9E0FF  |      ;
@@ -11149,6 +11692,8 @@ Options_DoVSLevelHard:
                        STA.W $021E                          ;83E42C|8D1E02  |83021E;
                        REP #$20                             ;83E42F|C220    |      ;
                        RTS                                  ;83E431|60      |      ;
+ 
+          CODE_83E432:
                        INC.W $1A6E                          ;83E432|EE6E1A  |831A6E;
                        JSR.W CODE_FN_8386E3                 ;83E435|20E386  |8386E3;
                        JSR.W CODE_FN_83AD6C                 ;83E438|206CAD  |83AD6C;
@@ -11185,6 +11730,8 @@ Options_DoVSLevelHard:
                        STA.W $021E                          ;83E486|8D1E02  |83021E;
                        REP #$20                             ;83E489|C220    |      ;
                        RTS                                  ;83E48B|60      |      ;
+ 
+          CODE_83E48C:
                        LDA.L $7E96E3                        ;83E48C|AFE3967E|7E96E3;
                        DEC A                                ;83E490|3A      |      ;
                        STA.L $7E96E3                        ;83E491|8FE3967E|7E96E3;
@@ -11223,6 +11770,8 @@ Options_DoVSLevelHard:
                        REP #$20                             ;83E4E1|C220    |      ;
                        JSR.W CODE_FN_839573                 ;83E4E3|207395  |839573;
                        RTS                                  ;83E4E6|60      |      ;
+ 
+          CODE_83E4E7:
                        LDA.W #$000B                         ;83E4E7|A90B00  |      ;
                        STA.W Game_State_State               ;83E4EA|8DA202  |8302A2;
                        JSR.W CODE_FN_8381DC                 ;83E4ED|20DC81  |8381DC;
@@ -11257,6 +11806,8 @@ Options_DoVSLevelHard:
                        REP #$20                             ;83E534|C220    |      ;
                        JSR.W CODE_FN_839573                 ;83E536|207395  |839573;
                        RTS                                  ;83E539|60      |      ;
+ 
+          CODE_83E53A:
                        LDA.B $B7                            ;83E53A|A5B7    |0000B7;
                        BIT.W #$1080                         ;83E53C|898010  |      ;
                        BEQ +                                ;83E53F|F009    |83E54A;
@@ -11267,18 +11818,24 @@ Options_DoVSLevelHard:
                      + LDA.W $1A6E                          ;83E54A|AD6E1A  |001A6E;
                        ASL A                                ;83E54D|0A      |      ;
                        TAX                                  ;83E54E|AA      |      ;
-                       JSR.W (DATA8_83E556,X)               ;83E54F|FC56E5  |83E556;
+                       JSR.W (PTR16_83E556,X)               ;83E54F|FC56E5  |83E556;
                        JSR.W CODE_FN_839565                 ;83E552|206595  |839565;
                        RTS                                  ;83E555|60      |      ;
+         PTR16_83E556:
+                       dw CODE_83E55E                       ;83E556|        |83E55E;
+                       dw CODE_83E56E                       ;83E558|        |83E56E;
+                       dw CODE_83E587                       ;83E55A|        |83E587;
+                       dw CODE_83E5B1                       ;83E55C|        |83E5B1;
  
-         DATA8_83E556:
-                       db $5E,$E5,$6E,$E5,$87,$E5,$B1,$E5   ;83E556|        |      ;
+          CODE_83E55E:
                        INC.W $1A6E                          ;83E55E|EE6E1A  |001A6E;
                        LDA.W #$0020                         ;83E561|A92000  |      ;
                        STA.W $1A70                          ;83E564|8D701A  |001A70;
                        JSR.W CODE_FN_83ADFD                 ;83E567|20FDAD  |83ADFD;
                        JSR.W CODE_FN_83A058                 ;83E56A|2058A0  |83A058;
                        RTS                                  ;83E56D|60      |      ;
+ 
+          CODE_83E56E:
                        DEC.W $1A70                          ;83E56E|CE701A  |001A70;
                        BNE +                                ;83E571|D003    |83E576;
                        INC.W $1A6E                          ;83E573|EE6E1A  |001A6E;
@@ -11289,6 +11846,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_8395CD                 ;83E580|20CD95  |8395CD;
                        JSR.W CODE_FN_83A0E3                 ;83E583|20E3A0  |83A0E3;
                        RTS                                  ;83E586|60      |      ;
+ 
+          CODE_83E587:
                        JSR.W CODE_FN_83AD97                 ;83E587|2097AD  |83AD97;
                        LDA.L $7E96E5                        ;83E58A|AFE5967E|7E96E5;
                        CMP.W #$0070                         ;83E58E|C97000  |      ;
@@ -11306,6 +11865,8 @@ Options_DoVSLevelHard:
                     ++ JSR.W CODE_FN_83AEE0                 ;83E5AA|20E0AE  |83AEE0;
                        JSR.W CODE_FN_83958D                 ;83E5AD|208D95  |83958D;
                        RTS                                  ;83E5B0|60      |      ;
+ 
+          CODE_83E5B1:
                        DEC.W $1A70                          ;83E5B1|CE701A  |001A70;
                        BPL +                                ;83E5B4|1019    |83E5CF;
                        LDA.W #$000B                         ;83E5B6|A90B00  |      ;
@@ -11326,14 +11887,18 @@ Options_DoVSLevelHard:
                        LSR A                                ;83E5D8|4A      |      ;
                        AND.W #$0002                         ;83E5D9|290200  |      ;
                        TAX                                  ;83E5DC|AA      |      ;
-                       JSR.W (DATA8_83E5E1,X)               ;83E5DD|FCE1E5  |83E5E1;
+                       JSR.W (PTR16_83E5E1,X)               ;83E5DD|FCE1E5  |83E5E1;
                        RTS                                  ;83E5E0|60      |      ;
+         PTR16_83E5E1:
+                       dw CODE_83E5E5                       ;83E5E1|        |83E5E5;
+                       dw CODE_83E5EC                       ;83E5E3|        |83E5EC;
  
-         DATA8_83E5E1:
-                       db $E5,$E5,$EC,$E5                   ;83E5E1|        |      ;
+          CODE_83E5E5:
                        JSR.W CODE_FN_83ADFD                 ;83E5E5|20FDAD  |83ADFD;
                        JSR.W CODE_FN_8398D7                 ;83E5E8|20D798  |8398D7;
                        RTS                                  ;83E5EB|60      |      ;
+ 
+          CODE_83E5EC:
                        JSR.W CODE_FN_83AE6D                 ;83E5EC|206DAE  |83AE6D;
                        JSR.W CODE_FN_8398D7                 ;83E5EF|20D798  |8398D7;
                        RTS                                  ;83E5F2|60      |      ;
@@ -11366,16 +11931,20 @@ Options_DoVSLevelHard:
                        LSR A                                ;83E628|4A      |      ;
                        AND.W #$0002                         ;83E629|290200  |      ;
                        TAX                                  ;83E62C|AA      |      ;
-                       JSR.W (DATA8_83E631,X)               ;83E62D|FC31E6  |83E631;
+                       JSR.W (PTR16_83E631,X)               ;83E62D|FC31E6  |83E631;
                        RTS                                  ;83E630|60      |      ;
+         PTR16_83E631:
+                       dw CODE_83E635                       ;83E631|        |83E635;
+                       dw CODE_83E642                       ;83E633|        |83E642;
  
-         DATA8_83E631:
-                       db $35,$E6,$42,$E6                   ;83E631|        |      ;
+          CODE_83E635:
                        JSR.W CODE_FN_83ADFD                 ;83E635|20FDAD  |83ADFD;
                        JSR.W CODE_FN_83AE4E                 ;83E638|204EAE  |83AE4E;
                        JSR.W CODE_FN_83AEB0                 ;83E63B|20B0AE  |83AEB0;
                        JSR.W CODE_FN_8398D7                 ;83E63E|20D798  |8398D7;
                        RTS                                  ;83E641|60      |      ;
+ 
+          CODE_83E642:
                        JSR.W CODE_FN_83AE6D                 ;83E642|206DAE  |83AE6D;
                        JSR.W CODE_FN_8398D7                 ;83E645|20D798  |8398D7;
                        LDA.W StageClear_LevelLo             ;83E648|AD3C03  |83033C;
@@ -11385,15 +11954,18 @@ Options_DoVSLevelHard:
                        db $20,$B0,$AE                       ;83E651|        |83AEB0;
  
                      + RTS                                  ;83E654|60      |      ;
+ 
+          CODE_83E655:
                        LDA.W $1A6E                          ;83E655|AD6E1A  |831A6E;
                        ASL A                                ;83E658|0A      |      ;
                        TAX                                  ;83E659|AA      |      ;
-                       JSR.W (DATA8_83E65E,X)               ;83E65A|FC5EE6  |83E65E;
+                       JSR.W (PTR16_83E65E,X)               ;83E65A|FC5EE6  |83E65E;
                        RTS                                  ;83E65D|60      |      ;
- 
-         DATA8_83E65E:
-                       db $FF,$E6                           ;83E65E|        |      ;
-                       db $6D,$E7,$9D,$E7,$E4,$E7           ;83E660|        |009DE7;
+         PTR16_83E65E:
+                       dw CODE_83E6FF                       ;83E65E|        |83E6FF;
+                       dw UNREACH_83E76D                    ;83E660|        |83E76D;
+                       dw UNREACH_83E79D                    ;83E662|        |83E79D;
+                       dw UNREACH_83E7E4                    ;83E664|        |83E7E4;
  
        CODE_FN_83E666:
                        LDA.W #$0000                         ;83E666|A90000  |      ;
@@ -11466,6 +12038,8 @@ Options_DoVSLevelHard:
                        db $BA,$02                           ;83E6FC|        |      ;
  
                      + RTS                                  ;83E6FE|60      |      ;
+ 
+          CODE_83E6FF:
                        JSR.W CODE_FN_83AEE0                 ;83E6FF|20E0AE  |83AEE0;
                        JSR.W CODE_FN_83E666                 ;83E702|2066E6  |83E666;
                        JSR.W CODE_FN_83E6C0                 ;83E705|20C0E6  |83E6C0;
@@ -11505,12 +12079,16 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83AE4E                 ;83E766|204EAE  |83AE4E;
                        JSR.W CODE_FN_83A058                 ;83E769|2058A0  |83A058;
                        RTS                                  ;83E76C|60      |      ;
+ 
+       UNREACH_83E76D:
                        db $20,$97,$AD,$AF,$E5,$96,$7E,$C9   ;83E76D|        |83AD97;
                        db $70,$00,$10,$0A,$18,$69,$04,$00   ;83E775|        |83E777;
                        db $8F,$E5,$96,$7E,$80,$10,$A9,$70   ;83E77D|        |7E96E5;
                        db $00,$8F,$E5,$96,$7E,$EE,$6E,$1A   ;83E785|        |      ;
                        db $A9,$06,$00,$8D,$BA,$02,$20,$E0   ;83E78D|        |      ;
                        db $AE,$20,$65,$95,$20,$8D,$95,$60   ;83E795|        |006520;
+ 
+       UNREACH_83E79D:
                        db $A5,$BB,$89,$00,$08,$F0,$06,$EE   ;83E79D|        |0000BB;
                        db $6E,$1A,$20,$AB,$84,$A5,$B7,$89   ;83E7A5|        |00201A;
                        db $80,$10,$F0,$1B,$20,$CD,$84,$A9   ;83E7AD|        |83E7BF;
@@ -11519,23 +12097,33 @@ Options_DoVSLevelHard:
                        db $00,$8F,$16,$96,$7E,$80,$0B,$89   ;83E7C5|        |      ;
                        db $00,$80,$F0,$06,$20,$D4,$84,$EE   ;83E7CD|        |      ;
                        db $6E,$1A,$20,$E0,$AE,$20,$65,$95   ;83E7D5|        |00201A;
-                       db $20,$8D,$95,$20,$37,$99,$60,$AF   ;83E7DD|        |83958D;
-                       db $E5,$96,$7E,$38,$E9,$04,$00,$30   ;83E7E5|        |000096;
-                       db $06,$8F,$E5,$96,$7E,$80,$1C,$A9   ;83E7ED|        |00008F;
-                       db $00,$00,$8F,$E5,$96,$7E,$8D,$46   ;83E7F5|        |      ;
-                       db $03,$8D,$6E,$1A,$A9,$02,$00,$8F   ;83E7FD|        |00008D;
-                       db $F5,$96,$7E,$AF,$EB,$96,$7E,$8F   ;83E805|        |000096;
-                       db $E7,$96,$7E,$20,$E0,$AE,$20,$65   ;83E80D|        |000096;
-                       db $95,$20,$8D,$95,$60               ;83E815|        |000020;
+                       db $20,$8D,$95,$20,$37,$99,$60       ;83E7DD|        |83958D;
+ 
+       UNREACH_83E7E4:
+                       db $AF,$E5,$96,$7E,$38,$E9,$04,$00   ;83E7E4|        |7E96E5;
+                       db $30,$06,$8F,$E5,$96,$7E,$80,$1C   ;83E7EC|        |83E7F4;
+                       db $A9,$00,$00,$8F,$E5,$96,$7E,$8D   ;83E7F4|        |      ;
+                       db $46,$03,$8D,$6E,$1A,$A9,$02,$00   ;83E7FC|        |000003;
+                       db $8F,$F5,$96,$7E,$AF,$EB,$96,$7E   ;83E804|        |7E96F5;
+                       db $8F,$E7,$96,$7E,$20,$E0,$AE,$20   ;83E80C|        |7E96E7;
+                       db $65,$95,$20,$8D,$95,$60           ;83E814|        |000095;
+ 
+          CODE_83E81A:
                        LDA.W $1A6E                          ;83E81A|AD6E1A  |831A6E;
                        ASL A                                ;83E81D|0A      |      ;
                        TAX                                  ;83E81E|AA      |      ;
-                       JSR.W (DATA8_83E823,X)               ;83E81F|FC23E8  |83E823;
+                       JSR.W (PTR16_83E823,X)               ;83E81F|FC23E8  |83E823;
                        RTS                                  ;83E822|60      |      ;
+         PTR16_83E823:
+                       dw CODE_83E831                       ;83E823|        |83E831;
+                       dw CODE_83E876                       ;83E825|        |83E876;
+                       dw CODE_83E898                       ;83E827|        |83E898;
+                       dw CODE_83E8D5                       ;83E829|        |83E8D5;
+                       dw CODE_83E912                       ;83E82B|        |83E912;
+                       dw CODE_83E937                       ;83E82D|        |83E937;
+                       dw CODE_83E950                       ;83E82F|        |83E950;
  
-         DATA8_83E823:
-                       db $31,$E8,$76,$E8,$98,$E8,$D5,$E8   ;83E823|        |      ;
-                       db $12,$E9,$37,$E9,$50,$E9           ;83E82B|        |      ;
+          CODE_83E831:
                        INC.W $1A6E                          ;83E831|EE6E1A  |831A6E;
                        LDA.W #$0000                         ;83E834|A90000  |      ;
                        JSL.L CODE_FL_80A1E0                 ;83E837|22E0A180|80A1E0;
@@ -11563,6 +12151,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839565                 ;83E86F|206595  |839565;
                        JSR.W CODE_FN_83A042                 ;83E872|2042A0  |83A042;
                        RTS                                  ;83E875|60      |      ;
+ 
+          CODE_83E876:
                        INC.W $1A6E                          ;83E876|EE6E1A  |831A6E;
                        LDY.W #$E881                         ;83E879|A081E8  |      ;
                        JSR.W CODE_FN_838BBA                 ;83E87C|20BA8B  |838BBA;
@@ -11576,6 +12166,8 @@ Options_DoVSLevelHard:
                        STA.L $7E995F                        ;83E890|8F5F997E|7E995F;
                        JSR.W CODE_FN_839565                 ;83E894|206595  |839565;
                        RTS                                  ;83E897|60      |      ;
+ 
+          CODE_83E898:
                        JSR.W CODE_FN_8380FC                 ;83E898|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83E89B|20F18B  |838BF1;
                        JSR.W CODE_FN_83AEB0                 ;83E89E|20B0AE  |83AEB0;
@@ -11600,6 +12192,8 @@ Options_DoVSLevelHard:
                     ++ JSR.W CODE_FN_838BF1                 ;83E8D1|20F18B  |838BF1;
  
                      + RTS                                  ;83E8D4|60      |      ;
+ 
+          CODE_83E8D5:
                        JSR.W CODE_FN_8380FC                 ;83E8D5|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83E8D8|20F18B  |838BF1;
                        JSR.W CODE_FN_83AEB0                 ;83E8DB|20B0AE  |83AEB0;
@@ -11624,6 +12218,8 @@ Options_DoVSLevelHard:
                     ++ JSR.W CODE_FN_838BF1                 ;83E90E|20F18B  |838BF1;
  
                      + RTS                                  ;83E911|60      |      ;
+ 
+          CODE_83E912:
                        JSR.W CODE_FN_8380FC                 ;83E912|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83E915|20F18B  |838BF1;
                        JSR.W CODE_FN_83AEB0                 ;83E918|20B0AE  |83AEB0;
@@ -11639,6 +12235,8 @@ Options_DoVSLevelHard:
                     ++ JSR.W CODE_FN_83A058                 ;83E933|2058A0  |83A058;
  
                      + RTS                                  ;83E936|60      |      ;
+ 
+          CODE_83E937:
                        INC.W $1A6E                          ;83E937|EE6E1A  |831A6E;
                        JSR.W CODE_FN_838193                 ;83E93A|209381  |838193;
                        LDY.W #$E948                         ;83E93D|A048E9  |      ;
@@ -11649,6 +12247,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_83A058                 ;83E94C|2058A0  |83A058;
                        RTS                                  ;83E94F|60      |      ;
+ 
+          CODE_83E950:
                        JSR.W CODE_FN_83A083                 ;83E950|2083A0  |83A083;
                        DEC.W Game_State                     ;83E953|CEA002  |8302A0;
                        LDA.W #$0012                         ;83E956|A91200  |      ;
@@ -11656,7 +12256,11 @@ Options_DoVSLevelHard:
                        STZ.W $1A6E                          ;83E95C|9C6E1A  |831A6E;
                        STZ.W $1A70                          ;83E95F|9C701A  |831A70;
                        RTS                                  ;83E962|60      |      ;
+ 
+       UNREACH_83E963:
                        db $60                               ;83E963|        |      ;
+ 
+          CODE_83E964:
                        JSR.W CODE_FN_83849D                 ;83E964|209D84  |83849D;
                        LDY.W #$0001                         ;83E967|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;83E96A|2218AF80|80AF18;
@@ -11702,22 +12306,29 @@ Options_DoVSLevelHard:
                        LDA.L $7E9616                        ;83E9D2|AF16967E|7E9616;
                        ASL A                                ;83E9D6|0A      |      ;
                        TAX                                  ;83E9D7|AA      |      ;
-                       JSR.W (UNREACH_83E9DC,X)             ;83E9D8|FCDCE9  |83E9DC;
+                       JSR.W (PTR16_83E9DC,X)               ;83E9D8|FCDCE9  |83E9DC;
  
                     ++ RTS                                  ;83E9DB|60      |      ;
+         PTR16_83E9DC:
+                       dw CODE_83E9E6                       ;83E9DC|        |83E9E6;
+                       dw CODE_83E9E6                       ;83E9DE|        |83E9E6;
+                       dw CODE_83EA01                       ;83E9E0|        |83EA01;
+                       dw CODE_83EAA0                       ;83E9E2|        |83EAA0;
+                       dw UNREACH_83E9F6                    ;83E9E4|        |83E9F6;
  
-       UNREACH_83E9DC:
-                       db $E6,$E9                           ;83E9DC|        |0000E9;
-                       db $E6,$E9,$01,$EA,$A0,$EA           ;83E9DE|        |      ;
-                       db $F6,$E9                           ;83E9E4|        |0000E9;
+          CODE_83E9E6:
                        JSR.W CODE_FN_83ADFD                 ;83E9E6|20FDAD  |83ADFD;
                        JSR.W CODE_FN_83AE4E                 ;83E9E9|204EAE  |83AE4E;
                        JSR.W CODE_FN_8395CD                 ;83E9EC|20CD95  |8395CD;
                        JSR.W CODE_FN_8398D7                 ;83E9EF|20D798  |8398D7;
                        JSR.W CODE_FN_83A058                 ;83E9F2|2058A0  |83A058;
                        RTS                                  ;83E9F5|60      |      ;
+ 
+       UNREACH_83E9F6:
                        db $AD,$6E,$1A,$C9,$02,$00,$10,$0B   ;83E9F6|        |001A6E;
                        db $80,$53,$60                       ;83E9FE|        |83EA53;
+ 
+          CODE_83EA01:
                        LDA.W $1A6E                          ;83EA01|AD6E1A  |831A6E;
                        CMP.W #$0005                         ;83EA04|C90500  |      ;
                        BPL +                                ;83EA07|104A    |83EA53;
@@ -11764,19 +12375,28 @@ Options_DoVSLevelHard:
                        STA.W $021E                          ;83EA9A|8D1E02  |83021E;
                        REP #$20                             ;83EA9D|C220    |      ;
                        RTS                                  ;83EA9F|60      |      ;
+ 
+          CODE_83EAA0:
                        JSR.W CODE_FN_83AEE0                 ;83EAA0|20E0AE  |83AEE0;
                        JSR.W CODE_FN_83958D                 ;83EAA3|208D95  |83958D;
                        RTS                                  ;83EAA6|60      |      ;
+ 
+          CODE_83EAA7:
                        LDA.W Game_State_State               ;83EAA7|ADA202  |8302A2;
                        ASL A                                ;83EAAA|0A      |      ;
                        TAX                                  ;83EAAB|AA      |      ;
-                       JSR.W (DATA8_83EAB0,X)               ;83EAAC|FCB0EA  |83EAB0;
+                       JSR.W (PTR16_83EAB0,X)               ;83EAAC|FCB0EA  |83EAB0;
                        RTS                                  ;83EAAF|60      |      ;
+         PTR16_83EAB0:
+                       dw CODE_83EABE                       ;83EAB0|        |83EABE;
+                       dw CODE_83EB66                       ;83EAB2|        |83EB66;
+                       dw CODE_83EB7D                       ;83EAB4|        |83EB7D;
+                       dw CODE_83ED2F                       ;83EAB6|        |83ED2F;
+                       dw CODE_83EEF2                       ;83EAB8|        |83EEF2;
+                       dw CODE_83EF67                       ;83EABA|        |83EF67;
+                       dw CODE_83F043                       ;83EABC|        |83F043;
  
-         DATA8_83EAB0:
-                       db $BE,$EA,$66,$EB,$7D,$EB           ;83EAB0|        |      ;
-                       db $2F,$ED,$F2,$EE                   ;83EAB6|        |EEF2ED;
-                       db $67,$EF,$43,$F0                   ;83EABA|        |      ;
+          CODE_83EABE:
                        JSR.W CODE_FN_83BE78                 ;83EABE|2078BE  |83BE78;
                        JSL.L CODE_FL_8A87A0                 ;83EAC1|22A0878A|8A87A0;
                        JSR.W CODE_FN_83BF62                 ;83EAC5|2062BF  |83BF62;
@@ -11837,8 +12457,10 @@ Options_DoVSLevelHard:
                        STA.L $7E96F5                        ;83EB61|8FF5967E|7E96F5;
  
                      + RTS                                  ;83EB65|60      |      ;
+ 
+          CODE_83EB66:
                        LDY.W #$0001                         ;83EB66|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;83EB69|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;83EB69|22CBAE80|80AECB;
                        BCC +                                ;83EB6D|9005    |83EB74;
                        REP #$20                             ;83EB6F|C220    |      ;
                        INC.W Game_State_State               ;83EB71|EEA202  |8302A2;
@@ -11847,17 +12469,29 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839958                 ;83EB76|205899  |839958;
                        JSR.W CODE_FN_83B59B                 ;83EB79|209BB5  |83B59B;
                        RTS                                  ;83EB7C|60      |      ;
+ 
+          CODE_83EB7D:
                        LDA.W $1A6E                          ;83EB7D|AD6E1A  |831A6E;
                        ASL A                                ;83EB80|0A      |      ;
                        TAX                                  ;83EB81|AA      |      ;
-                       JSR.W (DATA8_83EB86,X)               ;83EB82|FC86EB  |83EB86;
+                       JSR.W (PTR16_83EB86,X)               ;83EB82|FC86EB  |83EB86;
                        RTS                                  ;83EB85|60      |      ;
+         PTR16_83EB86:
+                       dw CODE_83EC2B                       ;83EB86|        |83EC2B;
+                       dw CODE_83EC4E                       ;83EB88|        |83EC4E;
+                       dw CODE_83D73F                       ;83EB8A|        |83D73F;
+                       dw CODE_83D75B                       ;83EB8C|        |83D75B;
+                       dw CODE_83D774                       ;83EB8E|        |83D774;
+                       dw CODE_83D78D                       ;83EB90|        |83D78D;
+                       dw CODE_83EC5B                       ;83EB92|        |83EC5B;
+                       dw CODE_83EC65                       ;83EB94|        |83EC65;
+                       dw CODE_83ECF1                       ;83EB96|        |83ECF1;
+                       dw CODE_83ED13                       ;83EB98|        |83ED13;
+                       dw CODE_83EBA0                       ;83EB9A|        |83EBA0;
+                       dw CODE_83EBC3                       ;83EB9C|        |83EBC3;
+                       dw CODE_83EC0C                       ;83EB9E|        |83EC0C;
  
-         DATA8_83EB86:
-                       db $2B,$EC,$4E,$EC,$3F,$D7,$5B,$D7   ;83EB86|        |      ;
-                       db $74,$D7,$8D,$D7,$5B,$EC,$65,$EC   ;83EB8E|        |      ;
-                       db $F1,$EC,$13,$ED,$A0,$EB,$C3,$EB   ;83EB96|        |      ;
-                       db $0C,$EC                           ;83EB9E|        |      ;
+          CODE_83EBA0:
                        LDA.L $7E9618                        ;83EBA0|AF18967E|7E9618;
                        BNE +                                ;83EBA4|D00F    |83EBB5;
                        db $EE,$A2,$02,$A9,$00,$00,$8D,$6E   ;83EBA6|        |0002A2;
@@ -11868,6 +12502,8 @@ Options_DoVSLevelHard:
                        STA.L $7E9987                        ;83EBBB|8F87997E|7E9987;
                        JSR.W CODE_FN_83B59B                 ;83EBBF|209BB5  |83B59B;
                        RTS                                  ;83EBC2|60      |      ;
+ 
+          CODE_83EBC3:
                        LDA.L $7E9987                        ;83EBC3|AF87997E|7E9987;
                        DEC A                                ;83EBC7|3A      |      ;
                        STA.L $7E9987                        ;83EBC8|8F87997E|7E9987;
@@ -11892,6 +12528,8 @@ Options_DoVSLevelHard:
                      + JSR.W CODE_FN_839958                 ;83EC05|205899  |839958;
                        JSR.W CODE_FN_83B59B                 ;83EC08|209BB5  |83B59B;
                        RTS                                  ;83EC0B|60      |      ;
+ 
+          CODE_83EC0C:
                        JSR.W CODE_FN_83B5A8                 ;83EC0C|20A8B5  |83B5A8;
                        JSR.W CODE_FN_83B59B                 ;83EC0F|209BB5  |83B59B;
                        LDA.L $7E9973                        ;83EC12|AF73997E|7E9973;
@@ -11904,6 +12542,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83B0AC                 ;83EC27|20ACB0  |83B0AC;
  
                      + RTS                                  ;83EC2A|60      |      ;
+ 
+          CODE_83EC2B:
                        LDA.W #$0000                         ;83EC2B|A90000  |      ;
                        STA.L Puzzle_MenuSelection           ;83EC2E|8F30957E|7E9530;
                        LDA.L $7E94D6                        ;83EC32|AFD6947E|7E94D6;
@@ -11917,15 +12557,21 @@ Options_DoVSLevelHard:
                      + JSR.W CODE_FN_83D6D7                 ;83EC46|20D7D6  |83D6D7;
                        JSL.L CODE_FL_8382BA                 ;83EC49|22BA8283|8382BA;
                        RTS                                  ;83EC4D|60      |      ;
+ 
+          CODE_83EC4E:
                        INC.W $1A6E                          ;83EC4E|EE6E1A  |831A6E;
                        LDA.W #$0028                         ;83EC51|A92800  |      ;
                        JSR.W CODE_FN_83A9E3                 ;83EC54|20E3A9  |83A9E3;
                        JSR.W CODE_FN_8386C5                 ;83EC57|20C586  |8386C5;
                        RTS                                  ;83EC5A|60      |      ;
+ 
+          CODE_83EC5B:
                        INC.W $1A6E                          ;83EC5B|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83B00B                 ;83EC5E|200BB0  |83B00B;
                        JSR.W CODE_FN_83A058                 ;83EC61|2058A0  |83A058;
                        RTS                                  ;83EC64|60      |      ;
+ 
+          CODE_83EC65:
                        INC.W $1A6E                          ;83EC65|EE6E1A  |831A6E;
                        LDA.W #$0000                         ;83EC68|A90000  |      ;
                        STA.L $7E96E3                        ;83EC6B|8FE3967E|7E96E3;
@@ -11983,6 +12629,8 @@ Options_DoVSLevelHard:
          DATA8_83ECE5:
                        db $C0,$00,$48,$01,$D0,$01,$58,$02   ;83ECE5|        |      ;
                        db $E0,$02,$68,$03                   ;83ECED|        |      ;
+ 
+          CODE_83ECF1:
                        JSR.W CODE_FN_83B5A8                 ;83ECF1|20A8B5  |83B5A8;
                        JSR.W CODE_FN_83B59B                 ;83ECF4|209BB5  |83B59B;
                        LDA.L $7E9973                        ;83ECF7|AF73997E|7E9973;
@@ -11996,6 +12644,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83B0AC                 ;83ED0F|20ACB0  |83B0AC;
  
                      + RTS                                  ;83ED12|60      |      ;
+ 
+          CODE_83ED13:
                        DEC.W $1A70                          ;83ED13|CE701A  |831A70;
                        BNE +                                ;83ED16|D010    |83ED28;
                        LDA.W #$0005                         ;83ED18|A90500  |      ;
@@ -12007,6 +12657,8 @@ Options_DoVSLevelHard:
                      + JSR.W CODE_FN_839958                 ;83ED28|205899  |839958;
                        JSR.W CODE_FN_83B59B                 ;83ED2B|209BB5  |83B59B;
                        RTS                                  ;83ED2E|60      |      ;
+ 
+          CODE_83ED2F:
                        LDA.L $7E9973                        ;83ED2F|AF73997E|7E9973;
                        BEQ +                                ;83ED33|F01B    |83ED50;
                        db $20,$A8,$B5,$AF,$73,$99,$7E,$F0   ;83ED35|        |83B5A8;
@@ -12138,14 +12790,20 @@ Options_DoVSLevelHard:
                        LDA.W #$0001                         ;83EEEA|A90100  |      ;
                        STA.L $7E95E8                        ;83EEED|8FE8957E|7E95E8;
                        RTS                                  ;83EEF1|60      |      ;
+ 
+          CODE_83EEF2:
                        LDA.W $1A6E                          ;83EEF2|AD6E1A  |831A6E;
                        ASL A                                ;83EEF5|0A      |      ;
                        TAX                                  ;83EEF6|AA      |      ;
-                       JSR.W (UNREACH_83EEFB,X)             ;83EEF7|FCFBEE  |83EEFB;
+                       JSR.W (PTR16_83EEFB,X)               ;83EEF7|FCFBEE  |83EEFB;
                        RTS                                  ;83EEFA|60      |      ;
+         PTR16_83EEFB:
+                       dw CODE_83EF03                       ;83EEFB|        |83EF03;
+                       dw CODE_83EF2A                       ;83EEFD|        |83EF2A;
+                       dw CODE_83EF41                       ;83EEFF|        |83EF41;
+                       dw CODE_83EF57                       ;83EF01|        |83EF57;
  
-       UNREACH_83EEFB:
-                       db $03,$EF,$2A,$EF,$41,$EF,$57,$EF   ;83EEFB|        |0000EF;
+          CODE_83EF03:
                        INC.W $1A6E                          ;83EF03|EE6E1A  |831A6E;
                        LDA.W #$0002                         ;83EF06|A90200  |      ;
                        STA.L $7E9973                        ;83EF09|8F73997E|7E9973;
@@ -12158,6 +12816,8 @@ Options_DoVSLevelHard:
                        STA.L $7E9983                        ;83EF22|8F83997E|7E9983;
                        JSR.W CODE_FN_83B59B                 ;83EF26|209BB5  |83B59B;
                        RTS                                  ;83EF29|60      |      ;
+ 
+          CODE_83EF2A:
                        JSR.W CODE_FN_83B5A8                 ;83EF2A|20A8B5  |83B5A8;
                        LDA.W #$0001                         ;83EF2D|A90100  |      ;
                        STA.L $7E995F                        ;83EF30|8F5F997E|7E995F;
@@ -12167,6 +12827,8 @@ Options_DoVSLevelHard:
                        INC.W $1A6E                          ;83EF3D|EE6E1A  |831A6E;
  
                      + RTS                                  ;83EF40|60      |      ;
+ 
+          CODE_83EF41:
                        INC.W $1A6E                          ;83EF41|EE6E1A  |831A6E;
                        JSR.W CODE_FN_839FB6                 ;83EF44|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83EF47|2058A0  |83A058;
@@ -12176,16 +12838,20 @@ Options_DoVSLevelHard:
                        STA.W $021E                          ;83EF51|8D1E02  |83021E;
                        REP #$20                             ;83EF54|C220    |      ;
                        RTS                                  ;83EF56|60      |      ;
+ 
+          CODE_83EF57:
                        JSR.W CODE_FN_83A083                 ;83EF57|2083A0  |83A083;
                        DEC.W Game_State                     ;83EF5A|CEA002  |8302A0;
                        LDA.W #$0017                         ;83EF5D|A91700  |      ;
                        STA.W Game_State_State               ;83EF60|8DA202  |8302A2;
                        STZ.W $1A6E                          ;83EF63|9C6E1A  |831A6E;
                        RTS                                  ;83EF66|60      |      ;
+ 
+          CODE_83EF67:
                        LDA.W $1A6E                          ;83EF67|AD6E1A  |831A6E;
                        ASL A                                ;83EF6A|0A      |      ;
                        TAX                                  ;83EF6B|AA      |      ;
-                       JSR.W (DATA8_83EF86,X)               ;83EF6C|FC86EF  |83EF86;
+                       JSR.W (PTR16_83EF86,X)               ;83EF6C|FC86EF  |83EF86;
                        JSR.W CODE_FN_838209                 ;83EF6F|200982  |838209;
                        LDA.W #$0001                         ;83EF72|A90100  |      ;
                        STA.L $7E995F                        ;83EF75|8F5F997E|7E995F;
@@ -12194,14 +12860,18 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83B4EC                 ;83EF7F|20ECB4  |83B4EC;
                        JSR.W CODE_FN_83B4E5                 ;83EF82|20E5B4  |83B4E5;
                        RTS                                  ;83EF85|60      |      ;
+         PTR16_83EF86:
+                       dw CODE_83EF8A                       ;83EF86|        |83EF8A;
+                       dw CODE_83EF98                       ;83EF88|        |83EF98;
  
-         DATA8_83EF86:
-                       db $8A,$EF,$98,$EF                   ;83EF86|        |      ;
+          CODE_83EF8A:
                        INC.W $1A6E                          ;83EF8A|EE6E1A  |831A6E;
                        JSR.W CODE_FN_8384DB                 ;83EF8D|20DB84  |8384DB;
                        LDA.W #$0040                         ;83EF90|A94000  |      ;
                        STA.L $7E9987                        ;83EF93|8F87997E|7E9987;
                        RTS                                  ;83EF97|60      |      ;
+ 
+          CODE_83EF98:
                        LDA.L $7E9987                        ;83EF98|AF87997E|7E9987;
                        DEC A                                ;83EF9C|3A      |      ;
                        STA.L $7E9987                        ;83EF9D|8F87997E|7E9987;
@@ -12220,7 +12890,7 @@ Options_DoVSLevelHard:
                        LDA.W Character_1P                   ;83EFBC|ADBA02  |8302BA;
                        ASL A                                ;83EFBF|0A      |      ;
                        TAX                                  ;83EFC0|AA      |      ;
-                       JSR.W (DATA8_83F02B,X)               ;83EFC1|FC2BF0  |83F02B;
+                       JSR.W (PTR16_83F02B,X)               ;83EFC1|FC2BF0  |83F02B;
                        LDA.W #$0000                         ;83EFC4|A90000  |      ;
                        STA.L $7E961C                        ;83EFC7|8F1C967E|7E961C;
                        BRA -                                ;83EFCB|80D6    |83EFA3;
@@ -12236,7 +12906,7 @@ Options_DoVSLevelHard:
                        LDA.W Character_1P                   ;83EFE6|ADBA02  |8302BA;
                        ASL A                                ;83EFE9|0A      |      ;
                        TAX                                  ;83EFEA|AA      |      ;
-                       JSR.W (DATA8_83F02B,X)               ;83EFEB|FC2BF0  |83F02B;
+                       JSR.W (PTR16_83F02B,X)               ;83EFEB|FC2BF0  |83F02B;
                        LDA.W #$0000                         ;83EFEE|A90000  |      ;
                        STA.L $7E961C                        ;83EFF1|8F1C967E|7E961C;
                        RTS                                  ;83EFF5|60      |      ;
@@ -12251,7 +12921,7 @@ Options_DoVSLevelHard:
                        LDA.W Character_1P                   ;83F00B|ADBA02  |8302BA;
                        ASL A                                ;83F00E|0A      |      ;
                        TAX                                  ;83F00F|AA      |      ;
-                       JSR.W (DATA8_83F02B,X)               ;83F010|FC2BF0  |83F02B;
+                       JSR.W (PTR16_83F02B,X)               ;83F010|FC2BF0  |83F02B;
                        LDA.W #$0000                         ;83F013|A90000  |      ;
                        STA.L $7E961C                        ;83F016|8F1C967E|7E961C;
                        RTS                                  ;83F01A|60      |      ;
@@ -12259,18 +12929,26 @@ Options_DoVSLevelHard:
                      + LDA.W Character_1P                   ;83F01B|ADBA02  |8302BA;
                        ASL A                                ;83F01E|0A      |      ;
                        TAX                                  ;83F01F|AA      |      ;
-                       JSR.W (DATA8_83F037,X)               ;83F020|FC37F0  |83F037;
+                       JSR.W (PTR16_83F037,X)               ;83F020|FC37F0  |83F037;
                        LDA.W #$0001                         ;83F023|A90100  |      ;
                        STA.L $7E961C                        ;83F026|8F1C967E|7E961C;
                        RTS                                  ;83F02A|60      |      ;
+         PTR16_83F02B:
+                       dw CODE_FN_83B164                    ;83F02B|        |83B164;
+                       dw CODE_FN_83B189                    ;83F02D|        |83B189;
+                       dw CODE_FN_83B1AE                    ;83F02F|        |83B1AE;
+                       dw CODE_83B23C                       ;83F031|        |83B23C;
+                       dw CODE_FN_83B243                    ;83F033|        |83B243;
+                       dw CODE_83B2C9                       ;83F035|        |83B2C9;
+         PTR16_83F037:
+                       dw CODE_83B2D0                       ;83F037|        |83B2D0;
+                       dw CODE_83B2EA                       ;83F039|        |83B2EA;
+                       dw CODE_83B304                       ;83F03B|        |83B304;
+                       dw CODE_83B31E                       ;83F03D|        |83B31E;
+                       dw CODE_83B351                       ;83F03F|        |83B351;
+                       dw CODE_83B36B                       ;83F041|        |83B36B;
  
-         DATA8_83F02B:
-                       db $64,$B1,$89,$B1,$AE,$B1,$3C,$B2   ;83F02B|        |      ;
-                       db $43,$B2,$C9,$B2                   ;83F033|        |      ;
- 
-         DATA8_83F037:
-                       db $D0,$B2,$EA,$B2,$04,$B3,$1E,$B3   ;83F037|        |      ;
-                       db $51,$B3,$6B,$B3                   ;83F03F|        |      ;
+          CODE_83F043:
                        JSR.W CODE_FN_83849D                 ;83F043|209D84  |83849D;
                        LDY.W #$0001                         ;83F046|A00100  |      ;
                        JSL.L CODE_FL_80AF18                 ;83F049|2218AF80|80AF18;
@@ -12292,17 +12970,29 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83B4EC                 ;83F077|20ECB4  |83B4EC;
                        JSR.W CODE_FN_83B4E5                 ;83F07A|20E5B4  |83B4E5;
                        RTS                                  ;83F07D|60      |      ;
+ 
+          CODE_83F07E:
                        LDA.W Game_State_State               ;83F07E|ADA202  |8302A2;
                        ASL A                                ;83F081|0A      |      ;
                        TAX                                  ;83F082|AA      |      ;
-                       JSR.W (UNREACH_83F087,X)             ;83F083|FC87F0  |83F087;
+                       JSR.W (PTR16_83F087,X)               ;83F083|FC87F0  |83F087;
                        RTS                                  ;83F086|60      |      ;
+         PTR16_83F087:
+                       dw CODE_83D66F                       ;83F087|        |83D66F;
+                       dw CODE_83C085                       ;83F089|        |83C085;
+                       dw CODE_83F0A1                       ;83F08B|        |83F0A1;
+                       dw CODE_83F1B9                       ;83F08D|        |83F1B9;
+                       dw CODE_83F2F2                       ;83F08F|        |83F2F2;
+                       dw CODE_83F383                       ;83F091|        |83F383;
+                       dw CODE_83F3A4                       ;83F093|        |83F3A4;
+                       dw CODE_83F512                       ;83F095|        |83F512;
+                       dw CODE_83F613                       ;83F097|        |83F613;
+                       dw CODE_83F709                       ;83F099|        |83F709;
+                       dw CODE_83F761                       ;83F09B|        |83F761;
+                       dw CODE_83F8E5                       ;83F09D|        |83F8E5;
+                       dw CODE_83F949                       ;83F09F|        |83F949;
  
-       UNREACH_83F087:
-                       db $6F,$D6,$85,$C0                   ;83F087|        |C085D6;
-                       db $A1,$F0,$B9,$F1,$F2,$F2,$83,$F3   ;83F08B|        |      ;
-                       db $A4,$F3,$12,$F5,$13,$F6           ;83F093|        |      ;
-                       db $09,$F7,$61,$F7,$E5,$F8,$49,$F9   ;83F099|        |      ;
+          CODE_83F0A1:
                        LDA.W $1A6E                          ;83F0A1|AD6E1A  |831A6E;
                        ASL A                                ;83F0A4|0A      |      ;
                        TAX                                  ;83F0A5|AA      |      ;
@@ -12322,7 +13012,7 @@ Options_DoVSLevelHard:
  
           CODE_83F0BE:
                        INC.W $1A6E                          ;83F0BE|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83F0C1|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83F0C1|222DBB80|80BB2D;
                        dl DATA8_93AD6F                      ;83F0C5|        |93AD6F;
                        dl $7E2000                           ;83F0C8|        |7E2000;
                        JSR.W CODE_FN_83B65D                 ;83F0CB|205DB6  |83B65D;
@@ -12426,6 +13116,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838193                 ;83F1B5|209381  |838193;
  
                      + RTS                                  ;83F1B8|60      |      ;
+ 
+          CODE_83F1B9:
                        LDA.W #$0001                         ;83F1B9|A90100  |      ;
                        STA.B $B1                            ;83F1BC|85B1    |0000B1;
                        JSR.W CODE_FN_83B807                 ;83F1BE|2007B8  |83B807;
@@ -12488,15 +13180,20 @@ Options_DoVSLevelHard:
                        ASL A                                ;83F239|0A      |      ;
                        TXY                                  ;83F23A|9B      |      ;
                        TAX                                  ;83F23B|AA      |      ;
-                       JSR.W (DATA8_83F241,X)               ;83F23C|FC41F2  |83F241;
+                       JSR.W (PTR16_83F241,X)               ;83F23C|FC41F2  |83F241;
                        BRA +                                ;83F23F|8057    |83F298;
+         PTR16_83F241:
+                       dw CODE_83F247                       ;83F241|        |83F247;
+                       dw CODE_83F24F                       ;83F243|        |83F24F;
+                       dw CODE_83F296                       ;83F245|        |83F296;
  
-         DATA8_83F241:
-                       db $47,$F2,$4F,$F2,$96,$F2           ;83F241|        |      ;
+          CODE_83F247:
                        TYX                                  ;83F247|BB      |      ;
                        JSR.W CODE_FN_83F1F4                 ;83F248|20F4F1  |83F1F4;
                        JSR.W CODE_FN_83998F                 ;83F24B|208F99  |83998F;
                        RTS                                  ;83F24E|60      |      ;
+ 
+          CODE_83F24F:
                        TYX                                  ;83F24F|BB      |      ;
                        LDA.W #$0000                         ;83F250|A90000  |      ;
                        STA.L $7E95EE                        ;83F253|8FEE957E|7E95EE;
@@ -12528,6 +13225,8 @@ Options_DoVSLevelHard:
                        STA.L $7E9969,X                      ;83F291|9F69997E|7E9969;
  
                     ++ RTS                                  ;83F295|60      |      ;
+ 
+          CODE_83F296:
                        TYX                                  ;83F296|BB      |      ;
                        RTS                                  ;83F297|60      |      ;
  
@@ -12538,15 +13237,19 @@ Options_DoVSLevelHard:
                        ASL A                                ;83F2A2|0A      |      ;
                        TXY                                  ;83F2A3|9B      |      ;
                        TAX                                  ;83F2A4|AA      |      ;
-                       JSR.W (DATA8_83F2A9,X)               ;83F2A5|FCA9F2  |83F2A9;
+                       JSR.W (PTR16_83F2A9,X)               ;83F2A5|FCA9F2  |83F2A9;
                        RTS                                  ;83F2A8|60      |      ;
+         PTR16_83F2A9:
+                       dw CODE_83F2AF                       ;83F2A9|        |83F2AF;
+                       dw CODE_83F2AF                       ;83F2AB|        |83F2AF;
+                       dw CODE_83F2B6                       ;83F2AD|        |83F2B6;
  
-         DATA8_83F2A9:
-                       db $AF,$F2,$AF,$F2                   ;83F2A9|        |      ;
-                       db $B6,$F2                           ;83F2AD|        |0000F2;
+          CODE_83F2AF:
                        TYX                                  ;83F2AF|BB      |      ;
                        INC.W $1A6E,X                        ;83F2B0|FE6E1A  |831A6E;
                        JSR.W CODE_FN_8384CD                 ;83F2B3|20CD84  |8384CD;
+ 
+          CODE_83F2B6:
                        RTS                                  ;83F2B6|60      |      ;
  
                      + BIT.W #$8000                         ;83F2B7|890080  |      ;
@@ -12555,14 +13258,16 @@ Options_DoVSLevelHard:
                        ASL A                                ;83F2BF|0A      |      ;
                        TXY                                  ;83F2C0|9B      |      ;
                        TAX                                  ;83F2C1|AA      |      ;
-                       JSR.W (DATA8_83F2C9,X)               ;83F2C2|FCC9F2  |83F2C9;
+                       JSR.W (PTR16_83F2C9,X)               ;83F2C2|FCC9F2  |83F2C9;
                        JSR.W CODE_FN_8384D4                 ;83F2C5|20D484  |8384D4;
  
                      + RTS                                  ;83F2C8|60      |      ;
+         PTR16_83F2C9:
+                       dw CODE_83F2CF                       ;83F2C9|        |83F2CF;
+                       dw UNREACH_83F2ED                    ;83F2CB|        |83F2ED;
+                       dw UNREACH_83F2ED                    ;83F2CD|        |83F2ED;
  
-         DATA8_83F2C9:
-                       db $CF,$F2                           ;83F2C9|        |      ;
-                       db $ED,$F2,$ED,$F2                   ;83F2CB|        |00EDF2;
+          CODE_83F2CF:
                        LDA.L $7E9458                        ;83F2CF|AF58947E|7E9458;
                        BNE UNREACH_83F2E0                   ;83F2D3|D00B    |83F2E0;
                        LDA.L $7E945A                        ;83F2D5|AF5A947E|7E945A;
@@ -12576,21 +13281,31 @@ Options_DoVSLevelHard:
                      + STZ.W $1A6E                          ;83F2E6|9C6E1A  |831A6E;
                        STZ.W $1A70                          ;83F2E9|9C701A  |831A70;
                        RTS                                  ;83F2EC|60      |      ;
+ 
+       UNREACH_83F2ED:
                        db $BB,$DE,$6E,$1A,$60               ;83F2ED|        |      ;
+ 
+          CODE_83F2F2:
                        LDA.W $1A6E                          ;83F2F2|AD6E1A  |831A6E;
                        ASL A                                ;83F2F5|0A      |      ;
                        TAX                                  ;83F2F6|AA      |      ;
-                       JSR.W (DATA8_83F2FB,X)               ;83F2F7|FCFBF2  |83F2FB;
+                       JSR.W (PTR16_83F2FB,X)               ;83F2F7|FCFBF2  |83F2FB;
                        RTS                                  ;83F2FA|60      |      ;
+         PTR16_83F2FB:
+                       dw CODE_83F303                       ;83F2FB|        |83F303;
+                       dw CODE_83F313                       ;83F2FD|        |83F313;
+                       dw CODE_83F338                       ;83F2FF|        |83F338;
+                       dw CODE_83F354                       ;83F301|        |83F354;
  
-         DATA8_83F2FB:
-                       db $03,$F3,$13,$F3,$38,$F3,$54,$F3   ;83F2FB|        |      ;
+          CODE_83F303:
                        INC.W $1A6E                          ;83F303|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83A77D                 ;83F306|207DA7  |83A77D;
                        JSR.W CODE_FN_8380FC                 ;83F309|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83F30C|20F18B  |838BF1;
                        JSR.W CODE_FN_83B7D0                 ;83F30F|20D0B7  |83B7D0;
                        RTS                                  ;83F312|60      |      ;
+ 
+          CODE_83F313:
                        JSR.W CODE_FN_8380FC                 ;83F313|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83F316|20F18B  |838BF1;
                        JSR.W CODE_FN_83B7D0                 ;83F319|20D0B7  |83B7D0;
@@ -12605,6 +13320,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83F334|2058A0  |83A058;
  
                      + RTS                                  ;83F337|60      |      ;
+ 
+          CODE_83F338:
                        JSR.W CODE_FN_8380FC                 ;83F338|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83F33B|20F18B  |838BF1;
                        JSR.W CODE_FN_83B7D0                 ;83F33E|20D0B7  |83B7D0;
@@ -12616,6 +13333,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83F350|2058A0  |83A058;
  
                      + RTS                                  ;83F353|60      |      ;
+ 
+          CODE_83F354:
                        STZ.W $1A6E                          ;83F354|9C6E1A  |831A6E;
                        DEC.W Game_State                     ;83F357|CEA002  |8302A0;
                        LDA.W #$000D                         ;83F35A|A90D00  |      ;
@@ -12635,35 +13354,47 @@ Options_DoVSLevelHard:
                        REP #$20                             ;83F380|C220    |      ;
  
                      + RTS                                  ;83F382|60      |      ;
+ 
+          CODE_83F383:
                        LDA.W $1A6E                          ;83F383|AD6E1A  |831A6E;
                        ASL A                                ;83F386|0A      |      ;
                        TAX                                  ;83F387|AA      |      ;
-                       JSR.W (DATA8_83F38C,X)               ;83F388|FC8CF3  |83F38C;
+                       JSR.W (PTR16_83F38C,X)               ;83F388|FC8CF3  |83F38C;
                        RTS                                  ;83F38B|60      |      ;
+         PTR16_83F38C:
+                       dw CODE_83F303                       ;83F38C|        |83F303;
+                       dw CODE_83F313                       ;83F38E|        |83F313;
+                       dw CODE_83F338                       ;83F390|        |83F338;
+                       dw CODE_83F394                       ;83F392|        |83F394;
  
-         DATA8_83F38C:
-                       db $03,$F3,$13,$F3,$38,$F3,$94,$F3   ;83F38C|        |      ;
+          CODE_83F394:
                        STZ.W $1A6E                          ;83F394|9C6E1A  |831A6E;
                        LDA.W #$0006                         ;83F397|A90600  |      ;
                        STA.W Game_State_State               ;83F39A|8DA202  |8302A2;
                        JSR.W CODE_FN_839FB6                 ;83F39D|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83F3A0|2058A0  |83A058;
                        RTS                                  ;83F3A3|60      |      ;
+ 
+          CODE_83F3A4:
                        LDA.W $1A6E                          ;83F3A4|AD6E1A  |831A6E;
                        ASL A                                ;83F3A7|0A      |      ;
                        TAX                                  ;83F3A8|AA      |      ;
-                       JSR.W (DATA8_83F3C1,X)               ;83F3A9|FCC1F3  |83F3C1;
+                       JSR.W (PTR16_83F3C1,X)               ;83F3A9|FCC1F3  |83F3C1;
                        LDA.L BossChars_Available            ;83F3AC|AFD2947E|7E94D2;
                        BEQ +                                ;83F3B0|F00E    |83F3C0;
                        db $A9,$03,$00,$8F,$DC,$95,$7E,$A9   ;83F3B2|        |      ;
                        db $02,$00,$8F,$E8,$95,$7E           ;83F3BA|        |      ;
  
                      + RTS                                  ;83F3C0|60      |      ;
+         PTR16_83F3C1:
+                       dw CODE_83F3C9                       ;83F3C1|        |83F3C9;
+                       dw CODE_83F421                       ;83F3C3|        |83F421;
+                       dw CODE_83F461                       ;83F3C5|        |83F461;
+                       dw CODE_83F4A6                       ;83F3C7|        |83F4A6;
  
-         DATA8_83F3C1:
-                       db $C9,$F3,$21,$F4,$61,$F4,$A6,$F4   ;83F3C1|        |      ;
+          CODE_83F3C9:
                        INC.W $1A6E                          ;83F3C9|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83F3CC|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83F3CC|222DBB80|80BB2D;
                        dl DATA8_93AA36                      ;83F3D0|        |93AA36;
                        dl $7E2000                           ;83F3D3|        |7E2000;
                        JSR.W CODE_FN_83BA41                 ;83F3D6|2041BA  |83BA41;
@@ -12697,6 +13428,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83971D                 ;83F41A|201D97  |83971D;
                        JSR.W CODE_FN_839763                 ;83F41D|206397  |839763;
                        RTS                                  ;83F420|60      |      ;
+ 
+          CODE_83F421:
                        JSR.W CODE_FN_8380FC                 ;83F421|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83F424|20BD8A  |838ABD;
                        JSR.W CODE_FN_83971D                 ;83F427|201D97  |83971D;
@@ -12723,6 +13456,8 @@ Options_DoVSLevelHard:
                        db $40,$34,$7E,$C0,$00,$80,$20,$7A   ;83F458|        |      ;
  
                      + RTS                                  ;83F460|60      |      ;
+ 
+          CODE_83F461:
                        INC.W $1A6E                          ;83F461|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83BA58                 ;83F464|2058BA  |83BA58;
                        PHB                                  ;83F467|8B      |      ;
@@ -12752,6 +13487,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838ABD                 ;83F49F|20BD8A  |838ABD;
                        JSR.W CODE_FN_83971D                 ;83F4A2|201D97  |83971D;
                        RTS                                  ;83F4A5|60      |      ;
+ 
+          CODE_83F4A6:
                        JSR.W CODE_FN_8380FC                 ;83F4A6|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83F4A9|20BD8A  |838ABD;
                        JSR.W CODE_FN_83971D                 ;83F4AC|201D97  |83971D;
@@ -12786,6 +13523,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83F578                 ;83F50E|2078F5  |83F578;
  
                      + RTS                                  ;83F511|60      |      ;
+ 
+          CODE_83F512:
                        LDX.W #$0000                         ;83F512|A20000  |      ;
                        JSR.W CODE_FN_83F5AD                 ;83F515|20ADF5  |83F5AD;
                        LDX.W #$0002                         ;83F518|A20200  |      ;
@@ -12895,15 +13634,22 @@ Options_DoVSLevelHard:
                        STA.W Game_State_State               ;83F60F|8DA202  |0002A2;
  
                      + RTS                                  ;83F612|60      |      ;
+ 
+          CODE_83F613:
                        LDA.W $1A6E                          ;83F613|AD6E1A  |001A6E;
                        ASL A                                ;83F616|0A      |      ;
                        TAX                                  ;83F617|AA      |      ;
-                       JSR.W (DATA8_83F61C,X)               ;83F618|FC1CF6  |83F61C;
+                       JSR.W (PTR16_83F61C,X)               ;83F618|FC1CF6  |83F61C;
                        RTS                                  ;83F61B|60      |      ;
+         PTR16_83F61C:
+                       dw CODE_83F628                       ;83F61C|        |83F628;
+                       dw CODE_83F650                       ;83F61E|        |83F650;
+                       dw CODE_83F685                       ;83F620|        |83F685;
+                       dw CODE_83F6B1                       ;83F622|        |83F6B1;
+                       dw CODE_83F6D0                       ;83F624|        |83F6D0;
+                       dw CODE_83F6F3                       ;83F626|        |83F6F3;
  
-         DATA8_83F61C:
-                       db $28,$F6,$50,$F6,$85,$F6,$B1,$F6   ;83F61C|        |      ;
-                       db $D0,$F6,$F3,$F6                   ;83F624|        |      ;
+          CODE_83F628:
                        INC.W $1A6E                          ;83F628|EE6E1A  |001A6E;
                        LDY.W #$F633                         ;83F62B|A033F6  |      ;
                        JSR.W CODE_FN_838BBA                 ;83F62E|20BA8B  |838BBA;
@@ -12919,6 +13665,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839763                 ;83F649|206397  |839763;
                        JSR.W CODE_FN_83A058                 ;83F64C|2058A0  |83A058;
                        RTS                                  ;83F64F|60      |      ;
+ 
+          CODE_83F650:
                        JSR.W CODE_FN_8380FC                 ;83F650|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83F653|20F18B  |838BF1;
                        LDA.W #$0001                         ;83F656|A90100  |      ;
@@ -12940,6 +13688,8 @@ Options_DoVSLevelHard:
                     ++ JSR.W CODE_FN_83A058                 ;83F681|2058A0  |83A058;
  
                      + RTS                                  ;83F684|60      |      ;
+ 
+          CODE_83F685:
                        INC.W $1A6E                          ;83F685|EE6E1A  |001A6E;
                        JSR.W CODE_FN_8380FC                 ;83F688|20FC80  |8380FC;
                        LDA.W #$0001                         ;83F68B|A90100  |      ;
@@ -12957,6 +13707,8 @@ Options_DoVSLevelHard:
  
                      + JSR.W CODE_FN_83A058                 ;83F6AD|2058A0  |83A058;
                        RTS                                  ;83F6B0|60      |      ;
+ 
+          CODE_83F6B1:
                        INC.W $1A6E                          ;83F6B1|EE6E1A  |001A6E;
                        LDY.W #$F6BC                         ;83F6B4|A0BCF6  |      ;
                        JSR.W CODE_FN_838BBA                 ;83F6B7|20BA8B  |838BBA;
@@ -12969,6 +13721,8 @@ Options_DoVSLevelHard:
                        STA.L $7E995F                        ;83F6C8|8F5F997E|7E995F;
                        JSR.W CODE_FN_83971D                 ;83F6CC|201D97  |83971D;
                        RTS                                  ;83F6CF|60      |      ;
+ 
+          CODE_83F6D0:
                        JSR.W CODE_FN_8380FC                 ;83F6D0|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83F6D3|20F18B  |838BF1;
                        LDA.W #$0001                         ;83F6D6|A90100  |      ;
@@ -12982,6 +13736,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83F6EF|2058A0  |83A058;
  
                      + RTS                                  ;83F6F2|60      |      ;
+ 
+          CODE_83F6F3:
                        JSR.W CODE_FN_838193                 ;83F6F3|209381  |838193;
                        LDA.W #$0002                         ;83F6F6|A90200  |      ;
                        STA.W Game_State_State               ;83F6F9|8DA202  |0002A2;
@@ -12990,6 +13746,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_839FB6                 ;83F702|20B69F  |839FB6;
                        JSR.W CODE_FN_83A058                 ;83F705|2058A0  |83A058;
                        RTS                                  ;83F708|60      |      ;
+ 
+          CODE_83F709:
                        LDA.L $7E95D4                        ;83F709|AFD4957E|7E95D4;
                        BIT.W #$1080                         ;83F70D|898010  |      ;
                        BNE +                                ;83F710|D019    |83F72B;
@@ -13022,39 +13780,63 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83971D                 ;83F75A|201D97  |83971D;
                        JSR.W CODE_FN_83A058                 ;83F75D|2058A0  |83A058;
                        RTS                                  ;83F760|60      |      ;
+ 
+          CODE_83F761:
                        JSR.W CODE_FN_83F5A0                 ;83F761|20A0F5  |83F5A0;
                        JSR.W CODE_FN_83BE0E                 ;83F764|200EBE  |83BE0E;
                        JSR.W CODE_FN_839763                 ;83F767|206397  |839763;
                        JSR.W CODE_FN_83971D                 ;83F76A|201D97  |83971D;
                        JSR.W CODE_FN_83A058                 ;83F76D|2058A0  |83A058;
                        RTS                                  ;83F770|60      |      ;
+ 
+          CODE_83F771:
                        LDA.W Game_State_State               ;83F771|ADA202  |8302A2;
                        ASL A                                ;83F774|0A      |      ;
                        TAX                                  ;83F775|AA      |      ;
-                       JSR.W (DATA8_83F77A,X)               ;83F776|FC7AF7  |83F77A;
+                       JSR.W (PTR16_83F77A,X)               ;83F776|FC7AF7  |83F77A;
                        RTS                                  ;83F779|60      |      ;
+         PTR16_83F77A:
+                       dw CODE_83D66F                       ;83F77A|        |83D66F;
+                       dw CODE_83C085                       ;83F77C|        |83C085;
+                       dw CODE_83F794                       ;83F77E|        |83F794;
+                       dw CODE_83F8B2                       ;83F780|        |83F8B2;
+                       dw CODE_83FA14                       ;83F782|        |83FA14;
+                       dw CODE_83FAF4                       ;83F784|        |83FAF4;
+                       dw CODE_83F3A4                       ;83F786|        |83F3A4;
+                       dw CODE_83F512                       ;83F788|        |83F512;
+                       dw CODE_83F613                       ;83F78A|        |83F613;
+                       dw CODE_83F709                       ;83F78C|        |83F709;
+                       dw CODE_83F761                       ;83F78E|        |83F761;
+                       dw CODE_83F8E5                       ;83F790|        |83F8E5;
+                       dw CODE_83F949                       ;83F792|        |83F949;
  
-         DATA8_83F77A:
-                       db $6F,$D6,$85,$C0,$94,$F7,$B2,$F8   ;83F77A|        |      ;
-                       db $14,$FA,$F4,$FA,$A4,$F3,$12,$F5   ;83F782|        |      ;
-                       db $13,$F6                           ;83F78A|        |0000F6;
-                       db $09,$F7,$61,$F7,$E5,$F8,$49,$F9   ;83F78C|        |      ;
+          CODE_83F794:
                        LDA.W $1A6E                          ;83F794|AD6E1A  |831A6E;
                        ASL A                                ;83F797|0A      |      ;
                        TAX                                  ;83F798|AA      |      ;
-                       JSR.W (DATA8_83F79D,X)               ;83F799|FC9DF7  |83F79D;
+                       JSR.W (PTR16_83F79D,X)               ;83F799|FC9DF7  |83F79D;
                        RTS                                  ;83F79C|60      |      ;
+         PTR16_83F79D:
+                       dw CODE_FN_83D6D7                    ;83F79D|        |83D6D7;
+                       dw CODE_83F7B1                       ;83F79F|        |83F7B1;
+                       dw CODE_83D73F                       ;83F7A1|        |83D73F;
+                       dw CODE_83D75B                       ;83F7A3|        |83D75B;
+                       dw CODE_83D774                       ;83F7A5|        |83D774;
+                       dw CODE_83D78D                       ;83F7A7|        |83D78D;
+                       dw CODE_83F7BB                       ;83F7A9|        |83F7BB;
+                       dw CODE_83F7FC                       ;83F7AB|        |83F7FC;
+                       dw CODE_83F841                       ;83F7AD|        |83F841;
+                       dw CODE_83F88F                       ;83F7AF|        |83F88F;
  
-         DATA8_83F79D:
-                       db $D7,$D6,$B1,$F7,$3F,$D7,$5B,$D7   ;83F79D|        |      ;
-                       db $74,$D7,$8D,$D7,$BB,$F7,$FC,$F7   ;83F7A5|        |      ;
-                       db $41,$F8,$8F,$F8                   ;83F7AD|        |      ;
+          CODE_83F7B1:
                        INC.W $1A6E                          ;83F7B1|EE6E1A  |831A6E;
                        LDA.W #$0020                         ;83F7B4|A92000  |      ;
                        JSR.W CODE_FN_83A9C7                 ;83F7B7|20C7A9  |83A9C7;
                        RTS                                  ;83F7BA|60      |      ;
+ 
+          CODE_83F7BB:
                        INC.W $1A6E                          ;83F7BB|EE6E1A  |831A6E;
-                       JSL.L CODE_FL_80BB2D                 ;83F7BE|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;83F7BE|222DBB80|80BB2D;
                        dl DATA8_93A831                      ;83F7C2|        |93A831;
                        dl $7E2000                           ;83F7C5|        |7E2000;
                        JSR.W CODE_FN_83BAB0                 ;83F7C8|20B0BA  |83BAB0;
@@ -13079,6 +13861,8 @@ Options_DoVSLevelHard:
                        db $C0,$30,$7E,$C0,$00,$80,$60,$78   ;83F7F3|        |      ;
  
                      + RTS                                  ;83F7FB|60      |      ;
+ 
+          CODE_83F7FC:
                        INC.W $1A6E                          ;83F7FC|EE6E1A  |831A6E;
                        JSR.W CODE_FN_83BB3F                 ;83F7FF|203FBB  |83BB3F;
                        JSR.W CODE_FN_83BB68                 ;83F802|2068BB  |83BB68;
@@ -13108,6 +13892,8 @@ Options_DoVSLevelHard:
                      + JSR.W CODE_FN_8380FC                 ;83F83A|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83F83D|20BD8A  |838ABD;
                        RTS                                  ;83F840|60      |      ;
+ 
+          CODE_83F841:
                        JSR.W CODE_FN_8380FC                 ;83F841|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83F844|20BD8A  |838ABD;
                        JSR.W CODE_FN_83BB26                 ;83F847|2026BB  |83BB26;
@@ -13141,6 +13927,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838ABD                 ;83F88B|20BD8A  |838ABD;
  
                      + RTS                                  ;83F88E|60      |      ;
+ 
+          CODE_83F88F:
                        JSR.W CODE_FN_8380FC                 ;83F88F|20FC80  |8380FC;
                        JSR.W CODE_FN_838ABD                 ;83F892|20BD8A  |838ABD;
                        JSR.W CODE_FN_83BB26                 ;83F895|2026BB  |83BB26;
@@ -13154,6 +13942,8 @@ Options_DoVSLevelHard:
                        STA.L $7E9452                        ;83F8AD|8F52947E|7E9452;
  
                      + RTS                                  ;83F8B1|60      |      ;
+ 
+          CODE_83F8B2:
                        LDA.W #$0001                         ;83F8B2|A90100  |      ;
                        STA.B $B1                            ;83F8B5|85B1    |0000B1;
                        JSR.W CODE_FN_83BB26                 ;83F8B7|2026BB  |83BB26;
@@ -13174,6 +13964,8 @@ Options_DoVSLevelHard:
                        RTS                                  ;83F8E3|60      |      ;
  
                      + RTS                                  ;83F8E4|60      |      ;
+ 
+          CODE_83F8E5:
                        SEP #$20                             ;83F8E5|E220    |      ;
                        LDA.B #$07                           ;83F8E7|A907    |      ;
                        STA.W $01E2                          ;83F8E9|8DE201  |8301E2;
@@ -13219,6 +14011,8 @@ Options_DoVSLevelHard:
                        STA.L $7EF1E0                        ;83F941|8FE0F17E|7EF1E0;
                        INC.W Game_State_State               ;83F945|EEA202  |8302A2;
                        RTS                                  ;83F948|60      |      ;
+ 
+          CODE_83F949:
                        REP #$30                             ;83F949|C230    |      ;
                        LDA.B $B7                            ;83F94B|A5B7    |0000B7;
                        ORA.B $B9                            ;83F94D|05B9    |0000B9;
@@ -13312,14 +14106,20 @@ Options_DoVSLevelHard:
                        STA.W Game_State_State               ;83FA10|8DA202  |8302A2;
  
                      + RTS                                  ;83FA13|60      |      ;
+ 
+          CODE_83FA14:
                        LDA.W $1A6E                          ;83FA14|AD6E1A  |831A6E;
                        ASL A                                ;83FA17|0A      |      ;
                        TAX                                  ;83FA18|AA      |      ;
-                       JSR.W (DATA8_83FA1D,X)               ;83FA19|FC1DFA  |83FA1D;
+                       JSR.W (PTR16_83FA1D,X)               ;83FA19|FC1DFA  |83FA1D;
                        RTS                                  ;83FA1C|60      |      ;
+         PTR16_83FA1D:
+                       dw CODE_83FA25                       ;83FA1D|        |83FA25;
+                       dw CODE_83FA40                       ;83FA1F|        |83FA40;
+                       dw CODE_83FA7F                       ;83FA21|        |83FA7F;
+                       dw CODE_83FAB0                       ;83FA23|        |83FAB0;
  
-         DATA8_83FA1D:
-                       db $25,$FA,$40,$FA,$7F,$FA,$B0,$FA   ;83FA1D|        |      ;
+          CODE_83FA25:
                        INC.W $1A6E                          ;83FA25|EE6E1A  |831A6E;
                        STZ.W $1A70                          ;83FA28|9C701A  |831A70;
                        LDY.W #$FA33                         ;83FA2B|A033FA  |      ;
@@ -13331,6 +14131,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838BF1                 ;83FA39|20F18B  |838BF1;
                        JSR.W CODE_FN_83BB26                 ;83FA3C|2026BB  |83BB26;
                        RTS                                  ;83FA3F|60      |      ;
+ 
+          CODE_83FA40:
                        JSR.W CODE_FN_8380FC                 ;83FA40|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83FA43|20F18B  |838BF1;
                        JSR.W CODE_FN_83BB26                 ;83FA46|2026BB  |83BB26;
@@ -13357,6 +14159,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_838BF1                 ;83FA7B|20F18B  |838BF1;
  
                      + RTS                                  ;83FA7E|60      |      ;
+ 
+          CODE_83FA7F:
                        JSR.W CODE_FN_8380FC                 ;83FA7F|20FC80  |8380FC;
                        JSR.W CODE_FN_838BF1                 ;83FA82|20F18B  |838BF1;
                        JSR.W CODE_FN_83BB26                 ;83FA85|2026BB  |83BB26;
@@ -13377,6 +14181,8 @@ Options_DoVSLevelHard:
                        JSR.W CODE_FN_83A058                 ;83FAAC|2058A0  |83A058;
  
                      + RTS                                  ;83FAAF|60      |      ;
+ 
+          CODE_83FAB0:
                        JSR.W CODE_FN_838193                 ;83FAB0|209381  |838193;
                        STZ.W $1A6E                          ;83FAB3|9C6E1A  |831A6E;
                        LDY.W #$FABE                         ;83FAB6|A0BEFA  |      ;
@@ -13405,14 +14211,20 @@ Options_DoVSLevelHard:
                        REP #$20                             ;83FAF1|C220    |      ;
  
                      + RTS                                  ;83FAF3|60      |      ;
+ 
+          CODE_83FAF4:
                        LDA.W $1A6E                          ;83FAF4|AD6E1A  |831A6E;
                        ASL A                                ;83FAF7|0A      |      ;
                        TAX                                  ;83FAF8|AA      |      ;
-                       JSR.W (DATA8_83FAFD,X)               ;83FAF9|FCFDFA  |83FAFD;
+                       JSR.W (PTR16_83FAFD,X)               ;83FAF9|FCFDFA  |83FAFD;
                        RTS                                  ;83FAFC|60      |      ;
+         PTR16_83FAFD:
+                       dw CODE_83FA25                       ;83FAFD|        |83FA25;
+                       dw CODE_83FA40                       ;83FAFF|        |83FA40;
+                       dw CODE_83FA7F                       ;83FB01|        |83FA7F;
+                       dw CODE_83FB05                       ;83FB03|        |83FB05;
  
-         DATA8_83FAFD:
-                       db $25,$FA,$40,$FA,$7F,$FA,$05,$FB   ;83FAFD|        |      ;
+          CODE_83FB05:
                        JSR.W CODE_FN_838193                 ;83FB05|209381  |838193;
                        STZ.W $1A6E                          ;83FB08|9C6E1A  |831A6E;
                        LDY.W #$FB13                         ;83FB0B|A013FB  |      ;

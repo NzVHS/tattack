@@ -210,25 +210,26 @@
                        RTS                                  ;88833A|60      |      ;
  
                      + LDA.L $7E90B3,X                      ;88833B|BFB3907E|7E90B3;
-                       BEQ +                                ;88833F|F014    |888355;
+                       BEQ CODE_888355                      ;88833F|F014    |888355;
                        PHX                                  ;888341|DA      |      ;
                        LDA.L $7E90B1,X                      ;888342|BFB1907E|7E90B1;
                        ASL A                                ;888346|0A      |      ;
                        TAX                                  ;888347|AA      |      ;
-                       JSR.W (DATA8_88835C,X)               ;888348|FC5C83  |88835C;
+                       JSR.W (PTR16_88835C,X)               ;888348|FC5C83  |88835C;
                        PLX                                  ;88834B|FA      |      ;
                        LDA.L $7E90B5,X                      ;88834C|BFB5907E|7E90B5;
                        ASL A                                ;888350|0A      |      ;
                        TAX                                  ;888351|AA      |      ;
-                       JSR.W (DATA8_888356,X)               ;888352|FC5683  |888356;
+                       JSR.W (PTR16_888356,X)               ;888352|FC5683  |888356;
  
-                     + RTS                                  ;888355|60      |      ;
- 
-         DATA8_888356:
-                       db $5E,$83,$8A,$83,$B6,$83           ;888356|        |      ;
- 
-         DATA8_88835C:
-                       db $55,$83                           ;88835C|        |      ;
+          CODE_888355:
+                       RTS                                  ;888355|60      |      ;
+         PTR16_888356:
+                       dw CODE_FN_88835E                    ;888356|        |88835E;
+                       dw CODE_FN_88838A                    ;888358|        |88838A;
+                       dw CODE_8883B6                       ;88835A|        |8883B6;
+         PTR16_88835C:
+                       dw CODE_888355                       ;88835C|        |888355;
  
        CODE_FN_88835E:
                        LDA.L $7E933B                        ;88835E|AF3B937E|7E933B;
@@ -265,6 +266,8 @@
                        INC A                                ;8883AF|1A      |      ;
                        STA.L $7E90B3,X                      ;8883B0|9FB3907E|7E90B3;
                        BRA ++                               ;8883B4|8007    |8883BD;
+ 
+          CODE_8883B6:
                        JSR.W CODE_FN_88835E                 ;8883B6|205E83  |88835E;
                        JSR.W CODE_FN_88838A                 ;8883B9|208A83  |88838A;
                        RTS                                  ;8883BC|60      |      ;
@@ -1004,13 +1007,18 @@
                        LDA.L $7E8EDE                        ;8889FB|AFDE8E7E|7E8EDE;
                        ASL A                                ;8889FF|0A      |      ;
                        TAX                                  ;888A00|AA      |      ;
-                       JSR.W (DATA8_888A06,X)               ;888A01|FC068A  |888A06;
+                       JSR.W (PTR16_888A06,X)               ;888A01|FC068A  |888A06;
                        PLB                                  ;888A04|AB      |      ;
                        RTL                                  ;888A05|6B      |      ;
+         PTR16_888A06:
+                       dw CODE_888A0C                       ;888A06|        |888A0C;
+                       dw CODE_888A0D                       ;888A08|        |888A0D;
+                       dw CODE_888B22                       ;888A0A|        |888B22;
  
-         DATA8_888A06:
-                       db $0C,$8A,$0D,$8A,$22,$8B           ;888A06|        |      ;
+          CODE_888A0C:
                        RTS                                  ;888A0C|60      |      ;
+ 
+          CODE_888A0D:
                        LDX.W #$0002                         ;888A0D|A20200  |      ;
  
        CODE_JP_888A10:
@@ -1119,6 +1127,8 @@
                        STA.L $7E8FFE                        ;888B1C|8FFE8F7E|7E8FFE;
                        PLX                                  ;888B20|FA      |      ;
                        RTL                                  ;888B21|6B      |      ;
+ 
+          CODE_888B22:
                        PHB                                  ;888B22|8B      |      ;
                        PHK                                  ;888B23|4B      |      ;
                        PLB                                  ;888B24|AB      |      ;
@@ -1164,7 +1174,7 @@
                        LDA.L $000394                        ;888B7A|AF940300|000394;
                        ASL A                                ;888B7E|0A      |      ;
                        TAX                                  ;888B7F|AA      |      ;
-                       JSR.W (DATA8_888BF6,X)               ;888B80|FCF68B  |888BF6;
+                       JSR.W (PTR16_888BF6,X)               ;888B80|FCF68B  |888BF6;
                        LDA.L $7E9448                        ;888B83|AF48947E|7E9448;
                        BNE ++                               ;888B87|D003    |888B8C;
                        JMP.W CODE_JP_888BA3                 ;888B89|4CA38B  |888BA3;
@@ -1178,7 +1188,7 @@
                        LDA.L $000394                        ;888B9A|AF940300|000394;
                        ASL A                                ;888B9E|0A      |      ;
                        TAX                                  ;888B9F|AA      |      ;
-                       JSR.W (DATA8_888C06,X)               ;888BA0|FC068C  |888C06;
+                       JSR.W (PTR16_888C06,X)               ;888BA0|FC068C  |888C06;
  
        CODE_JP_888BA3:
                        LDA.L $000394                        ;888BA3|AF940300|000394;
@@ -1217,14 +1227,26 @@
  
                     ++ PLB                                  ;888BF4|AB      |      ;
                        RTS                                  ;888BF5|60      |      ;
+         PTR16_888BF6:
+                       dw CODE_888C16                       ;888BF6|        |888C16;
+                       dw CODE_888C3C                       ;888BF8|        |888C3C;
+                       dw CODE_888C62                       ;888BFA|        |888C62;
+                       dw CODE_888C88                       ;888BFC|        |888C88;
+                       dw CODE_888CB2                       ;888BFE|        |888CB2;
+                       dw CODE_888CDC                       ;888C00|        |888CDC;
+                       dw CODE_888D0A                       ;888C02|        |888D0A;
+                       dw CODE_888D34                       ;888C04|        |888D34;
+         PTR16_888C06:
+                       dw CODE_888E02                       ;888C06|        |888E02;
+                       dw CODE_888DD6                       ;888C08|        |888DD6;
+                       dw CODE_888DAE                       ;888C0A|        |888DAE;
+                       dw CODE_888D86                       ;888C0C|        |888D86;
+                       dw CODE_888D5E                       ;888C0E|        |888D5E;
+                       dw CODE_888E8A                       ;888C10|        |888E8A;
+                       dw CODE_888E5E                       ;888C12|        |888E5E;
+                       dw CODE_888E2E                       ;888C14|        |888E2E;
  
-         DATA8_888BF6:
-                       db $16,$8C,$3C,$8C,$62,$8C,$88,$8C   ;888BF6|        |      ;
-                       db $B2,$8C,$DC,$8C,$0A,$8D,$34,$8D   ;888BFE|        |      ;
- 
-         DATA8_888C06:
-                       db $02,$8E,$D6,$8D,$AE,$8D,$86,$8D   ;888C06|        |      ;
-                       db $5E,$8D,$8A,$8E,$5E,$8E,$2E,$8E   ;888C0E|        |      ;
+          CODE_888C16:
                        LDA.L $000394                        ;888C16|AF940300|000394;
                        ASL A                                ;888C1A|0A      |      ;
                        TAX                                  ;888C1B|AA      |      ;
@@ -1240,6 +1262,8 @@
                        STA.B $D1                            ;888C35|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888C37|22AFBB80|80BBAF;
                        RTS                                  ;888C3B|60      |      ;
+ 
+          CODE_888C3C:
                        LDA.L $000394                        ;888C3C|AF940300|000394;
                        ASL A                                ;888C40|0A      |      ;
                        TAX                                  ;888C41|AA      |      ;
@@ -1255,6 +1279,8 @@
                        STA.B $D1                            ;888C5B|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888C5D|22AFBB80|80BBAF;
                        RTS                                  ;888C61|60      |      ;
+ 
+          CODE_888C62:
                        LDA.L $000394                        ;888C62|AF940300|000394;
                        ASL A                                ;888C66|0A      |      ;
                        TAX                                  ;888C67|AA      |      ;
@@ -1270,6 +1296,8 @@
                        STA.B $D1                            ;888C81|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888C83|22AFBB80|80BBAF;
                        RTS                                  ;888C87|60      |      ;
+ 
+          CODE_888C88:
                        LDA.L $000394                        ;888C88|AF940300|000394;
                        ASL A                                ;888C8C|0A      |      ;
                        TAX                                  ;888C8D|AA      |      ;
@@ -1287,6 +1315,8 @@
                        STA.B $D1                            ;888CAB|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888CAD|22AFBB80|80BBAF;
                        RTS                                  ;888CB1|60      |      ;
+ 
+          CODE_888CB2:
                        LDA.L $000394                        ;888CB2|AF940300|000394;
                        ASL A                                ;888CB6|0A      |      ;
                        TAX                                  ;888CB7|AA      |      ;
@@ -1304,6 +1334,8 @@
                        STA.B $D1                            ;888CD5|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888CD7|22AFBB80|80BBAF;
                        RTS                                  ;888CDB|60      |      ;
+ 
+          CODE_888CDC:
                        LDA.L $000394                        ;888CDC|AF940300|000394;
                        ASL A                                ;888CE0|0A      |      ;
                        TAX                                  ;888CE1|AA      |      ;
@@ -1323,6 +1355,8 @@
                        STA.B $D1                            ;888D03|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888D05|22AFBB80|80BBAF;
                        RTS                                  ;888D09|60      |      ;
+ 
+          CODE_888D0A:
                        LDA.L $000394                        ;888D0A|AF940300|000394;
                        ASL A                                ;888D0E|0A      |      ;
                        TAX                                  ;888D0F|AA      |      ;
@@ -1340,6 +1374,8 @@
                        STA.B $D1                            ;888D2D|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888D2F|22AFBB80|80BBAF;
                        RTS                                  ;888D33|60      |      ;
+ 
+          CODE_888D34:
                        LDA.L $000394                        ;888D34|AF940300|000394;
                        ASL A                                ;888D38|0A      |      ;
                        TAX                                  ;888D39|AA      |      ;
@@ -1357,6 +1393,8 @@
                        STA.B $D1                            ;888D57|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888D59|22AFBB80|80BBAF;
                        RTS                                  ;888D5D|60      |      ;
+ 
+          CODE_888D5E:
                        LDA.L $000394                        ;888D5E|AF940300|000394;
                        ASL A                                ;888D62|0A      |      ;
                        TAX                                  ;888D63|AA      |      ;
@@ -1374,6 +1412,8 @@
                        STA.B $D1                            ;888D7F|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888D81|22AFBB80|80BBAF;
                        RTS                                  ;888D85|60      |      ;
+ 
+          CODE_888D86:
                        LDA.L $000394                        ;888D86|AF940300|000394;
                        ASL A                                ;888D8A|0A      |      ;
                        TAX                                  ;888D8B|AA      |      ;
@@ -1391,6 +1431,8 @@
                        STA.B $D1                            ;888DA7|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888DA9|22AFBB80|80BBAF;
                        RTS                                  ;888DAD|60      |      ;
+ 
+          CODE_888DAE:
                        LDA.L $000394                        ;888DAE|AF940300|000394;
                        ASL A                                ;888DB2|0A      |      ;
                        TAX                                  ;888DB3|AA      |      ;
@@ -1408,6 +1450,8 @@
                        STA.B $D1                            ;888DCF|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888DD1|22AFBB80|80BBAF;
                        RTS                                  ;888DD5|60      |      ;
+ 
+          CODE_888DD6:
                        LDA.L $000394                        ;888DD6|AF940300|000394;
                        ASL A                                ;888DDA|0A      |      ;
                        TAX                                  ;888DDB|AA      |      ;
@@ -1427,6 +1471,8 @@
                        STA.B $D1                            ;888DFB|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888DFD|22AFBB80|80BBAF;
                        RTS                                  ;888E01|60      |      ;
+ 
+          CODE_888E02:
                        LDA.L $000394                        ;888E02|AF940300|000394;
                        ASL A                                ;888E06|0A      |      ;
                        TAX                                  ;888E07|AA      |      ;
@@ -1446,6 +1492,8 @@
                        STA.B $D1                            ;888E27|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888E29|22AFBB80|80BBAF;
                        RTS                                  ;888E2D|60      |      ;
+ 
+          CODE_888E2E:
                        LDA.L $000394                        ;888E2E|AF940300|000394;
                        ASL A                                ;888E32|0A      |      ;
                        TAX                                  ;888E33|AA      |      ;
@@ -1467,6 +1515,8 @@
                        STA.B $D1                            ;888E57|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888E59|22AFBB80|80BBAF;
                        RTS                                  ;888E5D|60      |      ;
+ 
+          CODE_888E5E:
                        LDA.L $000394                        ;888E5E|AF940300|000394;
                        ASL A                                ;888E62|0A      |      ;
                        TAX                                  ;888E63|AA      |      ;
@@ -1486,6 +1536,8 @@
                        STA.B $D1                            ;888E83|85D1    |0000D1;
                        JSL.L CODE_FL_80BBAF                 ;888E85|22AFBB80|80BBAF;
                        RTS                                  ;888E89|60      |      ;
+ 
+          CODE_888E8A:
                        LDA.L $000394                        ;888E8A|AF940300|000394;
                        ASL A                                ;888E8E|0A      |      ;
                        TAX                                  ;888E8F|AA      |      ;
@@ -1865,19 +1917,24 @@
                        LDA.L $7E8EDE                        ;88958A|AFDE8E7E|7E8EDE;
                        ASL A                                ;88958E|0A      |      ;
                        TAX                                  ;88958F|AA      |      ;
-                       JSR.W (DATA8_889596,X)               ;889590|FC9695  |889596;
+                       JSR.W (PTR16_889596,X)               ;889590|FC9695  |889596;
                        PLB                                  ;889593|AB      |      ;
                        RTL                                  ;889594|6B      |      ;
-                       RTS                                  ;889595|60      |      ;
  
-         DATA8_889596:
-                       db $95,$95,$AD,$95,$53,$96           ;889596|        |      ;
+          CODE_889595:
+                       RTS                                  ;889595|60      |      ;
+         PTR16_889596:
+                       dw CODE_889595                       ;889596|        |889595;
+                       dw CODE_8895AD                       ;889598|        |8895AD;
+                       dw CODE_889653                       ;88959A|        |889653;
                        LDA.W #$0001                         ;88959C|A90100  |      ;
                        STA.L $7E8EDE                        ;88959F|8FDE8E7E|7E8EDE;
                        DEC A                                ;8895A3|3A      |      ;
                        STA.L $7E8EE0                        ;8895A4|8FE08E7E|7E8EE0;
                        STA.L $7E8EE2                        ;8895A8|8FE28E7E|7E8EE2;
                        RTL                                  ;8895AC|6B      |      ;
+ 
+          CODE_8895AD:
                        LDA.W #$8100                         ;8895AD|A90081  |      ;
                        STA.B $D6                            ;8895B0|85D6    |0000D6;
                        LDA.W #$8000                         ;8895B2|A90080  |      ;
@@ -1943,6 +2000,8 @@
                        STA.L $7E8EE0                        ;88964A|8FE08E7E|7E8EE0;
                        STA.L $7E8EE2                        ;88964E|8FE28E7E|7E8EE2;
                        RTL                                  ;889652|6B      |      ;
+ 
+          CODE_889653:
                        LDA.W #$8100                         ;889653|A90081  |      ;
                        STA.B $D6                            ;889656|85D6    |0000D6;
                        LDA.W #$8000                         ;889658|A90080  |      ;
@@ -2179,19 +2238,24 @@
                        LDA.L $7E8EE4                        ;88982D|AFE48E7E|7E8EE4;
                        ASL A                                ;889831|0A      |      ;
                        TAX                                  ;889832|AA      |      ;
-                       JSR.W (DATA8_889839,X)               ;889833|FC3998  |889839;
+                       JSR.W (PTR16_889839,X)               ;889833|FC3998  |889839;
                        PLB                                  ;889836|AB      |      ;
                        RTL                                  ;889837|6B      |      ;
-                       RTS                                  ;889838|60      |      ;
  
-         DATA8_889839:
-                       db $38,$98,$50,$98,$F6,$98           ;889839|        |      ;
+          CODE_889838:
+                       RTS                                  ;889838|60      |      ;
+         PTR16_889839:
+                       dw CODE_889838                       ;889839|        |889838;
+                       dw CODE_889850                       ;88983B|        |889850;
+                       dw CODE_8898F6                       ;88983D|        |8898F6;
                        LDA.W #$0001                         ;88983F|A90100  |      ;
                        STA.L $7E8EE4                        ;889842|8FE48E7E|7E8EE4;
                        DEC A                                ;889846|3A      |      ;
                        STA.L $7E8EE6                        ;889847|8FE68E7E|7E8EE6;
                        STA.L $7E8EE8                        ;88984B|8FE88E7E|7E8EE8;
                        RTL                                  ;88984F|6B      |      ;
+ 
+          CODE_889850:
                        LDA.W #$8100                         ;889850|A90081  |      ;
                        STA.B $D6                            ;889853|85D6    |0000D6;
                        LDA.W #$8000                         ;889855|A90080  |      ;
@@ -2257,6 +2321,8 @@
                        STA.L $7E8EE6                        ;8898ED|8FE68E7E|7E8EE6;
                        STA.L $7E8EE8                        ;8898F1|8FE88E7E|7E8EE8;
                        RTL                                  ;8898F5|6B      |      ;
+ 
+          CODE_8898F6:
                        LDA.W #$8100                         ;8898F6|A90081  |      ;
                        STA.B $D6                            ;8898F9|85D6    |0000D6;
                        LDA.W #$8000                         ;8898FB|A90080  |      ;
@@ -2887,12 +2953,16 @@
                        LDA.L $7E8F3E                        ;889E20|AF3E8F7E|7E8F3E;
                        ASL A                                ;889E24|0A      |      ;
                        TAX                                  ;889E25|AA      |      ;
-                       JSR.W (DATA8_889E2B,X)               ;889E26|FC2B9E  |889E2B;
+                       JSR.W (PTR16_889E2B,X)               ;889E26|FC2B9E  |889E2B;
                        BRA +                                ;889E29|800E    |889E39;
- 
-         DATA8_889E2B:
-                       db $5C,$9E,$77,$9E,$93,$9E,$D2,$9E   ;889E2B|        |      ;
-                       db $11,$9F,$50,$9F,$CF,$9F           ;889E33|        |      ;
+         PTR16_889E2B:
+                       dw CODE_889E5C                       ;889E2B|        |889E5C;
+                       dw CODE_889E77                       ;889E2D|        |889E77;
+                       dw CODE_889E93                       ;889E2F|        |889E93;
+                       dw CODE_889ED2                       ;889E31|        |889ED2;
+                       dw CODE_889F11                       ;889E33|        |889F11;
+                       dw CODE_889F50                       ;889E35|        |889F50;
+                       dw CODE_889FCF                       ;889E37|        |889FCF;
  
                      + LDA.L $7E8F48                        ;889E39|AF488F7E|7E8F48;
                        BEQ +                                ;889E3D|F01C    |889E5B;
@@ -2907,6 +2977,8 @@
                        JSL.L CODE_FL_8883CE                 ;889E57|22CE8388|8883CE;
  
                      + RTS                                  ;889E5B|60      |      ;
+ 
+          CODE_889E5C:
                        LDA.L $7E90CE                        ;889E5C|AFCE907E|7E90CE;
                        CMP.W #$00C6                         ;889E60|C9C600  |      ;
                        BNE +                                ;889E63|D009    |889E6E;
@@ -2919,6 +2991,8 @@
  
                     ++ JSR.W CODE_FN_889FFB                 ;889E73|20FB9F  |889FFB;
                        RTS                                  ;889E76|60      |      ;
+ 
+          CODE_889E77:
                        LDA.W #$00C6                         ;889E77|A9C600  |      ;
                        CLC                                  ;889E7A|18      |      ;
                        ADC.L $7E9054                        ;889E7B|6F54907E|7E9054;
@@ -2929,6 +3003,8 @@
                        STA.L $7E8F40                        ;889E8B|8F408F7E|7E8F40;
                        JSR.W CODE_FN_889FFB                 ;889E8F|20FB9F  |889FFB;
                        RTS                                  ;889E92|60      |      ;
+ 
+          CODE_889E93:
                        LDA.L $7E8EDA                        ;889E93|AFDA8E7E|7E8EDA;
                        DEC A                                ;889E97|3A      |      ;
                        STA.L $7E8EDA                        ;889E98|8FDA8E7E|7E8EDA;
@@ -2954,6 +3030,8 @@
  
                      + JSR.W CODE_FN_889FFB                 ;889ECE|20FB9F  |889FFB;
                        RTS                                  ;889ED1|60      |      ;
+ 
+          CODE_889ED2:
                        LDA.L $7E8EDA                        ;889ED2|AFDA8E7E|7E8EDA;
                        DEC A                                ;889ED6|3A      |      ;
                        STA.L $7E8EDA                        ;889ED7|8FDA8E7E|7E8EDA;
@@ -2979,6 +3057,8 @@
  
                      + JSR.W CODE_FN_889FFB                 ;889F0D|20FB9F  |889FFB;
                        RTS                                  ;889F10|60      |      ;
+ 
+          CODE_889F11:
                        LDA.L $7E8EDA                        ;889F11|AFDA8E7E|7E8EDA;
                        DEC A                                ;889F15|3A      |      ;
                        STA.L $7E8EDA                        ;889F16|8FDA8E7E|7E8EDA;
@@ -3004,6 +3084,8 @@
  
                      + JSR.W CODE_FN_889FFB                 ;889F4C|20FB9F  |889FFB;
                        RTS                                  ;889F4F|60      |      ;
+ 
+          CODE_889F50:
                        LDA.L $7E531D                        ;889F50|AF1D537E|7E531D;
                        CMP.W #$0003                         ;889F54|C90300  |      ;
                        BEQ +                                ;889F57|F025    |889F7E;
@@ -3054,6 +3136,8 @@
  
                     ++ JSR.W CODE_FN_889FFB                 ;889FCB|20FB9F  |889FFB;
                        RTS                                  ;889FCE|60      |      ;
+ 
+          CODE_889FCF:
                        LDA.W #$0000                         ;889FCF|A90000  |      ;
                        JSL.L CODE_FL_829C29                 ;889FD2|22299C82|829C29;
                        LDA.W #$0024                         ;889FD6|A92400  |      ;
@@ -3325,7 +3409,7 @@
                        STA.B $D5                            ;88A2F3|85D5    |0000D5;
                        LDA.L $7E9059                        ;88A2F5|AF59907E|7E9059;
                        STA.B $D3                            ;88A2F9|85D3    |0000D3;
-                       LDA.L $7E9436                        ;88A2FB|AF36947E|7E9436;
+                       LDA.L CharacterBio_PictureID         ;88A2FB|AF36947E|7E9436;
                        ASL A                                ;88A2FF|0A      |      ;
                        TAX                                  ;88A300|AA      |      ;
                        LDA.L DATA8_89EB05,X                 ;88A301|BF05EB89|89EB05;

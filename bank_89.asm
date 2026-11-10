@@ -1424,7 +1424,7 @@
  
                      + ASL A                                ;89A1C9|0A      |      ;
                        TAX                                  ;89A1CA|AA      |      ;
-                       JSR.W (DATA8_89A1E2,X)               ;89A1CB|FCE2A1  |89A1E2;
+                       JSR.W (PTR16_89A1E2,X)               ;89A1CB|FCE2A1  |89A1E2;
                        LDX.W $1A65                          ;89A1CE|AE651A  |7E1A65;
                        LDA.L $0019FF,X                      ;89A1D1|BFFF1900|0019FF;
                        BEQ -                                ;89A1D5|F0E4    |89A1BB;
@@ -1433,11 +1433,13 @@
                        TYA                                  ;89A1DC|98      |      ;
                        STA.L $0019BF,X                      ;89A1DD|9FBF1900|0019BF;
                        RTS                                  ;89A1E1|60      |      ;
- 
-         DATA8_89A1E2:
-                       db $A2,$A2                           ;89A1E2|        |      ;
-                       db $A8,$A2,$C0,$A2,$E5,$A2           ;89A1E4|        |      ;
-                       db $F2,$A2,$04,$A3                   ;89A1EA|        |      ;
+         PTR16_89A1E2:
+                       dw CODE_89A2A2                       ;89A1E2|        |89A2A2;
+                       dw UNREACH_89A2A8                    ;89A1E4|        |89A2A8;
+                       dw UNREACH_89A2C0                    ;89A1E6|        |89A2C0;
+                       dw UNREACH_89A2E5                    ;89A1E8|        |89A2E5;
+                       dw CODE_89A2F2                       ;89A1EA|        |89A2F2;
+                       dw CODE_89A304                       ;89A1EC|        |89A304;
  
        CODE_FN_89A1EE:
                        LDA.W $0000,Y                        ;89A1EE|B90000  |7E0000;
@@ -1504,26 +1506,38 @@
                        db $C2,$20,$AF,$63,$1A,$00,$0A,$18   ;89A28F|        |      ;
                        db $6F,$5F,$1A,$00,$A8,$18,$79,$00   ;89A297|        |001A5F;
                        db $00,$A8,$60                       ;89A29F|        |      ;
+ 
+          CODE_89A2A2:
                        INY                                  ;89A2A2|C8      |      ;
                        INY                                  ;89A2A3|C8      |      ;
                        JSR.W CODE_FN_89A24B                 ;89A2A4|204BA2  |89A24B;
                        RTS                                  ;89A2A7|60      |      ;
+ 
+       UNREACH_89A2A8:
                        db $C8,$C8,$B9,$00,$00,$29,$FF,$00   ;89A2A8|        |      ;
                        db $AA,$C8,$DA,$20,$EE,$A1,$FA,$E2   ;89A2B0|        |      ;
                        db $20,$9F,$3F,$1A,$00,$C2,$20,$60   ;89A2B8|        |893F9F;
+ 
+       UNREACH_89A2C0:
                        db $C8,$C8,$B9,$00,$00,$29,$FF,$00   ;89A2C0|        |      ;
                        db $AA,$C8,$E2,$20,$BF,$3F,$1A,$00   ;89A2C8|        |      ;
                        db $3A,$9F,$3F,$1A,$00,$F0,$09,$C2   ;89A2D0|        |      ;
                        db $20,$98,$18,$79,$00,$00,$A8,$60   ;89A2D8|        |891898;
-                       db $C2,$20,$C8,$C8,$60,$C8,$C8,$20   ;89A2E0|        |      ;
-                       db $EE,$A1,$AE,$65,$1A,$9F,$FF,$19   ;89A2E8|        |00AEA1;
-                       db $00,$60                           ;89A2F0|        |      ;
+                       db $C2,$20,$C8,$C8,$60               ;89A2E0|        |      ;
+ 
+       UNREACH_89A2E5:
+                       db $C8,$C8,$20,$EE,$A1,$AE,$65,$1A   ;89A2E5|        |      ;
+                       db $9F,$FF,$19,$00,$60               ;89A2ED|        |0019FF;
+ 
+          CODE_89A2F2:
                        LDX.W $1A65                          ;89A2F2|AE651A  |7E1A65;
                        LDA.W #$0000                         ;89A2F5|A90000  |      ;
                        STA.L $0019BF,X                      ;89A2F8|9FBF1900|0019BF;
                        LDA.W #$0001                         ;89A2FC|A90100  |      ;
                        STA.L $0019FF,X                      ;89A2FF|9FFF1900|0019FF;
                        RTS                                  ;89A303|60      |      ;
+ 
+          CODE_89A304:
                        LDA.W $19BD                          ;89A304|ADBD19  |7E19BD;
                        STA.W $1A68                          ;89A307|8D681A  |7E1A68;
                        TYA                                  ;89A30A|98      |      ;
@@ -2079,7 +2093,7 @@ LittleGuy_ChangeAnimation:
                        TAY                                  ;89A704|A8      |      ;
  
                     -- LDA.B [$27]                          ;89A705|A727    |000027;
-                       JSR.W (DATA8_89A73A,X)               ;89A707|FC3AA7  |89A73A;
+                       JSR.W (PTR16_89A73A,X)               ;89A707|FC3AA7  |89A73A;
                        AND.W #$0007                         ;89A70A|290700  |      ;
                        CMP.W #$0007                         ;89A70D|C90700  |      ;
                        BEQ +                                ;89A710|F00D    |89A71F;
@@ -2109,30 +2123,47 @@ LittleGuy_ChangeAnimation:
                        PLX                                  ;89A737|FA      |      ;
                        PLP                                  ;89A738|28      |      ;
                        RTL                                  ;89A739|6B      |      ;
+         PTR16_89A73A:
+                       dw CODE_89A74A                       ;89A73A|        |89A74A;
+                       dw CODE_89A74E                       ;89A73C|        |89A74E;
+                       dw CODE_89A753                       ;89A73E|        |89A753;
+                       dw CODE_89A759                       ;89A740|        |89A759;
+                       dw CODE_89A760                       ;89A742|        |89A760;
+                       dw CODE_89A768                       ;89A744|        |89A768;
+                       dw CODE_89A773                       ;89A746|        |89A773;
+                       dw CODE_89A77F                       ;89A748|        |89A77F;
  
-         DATA8_89A73A:
-                       db $4A,$A7,$4E,$A7,$53,$A7,$59,$A7   ;89A73A|        |      ;
-                       db $60,$A7,$68,$A7,$73,$A7,$7F,$A7   ;89A742|        |      ;
+          CODE_89A74A:
                        LDX.W #$0006                         ;89A74A|A20600  |      ;
                        RTS                                  ;89A74D|60      |      ;
+ 
+          CODE_89A74E:
                        LSR A                                ;89A74E|4A      |      ;
                        LDX.W #$0008                         ;89A74F|A20800  |      ;
                        RTS                                  ;89A752|60      |      ;
+ 
+          CODE_89A753:
                        LSR A                                ;89A753|4A      |      ;
                        LSR A                                ;89A754|4A      |      ;
                        LDX.W #$000A                         ;89A755|A20A00  |      ;
                        RTS                                  ;89A758|60      |      ;
+ 
+          CODE_89A759:
                        LSR A                                ;89A759|4A      |      ;
                        LSR A                                ;89A75A|4A      |      ;
                        LSR A                                ;89A75B|4A      |      ;
                        LDX.W #$000C                         ;89A75C|A20C00  |      ;
                        RTS                                  ;89A75F|60      |      ;
+ 
+          CODE_89A760:
                        LSR A                                ;89A760|4A      |      ;
                        LSR A                                ;89A761|4A      |      ;
                        LSR A                                ;89A762|4A      |      ;
                        LSR A                                ;89A763|4A      |      ;
                        LDX.W #$000E                         ;89A764|A20E00  |      ;
                        RTS                                  ;89A767|60      |      ;
+ 
+          CODE_89A768:
                        LSR A                                ;89A768|4A      |      ;
                        LSR A                                ;89A769|4A      |      ;
                        LSR A                                ;89A76A|4A      |      ;
@@ -2141,6 +2172,8 @@ LittleGuy_ChangeAnimation:
                        LDX.W #$0000                         ;89A76D|A20000  |      ;
                        INC.B $27                            ;89A770|E627    |000027;
                        RTS                                  ;89A772|60      |      ;
+ 
+          CODE_89A773:
                        LSR A                                ;89A773|4A      |      ;
                        LSR A                                ;89A774|4A      |      ;
                        LSR A                                ;89A775|4A      |      ;
@@ -2150,6 +2183,8 @@ LittleGuy_ChangeAnimation:
                        LDX.W #$0002                         ;89A779|A20200  |      ;
                        INC.B $27                            ;89A77C|E627    |000027;
                        RTS                                  ;89A77E|60      |      ;
+ 
+          CODE_89A77F:
                        LSR A                                ;89A77F|4A      |      ;
                        LSR A                                ;89A780|4A      |      ;
                        LSR A                                ;89A781|4A      |      ;
@@ -2363,17 +2398,21 @@ LittleGuy_ChangeAnimation:
                        LDA.W $C9D2,X                        ;89A958|BDD2C9  |7EC9D2;
                        ASL A                                ;89A95B|0A      |      ;
                        TAX                                  ;89A95C|AA      |      ;
-                       JSR.W (UNREACH_89A961,X)             ;89A95D|FC61A9  |89A961;
+                       JSR.W (PTR16_89A961,X)               ;89A95D|FC61A9  |89A961;
                        RTS                                  ;89A960|60      |      ;
+         PTR16_89A961:
+                       dw CODE_89A96F                       ;89A961|        |89A96F;
+                       dw CODE_89A970                       ;89A963|        |89A970;
+                       dw CODE_JP_89AB47                    ;89A965|        |89AB47;
+                       dw CODE_89AB53                       ;89A967|        |89AB53;
+                       dw CODE_JP_89ABF8                    ;89A969|        |89ABF8;
+                       dw CODE_JP_89ACEA                    ;89A96B|        |89ACEA;
+                       dw CODE_89ADC9                       ;89A96D|        |89ADC9;
  
-       UNREACH_89A961:
-                       db $6F,$A9                           ;89A961|        |A970A9;
-                       db $70,$A9                           ;89A963|        |      ;
-                       db $47,$AB                           ;89A965|        |0000AB;
-                       db $53,$AB,$F8,$AB                   ;89A967|        |      ;
-                       db $EA,$AC                           ;89A96B|        |      ;
-                       db $C9,$AD                           ;89A96D|        |      ;
-                       db $60                               ;89A96F|        |      ;
+          CODE_89A96F:
+                       RTS                                  ;89A96F|60      |      ;
+ 
+          CODE_89A970:
                        LDY.W $D1D2                          ;89A970|ACD2D1  |7ED1D2;
                        LDA.W $C9DE,Y                        ;89A973|B9DEC9  |7EC9DE;
                        LSR A                                ;89A976|4A      |      ;
@@ -2576,6 +2615,8 @@ LittleGuy_ChangeAnimation:
                        LDA.W #$0000                         ;89AB4A|A90000  |      ;
                        STA.W $C9D4,X                        ;89AB4D|9DD4C9  |7EC9D4;
                        INC.W $C9D2,X                        ;89AB50|FED2C9  |7EC9D2;
+ 
+          CODE_89AB53:
                        LDY.W $D1D2                          ;89AB53|ACD2D1  |7ED1D2;
                        JSR.W CODE_FN_89B17B                 ;89AB56|207BB1  |89B17B;
                        LDX.W $C9D4,Y                        ;89AB59|BED4C9  |7EC9D4;
@@ -2862,6 +2903,8 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7EC9D2,X                      ;89ADC0|BFD2C97E|7EC9D2;
                        INC A                                ;89ADC4|1A      |      ;
                        STA.L $7EC9D2,X                      ;89ADC5|9FD2C97E|7EC9D2;
+ 
+          CODE_89ADC9:
                        LDY.W $D1D2                          ;89ADC9|ACD2D1  |7ED1D2;
                        LDA.W $C9F0,Y                        ;89ADCC|B9F0C9  |7EC9F0;
                        BEQ +                                ;89ADCF|F006    |89ADD7;
@@ -2975,13 +3018,17 @@ LittleGuy_ChangeAnimation:
                      + LDA.L $7EC9D6,X                      ;89AEB2|BFD6C97E|7EC9D6;
                        ASL A                                ;89AEB6|0A      |      ;
                        TAX                                  ;89AEB7|AA      |      ;
-                       JMP.W (DATA8_89AEBB,X)               ;89AEB8|7CBBAE  |89AEBB;
+                       JMP.W (PTR16_89AEBB,X)               ;89AEB8|7CBBAE  |89AEBB;
+         PTR16_89AEBB:
+                       dw CODE_89AEC9                       ;89AEBB|        |89AEC9;
+                       dw UNREACH_89AEDB                    ;89AEBD|        |89AEDB;
+                       dw CODE_89AEDD                       ;89AEBF|        |89AEDD;
+                       dw CODE_89AEE6                       ;89AEC1|        |89AEE6;
+                       dw CODE_89AEEF                       ;89AEC3|        |89AEEF;
+                       dw CODE_89AEF8                       ;89AEC5|        |89AEF8;
+                       dw CODE_89AF01                       ;89AEC7|        |89AF01;
  
-         DATA8_89AEBB:
-                       db $C9,$AE                           ;89AEBB|        |      ;
-                       db $DB,$AE                           ;89AEBD|        |      ;
-                       db $DD,$AE,$E6,$AE,$EF,$AE,$F8,$AE   ;89AEBF|        |      ;
-                       db $01,$AF                           ;89AEC7|        |      ;
+          CODE_89AEC9:
                        LDA.L $7ED1D2                        ;89AEC9|AFD2D17E|7ED1D2;
                        TAX                                  ;89AECD|AA      |      ;
                        LDA.L $7EC9EC,X                      ;89AECE|BFECC97E|7EC9EC;
@@ -2989,23 +3036,35 @@ LittleGuy_ChangeAnimation:
                        SBC.W #$0035                         ;89AED3|E93500  |      ;
                        STA.W $042E                          ;89AED6|8D2E04  |7E042E;
                        BRA +                                ;89AED9|802F    |89AF0A;
+ 
+       UNREACH_89AEDB:
                        db $80,$FE                           ;89AEDB|        |89AEDB;
+ 
+          CODE_89AEDD:
                        LDA.W $0446                          ;89AEDD|AD4604  |7E0446;
                        INC A                                ;89AEE0|1A      |      ;
                        STA.W $0446                          ;89AEE1|8D4604  |7E0446;
                        BRA +                                ;89AEE4|8024    |89AF0A;
+ 
+          CODE_89AEE6:
                        LDA.W $044E                          ;89AEE6|AD4E04  |7E044E;
                        INC A                                ;89AEE9|1A      |      ;
                        STA.W $044E                          ;89AEEA|8D4E04  |7E044E;
                        BRA +                                ;89AEED|801B    |89AF0A;
+ 
+          CODE_89AEEF:
                        LDA.W $0456                          ;89AEEF|AD5604  |7E0456;
                        INC A                                ;89AEF2|1A      |      ;
                        STA.W $0456                          ;89AEF3|8D5604  |7E0456;
                        BRA +                                ;89AEF6|8012    |89AF0A;
+ 
+          CODE_89AEF8:
                        LDA.W $045E                          ;89AEF8|AD5E04  |7E045E;
                        INC A                                ;89AEFB|1A      |      ;
                        STA.W $045E                          ;89AEFC|8D5E04  |7E045E;
                        BRA +                                ;89AEFF|8009    |89AF0A;
+ 
+          CODE_89AF01:
                        LDA.W $0472                          ;89AF01|AD7204  |7E0472;
                        INC A                                ;89AF04|1A      |      ;
                        STA.W $0472                          ;89AF05|8D7204  |7E0472;
@@ -3043,13 +3102,17 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7EC9D6,X                      ;89AF39|BFD6C97E|7EC9D6;
                        ASL A                                ;89AF3D|0A      |      ;
                        TAX                                  ;89AF3E|AA      |      ;
-                       JMP.W (DATA8_89AF42,X)               ;89AF3F|7C42AF  |89AF42;
+                       JMP.W (PTR16_89AF42,X)               ;89AF3F|7C42AF  |89AF42;
+         PTR16_89AF42:
+                       dw CODE_89AF50                       ;89AF42|        |89AF50;
+                       dw UNREACH_89AF62                    ;89AF44|        |89AF62;
+                       dw CODE_89AF64                       ;89AF46|        |89AF64;
+                       dw CODE_89AF6D                       ;89AF48|        |89AF6D;
+                       dw CODE_89AF76                       ;89AF4A|        |89AF76;
+                       dw CODE_89AF7F                       ;89AF4C|        |89AF7F;
+                       dw CODE_89AF88                       ;89AF4E|        |89AF88;
  
-         DATA8_89AF42:
-                       db $50,$AF                           ;89AF42|        |      ;
-                       db $62,$AF                           ;89AF44|        |8913F6;
-                       db $64,$AF,$6D,$AF,$76,$AF,$7F,$AF   ;89AF46|        |      ;
-                       db $88,$AF                           ;89AF4E|        |      ;
+          CODE_89AF50:
                        LDA.L $7ED1D2                        ;89AF50|AFD2D17E|7ED1D2;
                        TAX                                  ;89AF54|AA      |      ;
                        LDA.L $7EC9EC,X                      ;89AF55|BFECC97E|7EC9EC;
@@ -3057,23 +3120,35 @@ LittleGuy_ChangeAnimation:
                        SBC.W #$0046                         ;89AF5A|E94600  |      ;
                        STA.W $042C                          ;89AF5D|8D2C04  |7E042C;
                        BRA +                                ;89AF60|802F    |89AF91;
+ 
+       UNREACH_89AF62:
                        db $80,$FE                           ;89AF62|        |89AF62;
+ 
+          CODE_89AF64:
                        LDA.W $0444                          ;89AF64|AD4404  |7E0444;
                        INC A                                ;89AF67|1A      |      ;
                        STA.W $0444                          ;89AF68|8D4404  |7E0444;
                        BRA +                                ;89AF6B|8024    |89AF91;
+ 
+          CODE_89AF6D:
                        LDA.W $044C                          ;89AF6D|AD4C04  |7E044C;
                        INC A                                ;89AF70|1A      |      ;
                        STA.W $044C                          ;89AF71|8D4C04  |7E044C;
                        BRA +                                ;89AF74|801B    |89AF91;
+ 
+          CODE_89AF76:
                        LDA.W $0454                          ;89AF76|AD5404  |7E0454;
                        INC A                                ;89AF79|1A      |      ;
                        STA.W $0454                          ;89AF7A|8D5404  |7E0454;
                        BRA +                                ;89AF7D|8012    |89AF91;
+ 
+          CODE_89AF7F:
                        LDA.W $045C                          ;89AF7F|AD5C04  |00045C;
                        INC A                                ;89AF82|1A      |      ;
                        STA.W $045C                          ;89AF83|8D5C04  |00045C;
                        BRA +                                ;89AF86|8009    |89AF91;
+ 
+          CODE_89AF88:
                        LDA.W $0470                          ;89AF88|AD7004  |7E0470;
                        INC A                                ;89AF8B|1A      |      ;
                        STA.W $0470                          ;89AF8C|8D7004  |7E0470;
@@ -4603,12 +4678,18 @@ LittleGuy_ChangeAnimation:
  
                      + ASL A                                ;89BE5E|0A      |      ;
                        TAX                                  ;89BE5F|AA      |      ;
-                       JMP.W (DATA8_89BE63,X)               ;89BE60|7C63BE  |89BE63;
+                       JMP.W (PTR16_89BE63,X)               ;89BE60|7C63BE  |89BE63;
+         PTR16_89BE63:
+                       dw CODE_89BE6B                       ;89BE63|        |89BE6B;
+                       dw CODE_89BE6F                       ;89BE65|        |89BE6F;
+                       dw CODE_89BE82                       ;89BE67|        |89BE82;
+                       dw CODE_89BE98                       ;89BE69|        |89BE98;
  
-         DATA8_89BE63:
-                       db $6B,$BE,$6F,$BE,$82,$BE,$98,$BE   ;89BE63|        |      ;
+          CODE_89BE6B:
                        JSR.W CODE_FN_89BEB0                 ;89BE6B|20B0BE  |89BEB0;
                        RTL                                  ;89BE6E|6B      |      ;
+ 
+          CODE_89BE6F:
                        LDA.B $08                            ;89BE6F|A508    |000008;
                        EOR.W #$FFFF                         ;89BE71|49FFFF  |      ;
                        INC A                                ;89BE74|1A      |      ;
@@ -4618,6 +4699,8 @@ LittleGuy_ChangeAnimation:
                        CLC                                  ;89BE7D|18      |      ;
                        ADC.W #$0021                         ;89BE7E|692100  |      ;
                        RTL                                  ;89BE81|6B      |      ;
+ 
+          CODE_89BE82:
                        LDA.B $0A                            ;89BE82|A50A    |00000A;
                        EOR.W #$FFFF                         ;89BE84|49FFFF  |      ;
                        INC A                                ;89BE87|1A      |      ;
@@ -4628,6 +4711,8 @@ LittleGuy_ChangeAnimation:
                        ADC.W #$0041                         ;89BE91|694100  |      ;
                        AND.W #$003F                         ;89BE94|293F00  |      ;
                        RTL                                  ;89BE97|6B      |      ;
+ 
+          CODE_89BE98:
                        LDA.B $08                            ;89BE98|A508    |000008;
                        EOR.W #$FFFF                         ;89BE9A|49FFFF  |      ;
                        INC A                                ;89BE9D|1A      |      ;
@@ -6413,25 +6498,33 @@ LittleGuy_ChangeAnimation:
                        LDA.L $7E9357                        ;89DB39|AF57937E|7E9357;
                        ASL A                                ;89DB3D|0A      |      ;
                        TAX                                  ;89DB3E|AA      |      ;
-                       JSR.W (DATA8_89DB46,X)               ;89DB3F|FC46DB  |89DB46;
+                       JSR.W (PTR16_89DB46,X)               ;89DB3F|FC46DB  |89DB46;
                        JSR.W CODE_FN_89DB65                 ;89DB42|2065DB  |89DB65;
                        RTS                                  ;89DB45|60      |      ;
+         PTR16_89DB46:
+                       dw CODE_89DC54                       ;89DB46|        |89DC54;
+                       dw CODE_89DF23                       ;89DB48|        |89DF23;
+                       dw CODE_FN_89DBA7                    ;89DB4A|        |89DBA7;
+                       dw CODE_89DB4E                       ;89DB4C|        |89DB4E;
  
-         DATA8_89DB46:
-                       db $54,$DC,$23,$DF,$A7,$DB           ;89DB46|        |      ;
-                       db $4E,$DB,$60                       ;89DB4C|        |0060DB;
+          CODE_89DB4E:
+                       RTS                                  ;89DB4E|60      |      ;
  
           CODE_89DB4F:
                        LDA.L $7E9357                        ;89DB4F|AF57937E|7E9357;
                        ASL A                                ;89DB53|0A      |      ;
                        TAX                                  ;89DB54|AA      |      ;
-                       JSR.W (DATA8_89DB5C,X)               ;89DB55|FC5CDB  |89DB5C;
+                       JSR.W (PTR16_89DB5C,X)               ;89DB55|FC5CDB  |89DB5C;
                        JSR.W CODE_FN_89DB65                 ;89DB58|2065DB  |89DB65;
                        RTS                                  ;89DB5B|60      |      ;
+         PTR16_89DB5C:
+                       dw CODE_89DDD6                       ;89DB5C|        |89DDD6;
+                       dw CODE_89DF23                       ;89DB5E|        |89DF23;
+                       dw CODE_FN_89DBA7                    ;89DB60|        |89DBA7;
+                       dw CODE_89DB64                       ;89DB62|        |89DB64;
  
-         DATA8_89DB5C:
-                       db $D6,$DD,$23,$DF,$A7,$DB           ;89DB5C|        |      ;
-                       db $64,$DB,$60                       ;89DB62|        |0000DB;
+          CODE_89DB64:
+                       RTS                                  ;89DB64|60      |      ;
  
        CODE_FN_89DB65:
                        PHB                                  ;89DB65|8B      |      ;
@@ -6512,7 +6605,7 @@ LittleGuy_ChangeAnimation:
                        LDA.L DATA8_89DC50,X                 ;89DC0D|BF50DC89|89DC50;
                        AND.W #$00FF                         ;89DC11|29FF00  |      ;
                        STA.B $CF                            ;89DC14|85CF    |0000CF;
-                       JSL.L Move_HowtoPlayLipYoshi         ;89DC16|22BC8084|8480BC;
+                       JSL.L Move_HowtoPlayYoshi            ;89DC16|22BC8084|8480BC;
                        CLC                                  ;89DC1A|18      |      ;
                        ADC.W #$00C7                         ;89DC1B|69C700  |      ;
                        STA.B $D1                            ;89DC1E|85D1    |0000D1;
@@ -6540,6 +6633,8 @@ LittleGuy_ChangeAnimation:
  
          DATA8_89DC50:
                        db $98,$98,$80,$80                   ;89DC50|        |      ;
+ 
+          CODE_89DC54:
                        JSL.L BlankScreen                    ;89DC54|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;89DC58|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;89DC5C|22389E80|809E38;
@@ -6549,7 +6644,7 @@ LittleGuy_ChangeAnimation:
                        STA.W $1986                          ;89DC69|8D8619  |891986;
                        LDA.W #$0000                         ;89DC6C|A90000  |      ;
                        STA.L $7E390E                        ;89DC6F|8F0E397E|7E390E;
-                       JSL.L CODE_FL_80BB2D                 ;89DC73|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89DC73|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric              ;89DC77|        |8C8000;
                        dl $7F5D00                           ;89DC7A|        |7F5D00;
                        PHB                                  ;89DC7D|8B      |      ;
@@ -6561,7 +6656,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DC88|8008    |89DC92;
                        db $00,$5D,$7F,$00,$40,$80,$00,$20   ;89DC8A|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DC92|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DC92|222DBB80|80BB2D;
                        dl DATA8_93BF42                      ;89DC96|        |93BF42;
                        dl $7F5D00                           ;89DC99|        |7F5D00;
                        PHB                                  ;89DC9C|8B      |      ;
@@ -6573,7 +6668,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DCA7|8008    |89DCB1;
                        db $00,$5D,$7F,$00,$08,$80,$00,$44   ;89DCA9|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DCB1|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DCB1|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;89DCB5|        |91C0BB;
                        dl $7F5D00                           ;89DCB8|        |7F5D00;
                        PHB                                  ;89DCBB|8B      |      ;
@@ -6585,7 +6680,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DCC6|8008    |89DCD0;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89DCC8|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DCD0|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DCD0|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric2             ;89DCD4|        |8C9F51;
                        dl $7F5D00                           ;89DCD7|        |7F5D00;
                        PHB                                  ;89DCDA|8B      |      ;
@@ -6597,7 +6692,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DCE5|8008    |89DCEF;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89DCE7|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DCEF|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DCEF|222DBB80|80BB2D;
                        dl CompGFX_MenuYoshi                 ;89DCF3|        |93B039;
                        dl $7F5D00                           ;89DCF6|        |7F5D00;
                        PHB                                  ;89DCF9|8B      |      ;
@@ -6609,7 +6704,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DD04|8008    |89DD0E;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;89DD06|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DD0E|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DD0E|222DBB80|80BB2D;
                        dl DATA8_93C3C2                      ;89DD12|        |93C3C2;
                        dl $7E86F6                           ;89DD15|        |7E86F6;
                        PHB                                  ;89DD18|8B      |      ;
@@ -6621,7 +6716,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DD23|8006    |89DD2B;
                        db $F6,$86,$7E,$00,$02,$00           ;89DD25|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DD2B|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DD2B|222DBB80|80BB2D;
                        dl DATA8_93C51C                      ;89DD2F|        |93C51C;
                        dl $7F5D00                           ;89DD32|        |7F5D00;
                        LDY.W #$0800                         ;89DD35|A00008  |      ;
@@ -6643,7 +6738,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DD54|8008    |89DD5E;
                        db $00,$5D,$7F,$00,$10,$80,$00,$70   ;89DD56|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DD5E|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DD5E|222DBB80|80BB2D;
                        dl DATA8_93C6E0                      ;89DD62|        |93C6E0;
                        dl $7E2800                           ;89DD65|        |7E2800;
                        PHB                                  ;89DD68|8B      |      ;
@@ -6684,6 +6779,8 @@ LittleGuy_ChangeAnimation:
                        db $16,$01,$00,$29,$08,$67,$40,$08   ;89DDC3|        |      ;
                        db $67,$40,$08,$67,$21,$08,$67,$09   ;89DDCB|        |      ;
                        db $01,$00,$00                       ;89DDD3|        |      ;
+ 
+          CODE_89DDD6:
                        JSL.L BlankScreen                    ;89DDD6|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;89DDDA|228A9C80|809C8A;
                        JSL.L CODE_FL_809E38                 ;89DDDE|22389E80|809E38;
@@ -6692,7 +6789,7 @@ LittleGuy_ChangeAnimation:
                        LDA.W #$0000                         ;89DDE8|A90000  |      ;
                        STA.L $7E390E                        ;89DDEB|8F0E397E|7E390E;
                        STA.L $7E9434                        ;89DDEF|8F34947E|7E9434;
-                       JSL.L CODE_FL_80BB2D                 ;89DDF3|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89DDF3|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric              ;89DDF7|        |8C8000;
                        dl $7F5D00                           ;89DDFA|        |7F5D00;
                        PHB                                  ;89DDFD|8B      |      ;
@@ -6704,7 +6801,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DE08|8008    |89DE12;
                        db $00,$5D,$7F,$00,$40,$80,$00,$20   ;89DE0A|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DE12|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DE12|222DBB80|80BB2D;
                        dl DATA8_93BF42                      ;89DE16|        |93BF42;
                        dl $7F5D00                           ;89DE19|        |7F5D00;
                        PHB                                  ;89DE1C|8B      |      ;
@@ -6716,7 +6813,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DE27|8008    |89DE31;
                        db $00,$5D,$7F,$00,$08,$80,$00,$44   ;89DE29|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DE31|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DE31|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;89DE35|        |91C0BB;
                        dl $7F5D00                           ;89DE38|        |7F5D00;
                        PHB                                  ;89DE3B|8B      |      ;
@@ -6728,7 +6825,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DE46|8008    |89DE50;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89DE48|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DE50|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DE50|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric2             ;89DE54|        |8C9F51;
                        dl $7F5D00                           ;89DE57|        |7F5D00;
                        PHB                                  ;89DE5A|8B      |      ;
@@ -6740,7 +6837,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DE65|8008    |89DE6F;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89DE67|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DE6F|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DE6F|222DBB80|80BB2D;
                        dl CompGFX_MenuYoshi                 ;89DE73|        |93B039;
                        dl $7F5D00                           ;89DE76|        |7F5D00;
                        PHB                                  ;89DE79|8B      |      ;
@@ -6752,7 +6849,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DE84|8008    |89DE8E;
                        db $00,$5D,$7F,$00,$20,$80,$00,$10   ;89DE86|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DE8E|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DE8E|222DBB80|80BB2D;
                        dl DATA8_93C3C2                      ;89DE92|        |93C3C2;
                        dl $7E86F6                           ;89DE95|        |7E86F6;
                        PHB                                  ;89DE98|8B      |      ;
@@ -6764,7 +6861,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DEA3|8006    |89DEAB;
                        db $F6,$86,$7E,$00,$02,$00           ;89DEA5|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DEAB|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DEAB|222DBB80|80BB2D;
                        dl DATA8_93C777                      ;89DEAF|        |93C777;
                        dl $7F5D00                           ;89DEB2|        |7F5D00;
                        LDY.W #$0800                         ;89DEB5|A00008  |      ;
@@ -6786,7 +6883,7 @@ LittleGuy_ChangeAnimation:
                        BRA +                                ;89DED4|8008    |89DEDE;
                        db $00,$5D,$7F,$00,$10,$80,$00,$70   ;89DED6|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89DEDE|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89DEDE|222DBB80|80BB2D;
                        dl DATA8_93C876                      ;89DEE2|        |93C876;
                        dl $7E2800                           ;89DEE5|        |7E2800;
                        PHB                                  ;89DEE8|8B      |      ;
@@ -6811,8 +6908,10 @@ LittleGuy_ChangeAnimation:
                        STA.L $7E9357                        ;89DF1A|8F57937E|7E9357;
                        JSL.L CODE_FL_809D0B                 ;89DF1E|220B9D80|809D0B;
                        RTS                                  ;89DF22|60      |      ;
+ 
+          CODE_89DF23:
                        LDY.W #$0001                         ;89DF23|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;89DF26|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;89DF26|22CBAE80|80AECB;
                        BCC +                                ;89DF2A|900B    |89DF37;
                        REP #$20                             ;89DF2C|C220    |      ;
                        LDA.L $7E9357                        ;89DF2E|AF57937E|7E9357;
@@ -7542,8 +7641,8 @@ CharacterBio_Pointers:
                        TAX                                  ;89E73D|AA      |      ;
                        LDA.W OptionsIDstoCharacterIDs,X     ;89E73E|BDCDE9  |89E9CD; convert to character ID
                        AND.W #$00FF                         ;89E741|29FF00  |      ;
-                       STA.L $7E9436                        ;89E744|8F36947E|7E9436;
-                       JSL.L CODE_FL_80BB2D                 ;89E748|222DBB80|80BB2D;
+                       STA.L CharacterBio_PictureID         ;89E744|8F36947E|7E9436;
+                       JSL.L StartDecompression             ;89E748|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric2             ;89E74C|        |8C9F51;
                        dl $7F5D00                           ;89E74F|        |7F5D00;
                        PHB                                  ;89E752|8B      |      ;
@@ -7555,7 +7654,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E75D|8008    |89E767;
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89E75F|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E767|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E767|222DBB80|80BB2D;
                        dl DATA8_8CB5CA                      ;89E76B|        |8CB5CA;
                        dl $7F5D00                           ;89E76E|        |7F5D00;
                        PHB                                  ;89E771|8B      |      ;
@@ -7567,7 +7666,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E77C|8008    |89E786;
                        db $00,$5D,$7F,$00,$08,$80,$00,$02   ;89E77E|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E786|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E786|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric              ;89E78A|        |8C8000;
                        dl $7F5D00                           ;89E78D|        |7F5D00;
                        PHB                                  ;89E790|8B      |      ;
@@ -7579,7 +7678,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E79B|8008    |89E7A5;
                        db $00,$5D,$7F,$00,$08,$80,$00,$20   ;89E79D|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E7A5|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E7A5|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;89E7A9|        |91C0BB;
                        dl $7F5D00                           ;89E7AC|        |7F5D00;
                        PHB                                  ;89E7AF|8B      |      ;
@@ -7591,10 +7690,10 @@ CharacterBio_Pointers:
                        BRA +                                ;89E7BA|8008    |89E7C4;
                        db $00,$5D,$7F,$00,$08,$80,$00,$40   ;89E7BC|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E7C4|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E7C4|222DBB80|80BB2D;
                        dl DATA8_93CD65                      ;89E7C8|        |93CD65;
                        dl $7E86F6                           ;89E7CB|        |7E86F6;
-                       JSL.L CODE_FL_80BB2D                 ;89E7CE|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89E7CE|222DBB80|80BB2D;
                        dl DATA8_91FA1C                      ;89E7D2|        |91FA1C;
                        dl $7F5D00                           ;89E7D5|        |7F5D00;
                        PHB                                  ;89E7D8|8B      |      ;
@@ -7606,7 +7705,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E7E3|8008    |89E7ED;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$60   ;89E7E5|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E7ED|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E7ED|222DBB80|80BB2D;
                        dl DATA8_93CDCD                      ;89E7F1|        |93CDCD;
                        dl $7E2000                           ;89E7F4|        |7E2000;
                        PHB                                  ;89E7F7|8B      |      ;
@@ -7618,7 +7717,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E802|8008    |89E80C;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;89E804|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E80C|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E80C|222DBB80|80BB2D;
                        dl DATA8_93C6E0                      ;89E810|        |93C6E0;
                        dl $7E2800                           ;89E813|        |7E2800;
                        PHB                                  ;89E816|8B      |      ;
@@ -7630,7 +7729,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E821|8008    |89E82B;
                        db $00,$28,$7E,$00,$08,$80,$00,$70   ;89E823|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E82B|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E82B|222DBB80|80BB2D;
                        dl DATA8_93CF87                      ;89E82F|        |93CF87;
                        dl $7E3000                           ;89E832|        |7E3000;
                        PHB                                  ;89E835|8B      |      ;
@@ -7651,33 +7750,33 @@ CharacterBio_Pointers:
                        BRA +                                ;89E855|8006    |89E85D;
                        db $F6,$86,$7E,$00,$02,$00           ;89E857|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89E85D|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89E85D|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;89E861|        |91C0BB;
                        dl $7F5D00                           ;89E864|        |7F5D00;
-                       JSL.L CODE_FL_80BB2D                 ;89E867|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89E867|222DBB80|80BB2D;
                        dl CompGFX_CharacterPortraits2       ;89E86B|        |91EB69;
                        dl $7FBD00                           ;89E86E|        |7FBD00;
-                       LDA.L $7E9436                        ;89E871|AF36947E|7E9436;
+                       LDA.L CharacterBio_PictureID         ;89E871|AF36947E|7E9436;
                        ASL A                                ;89E875|0A      |      ;
                        TAX                                  ;89E876|AA      |      ;
-                       LDA.W DATA8_89E9DA,X                 ;89E877|BDDAE9  |89E9DA;
+                       LDA.W CharacterBio_CharacterDMAPointers,X;89E877|BDDAE9  |89E9DA;
                        TAY                                  ;89E87A|A8      |      ;
                        PHB                                  ;89E87B|8B      |      ;
                        PHK                                  ;89E87C|4B      |      ;
                        PLB                                  ;89E87D|AB      |      ;
                        JSL.L DMA_QueueVRAMCommand           ;89E87E|22CAA080|80A0CA;
                        PLB                                  ;89E882|AB      |      ;
-                       JSL.L CODE_FL_80BB2D                 ;89E883|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89E883|222DBB80|80BB2D;
                        dl DATA8_92FBD5                      ;89E887|        |92FBD5;
                        dl $7F5D00                           ;89E88A|        |7F5D00;
-                       LDA.L $7E9436                        ;89E88D|AF36947E|7E9436;
+                       LDA.L CharacterBio_PictureID         ;89E88D|AF36947E|7E9436;
                        ASL A                                ;89E891|0A      |      ;
                        CLC                                  ;89E892|18      |      ;
-                       ADC.L $7E9436                        ;89E893|6F36947E|7E9436;
+                       ADC.L CharacterBio_PictureID         ;89E893|6F36947E|7E9436;
                        TAX                                  ;89E897|AA      |      ;
-                       LDA.W DATA8_89EA5C,X                 ;89E898|BD5CEA  |89EA5C;
+                       LDA.W PTR24_89EA5C,X                 ;89E898|BD5CEA  |89EA5C;
                        STA.B $24                            ;89E89B|8524    |000024;
-                       LDA.W DATA8_89EA5D,X                 ;89E89D|BD5DEA  |89EA5D;
+                       LDA.W PTR24_89EA5D,X                 ;89E89D|BD5DEA  |89EA5D;
                        STA.B $25                            ;89E8A0|8525    |000025;
                        PHB                                  ;89E8A2|8B      |      ;
                        PEA.W $7E00                          ;89E8A3|F4007E  |897E00;
@@ -7694,9 +7793,10 @@ CharacterBio_Pointers:
                        DEX                                  ;89E8B6|CA      |      ;
                        BNE -                                ;89E8B7|D0F5    |89E8AE;
                        PLB                                  ;89E8B9|AB      |      ;
-                       JSL.L CODE_FL_80BB61                 ;89E8BA|2261BB80|80BB61;
-                       db $36,$94,$7E,$83,$EA,$89,$00,$5D   ;89E8BE|        |      ;
-                       db $7F                               ;89E8C6|        |      ;
+                       JSL.L StartDecompressionAlternate    ;89E8BA|2261BB80|80BB61;
+                       dl $7E9436                           ;89E8BE|        |7E9436;
+                       dl CharacterBio_ImagePointers        ;89E8C1|        |89EA83;
+                       dl $7F5D00                           ;89E8C4|        |7F5D00;
                        PHB                                  ;89E8C7|8B      |      ;
                        PHK                                  ;89E8C8|4B      |      ;
                        PLB                                  ;89E8C9|AB      |      ;
@@ -7706,9 +7806,10 @@ CharacterBio_Pointers:
                        BRA +                                ;89E8D2|8008    |89E8DC;
                        db $00,$5D,$7F,$00,$20,$80,$00,$50   ;89E8D4|        |      ;
  
-                     + JSL.L CODE_FL_80BB61                 ;89E8DC|2261BB80|80BB61;
-                       db $36,$94,$7E,$AA,$EA,$89,$00,$5D   ;89E8E0|        |      ;
-                       db $7F                               ;89E8E8|        |      ;
+                     + JSL.L StartDecompressionAlternate    ;89E8DC|2261BB80|80BB61;
+                       dl $7E9436                           ;89E8E0|        |7E9436;
+                       dl PTR24_89EAAA                      ;89E8E3|        |89EAAA;
+                       dl $7F5D00                           ;89E8E6|        |7F5D00;
                        LDY.W #$0020                         ;89E8E9|A02000  |      ;
                        LDX.W #$0000                         ;89E8EC|A20000  |      ;
  
@@ -7728,9 +7829,10 @@ CharacterBio_Pointers:
                        BRA +                                ;89E908|8006    |89E910;
                        db $F6,$86,$7E,$00,$02,$00           ;89E90A|        |      ;
  
-                     + JSL.L CODE_FL_80BB61                 ;89E910|2261BB80|80BB61;
-                       db $36,$94,$7E,$D1,$EA,$89,$00,$5D   ;89E914|        |      ;
-                       db $7F                               ;89E91C|        |      ;
+                     + JSL.L StartDecompressionAlternate    ;89E910|2261BB80|80BB61;
+                       dl $7E9436                           ;89E914|        |7E9436;
+                       dl PTR24_89EAD1                      ;89E917|        |89EAD1;
+                       dl $7F5D00                           ;89E91A|        |7F5D00;
                        LDA.W #$0018                         ;89E91D|A91800  |      ;
                        STA.B $00                            ;89E920|8500    |000000;
                        LDX.W #$0000                         ;89E922|A20000  |      ;
@@ -7772,7 +7874,7 @@ CharacterBio_Pointers:
                        BRA +                                ;89E968|8008    |89E972;
                        db $00,$20,$7E,$00,$08,$80,$00,$68   ;89E96A|        |      ;
  
-                     + LDA.L $7E9436                        ;89E972|AF36947E|7E9436;
+                     + LDA.L CharacterBio_PictureID         ;89E972|AF36947E|7E9436;
                        STA.W Character_1P                   ;89E976|8DBA02  |8902BA;
                        JSL.L CODE_FL_85AAAC                 ;89E979|22ACAA85|85AAAC;
                        JSL.L CODE_FL_88A0F3                 ;89E97D|22F3A088|88A0F3;
@@ -7819,50 +7921,115 @@ OptionsIDstoCharacterIDs:
                        db $09                               ;89E9D7|        |      ; Naval Piranha
                        db $0A                               ;89E9D8|        |      ; Kamek
                        db $0B                               ;89E9D9|        |      ; Bowser
+CharacterBio_CharacterDMAPointers:
+                       dw CharacterBio_LakituDMAPointers    ;89E9DA|        |89E9F4;
+                       dw CharacterBio_BumptyDMAPointers    ;89E9DC|        |89E9FC;
+                       dw CharacterBio_PoochyDMAPointers    ;89E9DE|        |89EA04;
+                       dw CharacterBio_WigglerDMAPointers   ;89E9E0|        |89EA0C;
+                       dw CharacterBio_FroggyDMAPointers    ;89E9E2|        |89EA14;
+                       dw CharacterBio_BlarggDMAPointers    ;89E9E4|        |89EA1C;
+                       dw CharacterBio_LungeFishDMAPointers ;89E9E6|        |89EA24;
+                       dw CharacterBio_RaphaelDMAPointers   ;89E9E8|        |89EA2C;
+                       dw CharacterBio_KoopaDMAPointers     ;89E9EA|        |89EA34;
+                       dw CharacterBio_PiranhaDMAPointers   ;89E9EC|        |89EA3C;
+                       dw CharacterBio_KamekDMAPointers     ;89E9EE|        |89EA44;
+                       dw CharacterBio_BowserDMAPointers    ;89E9F0|        |89EA4C;
+                       dw CharacterBio_YoshiDMAPointers     ;89E9F2|        |89EA54;
  
-         DATA8_89E9DA:
-                       db $F4,$E9,$FC,$E9,$04,$EA,$0C,$EA   ;89E9DA|        |      ;
-                       db $14,$EA,$1C,$EA,$24,$EA,$2C,$EA   ;89E9E2|        |      ;
-                       db $34,$EA,$3C,$EA,$44,$EA,$4C,$EA   ;89E9EA|        |      ;
-                       db $54,$EA,$00,$81,$7F,$00,$04,$80   ;89E9F2|        |      ;
-                       db $00,$44,$00,$BF,$7F,$00,$04,$80   ;89E9FA|        |      ;
-                       db $00,$44,$00,$85,$7F,$00,$04,$80   ;89EA02|        |      ;
-                       db $00,$44,$00,$8D,$7F,$00,$04,$80   ;89EA0A|        |      ;
-                       db $00,$44,$00,$C3,$7F,$00,$04,$80   ;89EA12|        |      ;
-                       db $00,$44,$00,$89,$7F,$00,$04,$80   ;89EA1A|        |      ;
-                       db $00,$44,$00,$91,$7F,$00,$04,$80   ;89EA22|        |      ;
-                       db $00,$44,$00,$C7,$7F,$00,$04,$80   ;89EA2A|        |      ;
-                       db $00,$44,$00,$CB,$7F,$00,$04,$80   ;89EA32|        |      ;
-                       db $00,$44,$00,$95,$7F,$00,$04,$80   ;89EA3A|        |      ;
-                       db $00,$44,$00,$CF,$7F,$00,$04,$80   ;89EA42|        |      ;
-                       db $00,$44,$00,$D3,$7F,$00,$04,$80   ;89EA4A|        |      ;
-                       db $00,$44,$00,$7D,$7F,$00,$04,$80   ;89EA52|        |      ;
-                       db $00,$44                           ;89EA5A|        |      ;
+CharacterBio_LakituDMAPointers:
+                       db $00,$81,$7F,$00,$04,$80,$00,$44   ;89E9F4|        |      ;
  
-         DATA8_89EA5C:
-                       db $80                               ;89EA5C|        |      ;
+CharacterBio_BumptyDMAPointers:
+                       db $00,$BF,$7F,$00,$04,$80,$00,$44   ;89E9FC|        |      ;
  
-         DATA8_89EA5D:
-                       db $5D,$7F,$A0,$5E,$7F,$A0,$5D,$7F   ;89EA5D|        |      ;
-                       db $80,$5D,$7F,$80,$5E,$7F,$A0,$5D   ;89EA65|        |      ;
-                       db $7F,$C0,$5D,$7F,$A0,$5E,$7F,$80   ;89EA6D|        |      ;
-                       db $5E,$7F,$80,$5D,$7F,$A0,$5E,$7F   ;89EA75|        |      ;
-                       db $80,$5E,$7F,$C0,$5D,$7F,$58,$B1   ;89EA7D|        |      ;
-                       db $95,$E9,$87,$95,$6A,$F7,$94,$3A   ;89EA85|        |      ;
-                       db $E1,$94,$B7,$D3,$94,$8F,$9A,$95   ;89EA8D|        |      ;
-                       db $EF,$C1,$95,$E8,$D2,$95,$B1,$FD   ;89EA95|        |      ;
-                       db $95,$6F,$92,$96,$AC,$A7,$96,$E5   ;89EA9D|        |      ;
-                       db $E6,$95,$F2,$C0,$94,$42,$C0,$95   ;89EAA5|        |      ;
-                       db $D2,$98,$95,$46,$86,$95,$B7,$F5   ;89EAAD|        |      ;
-                       db $94,$A7,$DF,$94,$98,$AF,$95,$49   ;89EAB5|        |      ;
-                       db $D1,$95,$1F,$E5,$95,$CE,$90,$96   ;89EABD|        |      ;
-                       db $12,$A6,$96,$A9,$B9,$96,$F3,$FB   ;89EAC5|        |      ;
-                       db $95,$25,$D2,$94,$84,$C0,$95,$14   ;89EACD|        |      ;
-                       db $99,$95,$88,$86,$95,$F9,$F5,$94   ;89EAD5|        |      ;
-                       db $E9,$DF,$94,$DA,$AF,$95,$8B,$D1   ;89EADD|        |      ;
-                       db $95,$61,$E5,$95,$0E,$91,$96,$54   ;89EAE5|        |      ;
-                       db $A6,$96,$EB,$B9,$96,$35,$FC,$95   ;89EAED|        |      ;
-                       db $67,$D2,$94                       ;89EAF5|        |      ;
+CharacterBio_PoochyDMAPointers:
+                       db $00,$85,$7F,$00,$04,$80,$00,$44   ;89EA04|        |      ;
+ 
+CharacterBio_WigglerDMAPointers:
+                       db $00,$8D,$7F,$00,$04,$80,$00,$44   ;89EA0C|        |      ;
+ 
+CharacterBio_FroggyDMAPointers:
+                       db $00,$C3,$7F,$00,$04,$80,$00,$44   ;89EA14|        |      ;
+ 
+CharacterBio_BlarggDMAPointers:
+                       db $00,$89,$7F,$00,$04,$80,$00,$44   ;89EA1C|        |      ;
+ 
+CharacterBio_LungeFishDMAPointers:
+                       db $00,$91,$7F,$00,$04,$80,$00,$44   ;89EA24|        |      ;
+ 
+CharacterBio_RaphaelDMAPointers:
+                       db $00,$C7,$7F,$00,$04,$80,$00,$44   ;89EA2C|        |      ;
+ 
+CharacterBio_KoopaDMAPointers:
+                       db $00,$CB,$7F,$00,$04,$80,$00,$44   ;89EA34|        |      ;
+ 
+CharacterBio_PiranhaDMAPointers:
+                       db $00,$95,$7F,$00,$04,$80,$00,$44   ;89EA3C|        |      ;
+ 
+CharacterBio_KamekDMAPointers:
+                       db $00,$CF,$7F,$00,$04,$80,$00,$44   ;89EA44|        |      ;
+ 
+CharacterBio_BowserDMAPointers:
+                       db $00,$D3,$7F,$00,$04,$80,$00,$44   ;89EA4C|        |      ;
+ 
+CharacterBio_YoshiDMAPointers:
+                       db $00,$7D,$7F,$00,$04,$80,$00,$44   ;89EA54|        |      ;
+         PTR24_89EA5C:
+                       dl $7F5D80                           ;89EA5C|        |7F5D80; Lakitu
+                       dl $7F5EA0                           ;89EA5F|        |7F5EA0; Bumpty
+                       dl $7F5DA0                           ;89EA62|        |7F5DA0; Poochy
+                       dl $7F5D80                           ;89EA65|        |7F5D80; Flying Wiggler
+                       dl $7F5E80                           ;89EA68|        |7F5E80; Froggy
+                       dl $7F5DA0                           ;89EA6B|        |7F5DA0; Gargantua Blargg
+                       dl $7F5DC0                           ;89EA6E|        |7F5DC0; Lunge Fish
+                       dl $7F5EA0                           ;89EA71|        |7F5EA0; Raphael Raven
+                       dl $7F5E80                           ;89EA74|        |7F5E80; Hookbill Koopa
+                       dl $7F5D80                           ;89EA77|        |7F5D80; Naval Piranha
+                       dl $7F5EA0                           ;89EA7A|        |7F5EA0; Kamek
+                       dl $7F5E80                           ;89EA7D|        |7F5E80; Bowser
+                       dl $7F5DC0                           ;89EA80|        |7F5DC0; Yoshi
+CharacterBio_ImagePointers:
+                       dl CompGFX_LakituGraphic             ;89EA83|        |95B158;
+                       dl CompGFX_BumptyGraphic             ;89EA86|        |9587E9;
+                       dl CompGFX_PoochyGraphic             ;89EA89|        |94F76A;
+                       dl CompGFX_FlyingWigglerGraphic      ;89EA8C|        |94E13A;
+                       dl CompGFX_FroggyGraphic             ;89EA8F|        |94D3B7;
+                       dl CompGFX_GargantuaBlarggGraphic    ;89EA92|        |959A8F;
+                       dl CompGFX_LungeFishGraphic          ;89EA95|        |95C1EF;
+                       dl CompGFX_RaphaelRavenGraphic       ;89EA98|        |95D2E8;
+                       dl CompGFX_HookbillKoopaGraphic      ;89EA9B|        |95FDB1;
+                       dl CompGFX_NavalPiranhaGraphic       ;89EA9E|        |96926F;
+                       dl CompGFX_KamekGraphic              ;89EAA1|        |96A7AC;
+                       dl CompGFX_BowserGraphic             ;89EAA4|        |95E6E5;
+                       dl CompGFX_YoshiGraphic              ;89EAA7|        |94C0F2;
+         PTR24_89EAAA:
+                       dl DATA8_95C042                      ;89EAAA|        |95C042; Lakitu
+                       dl DATA8_9598D2                      ;89EAAD|        |9598D2; Bumpty
+                       dl DATA8_958646                      ;89EAB0|        |958646; Poochy
+                       dl DATA8_94F5B7                      ;89EAB3|        |94F5B7; Flying Wiggler
+                       dl DATA8_94DFA7                      ;89EAB6|        |94DFA7; Froggy
+                       dl DATA8_95AF98                      ;89EAB9|        |95AF98; Gargantua Blargg
+                       dl DATA8_95D149                      ;89EABC|        |95D149; Lunge Fish
+                       dl DATA8_95E51F                      ;89EABF|        |95E51F; Raphael Raven
+                       dl DATA8_9690CE                      ;89EAC2|        |9690CE; Hookbill Koopa
+                       dl DATA8_96A612                      ;89EAC5|        |96A612; Naval Piranha
+                       dl DATA8_96B9A9                      ;89EAC8|        |96B9A9; Kamek
+                       dl DATA8_95FBF3                      ;89EACB|        |95FBF3; Bowser
+                       dl DATA8_94D225                      ;89EACE|        |94D225; Yoshi
+         PTR24_89EAD1:
+                       dl DATA8_95C084                      ;89EAD1|        |95C084; Lakitu
+                       dl DATA8_959914                      ;89EAD4|        |959914; Bumpty
+                       dl DATA8_958688                      ;89EAD7|        |958688; Poochy
+                       dl DATA8_94F5F9                      ;89EADA|        |94F5F9; Flying Wiggler
+                       dl DATA8_94DFE9                      ;89EADD|        |94DFE9; Froggy
+                       dl DATA8_95AFDA                      ;89EAE0|        |95AFDA; Gargantua Blargg
+                       dl DATA8_95D18B                      ;89EAE3|        |95D18B; Lunge Fish
+                       dl DATA8_95E561                      ;89EAE6|        |95E561; Raphael Raven
+                       dl DATA8_96910E                      ;89EAE9|        |96910E; Hookbill Koopa
+                       dl DATA8_96A654                      ;89EAEC|        |96A654; Naval Piranha
+                       dl DATA8_96B9EB                      ;89EAEF|        |96B9EB; Kamek
+                       dl DATA8_95FC35                      ;89EAF2|        |95FC35; Bowser
+                       dl DATA8_94D267                      ;89EAF5|        |94D267; Yoshi
  
 OptionsIDtoTextPointer:
                        db $13                               ;89EAF8|        |      ; Yoshi
@@ -8015,7 +8182,7 @@ OptionsIDtoTextPointer:
  
           CODE_89EC88:
                        LDY.W #$0001                         ;89EC88|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;89EC8B|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;89EC8B|22CBAE80|80AECB;
                        BCC +                                ;89EC8F|900F    |89ECA0;
                        REP #$20                             ;89EC91|C220    |      ;
                        LDA.L $7E9357                        ;89EC93|AF57937E|7E9357;
@@ -8184,7 +8351,7 @@ StageClearIntro_Pointers:
                        LDA.W #$0006                         ;89EE1A|A90600  |      ;
                        STA.W Character_1P                   ;89EE1D|8DBA02  |8902BA;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89EE20|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89EE20|222DBB80|80BB2D;
                        dl DATA8_93FE9F                      ;89EE24|        |93FE9F;
                        dl $7F5D00                           ;89EE27|        |7F5D00;
                        PHB                                  ;89EE2A|8B      |      ;
@@ -8196,7 +8363,7 @@ StageClearIntro_Pointers:
                        BRA +                                ;89EE35|8008    |89EE3F;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$34   ;89EE37|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89EE3F|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89EE3F|222DBB80|80BB2D;
                        dl CompGFX_MenuandOptions            ;89EE43|        |91C0BB;
                        dl $7F5D00                           ;89EE46|        |7F5D00;
                        PHB                                  ;89EE49|8B      |      ;
@@ -8209,7 +8376,7 @@ StageClearIntro_Pointers:
                        db $00,$5D,$7F,$00,$08,$80,$00,$30   ;89EE56|        |      ;
  
                      + JSL.L CODE_FL_859B0F                 ;89EE5E|220F9B85|859B0F;
-                       JSL.L CODE_FL_80BB2D                 ;89EE62|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89EE62|222DBB80|80BB2D;
                        dl CompGFX_MatchGeneric2             ;89EE66|        |8C9F51;
                        dl $7F5D00                           ;89EE69|        |7F5D00;
                        PHB                                  ;89EE6C|8B      |      ;
@@ -8222,7 +8389,7 @@ StageClearIntro_Pointers:
                        db $00,$5D,$7F,$00,$20,$80,$00,$00   ;89EE79|        |      ;
  
                      + JSL.L CODE_FL_859B4D                 ;89EE81|224D9B85|859B4D;
-                       JSL.L CODE_FL_80BB2D                 ;89EE85|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89EE85|222DBB80|80BB2D;
                        dl DATA8_91FC13                      ;89EE89|        |91FC13;
                        dl $7F5D00                           ;89EE8C|        |7F5D00;
                        PHB                                  ;89EE8F|8B      |      ;
@@ -8235,7 +8402,7 @@ StageClearIntro_Pointers:
                        db $00,$5D,$7F,$00,$0C,$80,$00,$06   ;89EE9C|        |      ;
  
                      + JSR.W CODE_FN_89F307                 ;89EEA4|2007F3  |89F307;
-                       JSL.L CODE_FL_80BB2D                 ;89EEA7|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89EEA7|222DBB80|80BB2D;
                        dl DATA8_949008                      ;89EEAB|        |949008;
                        dl $7F5D00                           ;89EEAE|        |7F5D00;
                        PHB                                  ;89EEB1|8B      |      ;
@@ -8247,7 +8414,7 @@ StageClearIntro_Pointers:
                        BRA +                                ;89EEBC|8008    |89EEC6;
                        db $00,$5D,$7F,$00,$05,$80,$00,$60   ;89EEBE|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89EEC6|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89EEC6|222DBB80|80BB2D;
                        dl DATA8_93FE6F                      ;89EECA|        |93FE6F;
                        dl $7F5D00                           ;89EECD|        |7F5D00;
                        LDY.W #$000C                         ;89EED0|A00C00  |      ;
@@ -8260,7 +8427,7 @@ StageClearIntro_Pointers:
                        INX                                  ;89EEE0|E8      |      ;
                        DEY                                  ;89EEE1|88      |      ;
                        BNE -                                ;89EEE2|D0F2    |89EED6;
-                       JSL.L CODE_FL_80BB2D                 ;89EEE4|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89EEE4|222DBB80|80BB2D;
                        dl DATA8_93FE7D                      ;89EEE8|        |93FE7D;
                        dl $7F5D00                           ;89EEEB|        |7F5D00;
                        LDY.W #$001E                         ;89EEEE|A01E00  |      ;
@@ -8285,7 +8452,7 @@ StageClearIntro_Pointers:
                        JSL.L CODE_FL_859BC8                 ;89EF22|22C89B85|859BC8;
                        JSL.L CODE_FL_859D1A                 ;89EF26|221A9D85|859D1A;
                        JSL.L CODE_FL_89F531                 ;89EF2A|2231F589|89F531;
-                       JSL.L CODE_FL_80BB2D                 ;89EF2E|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89EF2E|222DBB80|80BB2D;
                        dl DATA8_91FB7B                      ;89EF32|        |91FB7B;
                        dl $7F5D00                           ;89EF35|        |7F5D00;
                        LDY.W #$0800                         ;89EF38|A00008  |      ;
@@ -8374,7 +8541,7 @@ StageClearIntro_Pointers:
                        STA.W $021E                          ;89EFFC|8D1E02  |89021E;
                        REP #$20                             ;89EFFF|C220    |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89F001|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89F001|222DBB80|80BB2D;
                        dl DATA8_94AAD1                      ;89F005|        |94AAD1;
                        dl $7E3000                           ;89F008|        |7E3000;
                        JSR.W CODE_FN_89F263                 ;89F00B|2063F2  |89F263;
@@ -8691,7 +8858,7 @@ StageClearIntro_Pointers:
                        BNE +                                ;89F30D|D003    |89F312;
                        JMP.W CODE_JP_89F3A0                 ;89F30F|4CA0F3  |89F3A0;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89F312|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89F312|222DBB80|80BB2D;
                        dl DATA8_94876A                      ;89F316|        |94876A;
                        dl $7F5D00                           ;89F319|        |7F5D00;
                        PHB                                  ;89F31C|8B      |      ;
@@ -8770,7 +8937,7 @@ StageClearIntro_Pointers:
  
                      + CMP.W #$0001                         ;89F3A8|C90100  |      ;
                        BNE +                                ;89F3AB|D04A    |89F3F7;
-                       JSL.L CODE_FL_80BB2D                 ;89F3AD|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;89F3AD|222DBB80|80BB2D;
                        dl DATA8_94876A                      ;89F3B1|        |94876A;
                        dl $7F5D00                           ;89F3B4|        |7F5D00;
                        PHB                                  ;89F3B7|8B      |      ;
@@ -8802,7 +8969,7 @@ StageClearIntro_Pointers:
  
                     ++ RTS                                  ;89F3F6|60      |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;89F3F7|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;89F3F7|222DBB80|80BB2D;
                        dl DATA8_94876A                      ;89F3FB|        |94876A;
                        dl $7F5D00                           ;89F3FE|        |7F5D00;
                        PHB                                  ;89F401|8B      |      ;
@@ -8878,9 +9045,10 @@ StageClearIntro_Pointers:
                        PHB                                  ;89F531|8B      |      ;
                        PHK                                  ;89F532|4B      |      ;
                        PLB                                  ;89F533|AB      |      ;
-                       JSL.L CODE_FL_80BB61                 ;89F534|2261BB80|80BB61;
-                       db $BA,$02,$00,$84,$F5,$89,$00,$5D   ;89F538|        |      ;
-                       db $7F                               ;89F540|        |      ;
+                       JSL.L StartDecompressionAlternate    ;89F534|2261BB80|80BB61;
+                       dl $0002BA                           ;89F538|        |0002BA;
+                       dl DATA8_89F584                      ;89F53B|        |89F584;
+                       dl $7F5D00                           ;89F53E|        |7F5D00;
                        LDY.W #$0800                         ;89F541|A00008  |      ;
                        LDX.W #$0000                         ;89F544|A20000  |      ;
  
@@ -8894,9 +9062,10 @@ StageClearIntro_Pointers:
                        LDA.W Character_1P                   ;89F555|ADBA02  |8902BA;
                        CMP.W #$0006                         ;89F558|C90600  |      ;
                        BEQ +                                ;89F55B|F025    |89F582;
-                       JSL.L CODE_FL_80BB61                 ;89F55D|2261BB80|80BB61;
-                       db $BA,$02,$00,$99,$F5,$89,$00,$5D   ;89F561|        |      ;
-                       db $7F                               ;89F569|        |      ;
+                       JSL.L StartDecompressionAlternate    ;89F55D|2261BB80|80BB61;
+                       dl $0002BA                           ;89F561|        |0002BA;
+                       dl DATA8_89F599                      ;89F564|        |89F599;
+                       dl $7F5D00                           ;89F567|        |7F5D00;
                        JSR.W CODE_FN_89F5AB                 ;89F56A|20ABF5  |89F5AB;
                        PHB                                  ;89F56D|8B      |      ;
                        PHK                                  ;89F56E|4B      |      ;
@@ -8909,11 +9078,16 @@ StageClearIntro_Pointers:
  
                      + PLB                                  ;89F582|AB      |      ;
                        RTL                                  ;89F583|6B      |      ;
+ 
+         DATA8_89F584:
                        db $F9,$91,$94,$42,$95,$94,$D3,$97   ;89F584|        |      ;
                        db $94,$46,$9A,$94,$C0,$9C,$94,$8B   ;89F58C|        |      ;
-                       db $A0,$94,$53,$A3,$94,$BC,$92,$94   ;89F594|        |      ;
-                       db $3E,$96,$94,$F5,$98,$94,$F6,$9A   ;89F59C|        |      ;
-                       db $94,$56,$9E,$94,$63,$A1,$94       ;89F5A4|        |      ;
+                       db $A0,$94,$53,$A3,$94               ;89F594|        |      ;
+ 
+         DATA8_89F599:
+                       db $BC,$92,$94,$3E,$96,$94,$F5,$98   ;89F599|        |      ;
+                       db $94,$F6,$9A,$94,$56,$9E,$94,$63   ;89F5A1|        |      ;
+                       db $A1,$94                           ;89F5A9|        |      ;
  
        CODE_FN_89F5AB:
                        LDA.W #$01C0                         ;89F5AB|A9C001  |      ;
@@ -8941,7 +9115,7 @@ StageClearIntro_Pointers:
  
           CODE_89F5D7:
                        LDY.W #$0001                         ;89F5D7|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;89F5DA|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;89F5DA|22CBAE80|80AECB;
                        BCC +                                ;89F5DE|9009    |89F5E9;
                        REP #$20                             ;89F5E0|C220    |      ;
                        STZ.B $A7                            ;89F5E2|64A7    |0000A7;

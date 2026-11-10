@@ -83,8 +83,11 @@
                        BEQ CODE_808088                      ;808096|F0F0    |808088;
                        CPY.W #$1FFF                         ;808098|C0FF1F  |      ;
                        BCS -                                ;80809B|B0DE    |80807B;
-                       db $B9,$00,$00,$C9,$02,$80,$F0,$E3   ;80809D|        |000000;
-                       db $80,$D4                           ;8080A5|        |80807B;
+                       LDA.W $0000,Y                        ;80809D|B90000  |000000;
+                       CMP.W #$8002                         ;8080A0|C90280  |      ;
+                       BEQ CODE_808088                      ;8080A3|F0E3    |808088;
+                       BRA -                                ;8080A5|80D4    |80807B;
+ 
  
                    +++ LDY.W $0001,X                        ;8080A7|BC0100  |000001;
                        CPY.W #$8002                         ;8080AA|C00280  |      ;
@@ -95,10 +98,19 @@
                        TCD                                  ;8080B2|5B      |      ;
                        LDY.W #$0000                         ;8080B3|A00000  |      ;
                        LDA.W #$6160                         ;8080B6|A96061  |      ;
-                       CMP.W $0000,X                        ;8080B9|DD0000  |000000;
+ 
+                    -- CMP.W $0000,X                        ;8080B9|DD0000  |000000;
                        BNE +                                ;8080BC|D00F    |8080CD;
-                       db $18,$69,$02,$02,$E8,$E8,$C8,$C8   ;8080BE|        |      ;
-                       db $C0,$20,$00,$D0,$EE,$80,$BB       ;8080C6|        |      ;
+                       CLC                                  ;8080BE|18      |      ;
+                       ADC.W #$0202                         ;8080BF|690202  |      ;
+                       INX                                  ;8080C2|E8      |      ;
+                       INX                                  ;8080C3|E8      |      ;
+                       INY                                  ;8080C4|C8      |      ;
+                       INY                                  ;8080C5|C8      |      ;
+                       CPY.W #$0020                         ;8080C6|C02000  |      ;
+                       BNE --                               ;8080C9|D0EE    |8080B9;
+                       BRA CODE_808088                      ;8080CB|80BB    |808088;
+ 
  
                      + TDC                                  ;8080CD|7B      |      ;
                        TAX                                  ;8080CE|AA      |      ;
@@ -724,7 +736,7 @@
                        STA.B $00                            ;808708|8500    |000000;
                        CMP.L $7EFFFE                        ;80870A|CFFEFF7E|7EFFFE;
                        BEQ ++                               ;80870E|F002    |808712;
-                       db $E6,$02                           ;808710|        |000002;
+                       INC.B $02                            ;808710|E602    |000002;
  
                     ++ PLB                                  ;808712|AB      |      ;
                        PLP                                  ;808713|28      |      ;
@@ -1141,13 +1153,14 @@
                        db $24,$1F,$00,$E8,$E8,$E0,$10,$00   ;808C09|        |00001F;
                        db $D0,$F1                           ;808C11|        |808C04;
  
-                     - RTL                                  ;808C13|6B      |      ;
+         OddCalltoRTL:
+                       RTL                                  ;808C13|6B      |      ; this label is exclusively here so that the code builds
  
        CODE_FL_808C14:
                        LDX.W #$0000                         ;808C14|A20000  |      ;
                        LDA.L DATA8_909090,X                 ;808C17|BF909090|909090;
                        CMP.L $001F24,X                      ;808C1B|DF241F00|001F24;
-                       BNE -                                ;808C1F|D0F2    |808C13;
+                       BNE OddCalltoRTL                     ;808C1F|D0F2    |808C13;
                        db $E8,$E8,$E0,$10,$00,$D0,$EF       ;808C21|        |      ;
  
        CODE_FL_808C28:
@@ -1340,7 +1353,7 @@
                        BPL +                                ;808ECF|1020    |808EF1;
                        REP #$30                             ;808ED1|C230    |      ;
                        LDX.B $9F                            ;808ED3|A69F    |00009F;
-                       JSR.W (DATA8_808EF9,X)               ;808ED5|FCF98E  |808EF9;
+                       JSR.W (PTR16_808EF9,X)               ;808ED5|FCF98E  |808EF9;
                        REP #$30                             ;808ED8|C230    |      ;
                        LDA.B $9F                            ;808EDA|A59F    |00009F;
                        CMP.W #$0010                         ;808EDC|C91000  |      ;
@@ -1353,7 +1366,7 @@
  
                    +++ STA.B $9F                            ;808EEA|859F    |00009F;
                        LDX.B $9F                            ;808EEC|A69F    |00009F;
-                       JSR.W (DATA8_808EFB,X)               ;808EEE|FCFB8E  |808EFB;
+                       JSR.W (PTR16_808EFB,X)               ;808EEE|FCFB8E  |808EFB;
  
                      + REP #$30                             ;808EF1|C230    |      ;
                        PLB                                  ;808EF3|AB      |      ;
@@ -1362,14 +1375,20 @@
                        PLX                                  ;808EF6|FA      |      ;
                        PLA                                  ;808EF7|68      |      ;
                        RTI                                  ;808EF8|40      |      ;
+         PTR16_808EF9:
+                       dw CODE_808F0D                       ;808EF9|        |808F0D;
+         PTR16_808EFB:
+                       dw CODE_808F75                       ;808EFB|        |808F75;
+                       dw CODE_808F7F                       ;808EFD|        |808F7F;
+                       dw CODE_808F89                       ;808EFF|        |808F89;
+                       dw CODE_808F97                       ;808F01|        |808F97;
+                       dw CODE_809048                       ;808F03|        |809048;
+                       dw CODE_809056                       ;808F05|        |809056;
+                       dw CODE_809060                       ;808F07|        |809060;
+                       dw CODE_80906E                       ;808F09|        |80906E;
+                       dw CODE_809078                       ;808F0B|        |809078;
  
-         DATA8_808EF9:
-                       db $0D,$8F                           ;808EF9|        |      ;
- 
-         DATA8_808EFB:
-                       db $75,$8F,$7F,$8F,$89,$8F,$97,$8F   ;808EFB|        |      ;
-                       db $48,$90,$56,$90,$60,$90,$6E,$90   ;808F03|        |      ;
-                       db $78,$90                           ;808F0B|        |      ;
+          CODE_808F0D:
                        SEP #$20                             ;808F0D|E220    |      ;
                        LDA.B #$00                           ;808F0F|A900    |      ;
                        STA.W INIDISP                        ;808F11|8D0021  |802100;
@@ -1403,19 +1422,27 @@
                        LDA.B #$79                           ;808F6F|A979    |      ;
                        STA.W BG2SC                          ;808F71|8D0821  |802108;
                        RTS                                  ;808F74|60      |      ;
+ 
+          CODE_808F75:
                        LDX.W #$0000                         ;808F75|A20000  |      ;
                        STX.W VTIMEL                         ;808F78|8E0942  |804209;
                        STX.W HTIMEL                         ;808F7B|8E0742  |804207;
                        RTS                                  ;808F7E|60      |      ;
+ 
+          CODE_808F7F:
                        SEP #$20                             ;808F7F|E220    |      ;
                        LDA.L $7ED220                        ;808F81|AF20D27E|7ED220;
                        STA.W INIDISP                        ;808F85|8D0021  |802100;
                        RTS                                  ;808F88|60      |      ;
+ 
+          CODE_808F89:
                        LDA.L $7ED246                        ;808F89|AF46D27E|7ED246;
                        STA.W VTIMEL                         ;808F8D|8D0942  |804209;
                        LDA.W #$0090                         ;808F90|A99000  |      ;
                        STA.W HTIMEL                         ;808F93|8D0742  |804207;
                        RTS                                  ;808F96|60      |      ;
+ 
+          CODE_808F97:
                        SEP #$20                             ;808F97|E220    |      ;
                        LDA.B #$80                           ;808F99|A980    |      ;
                        STA.W INIDISP                        ;808F9B|8D0021  |802100;
@@ -1473,24 +1500,34 @@
                        LDA.B #$00                           ;809042|A900    |      ;
                        STA.W INIDISP                        ;809044|8D0021  |802100;
                        RTS                                  ;809047|60      |      ;
+ 
+          CODE_809048:
                        LDA.L $7ED248                        ;809048|AF48D27E|7ED248;
                        STA.W VTIMEL                         ;80904C|8D0942  |804209;
                        LDA.W #$0090                         ;80904F|A99000  |      ;
                        STA.W HTIMEL                         ;809052|8D0742  |804207;
                        RTS                                  ;809055|60      |      ;
+ 
+          CODE_809056:
                        SEP #$20                             ;809056|E220    |      ;
                        LDA.L $7ED22E                        ;809058|AF2ED27E|7ED22E;
                        STA.W INIDISP                        ;80905C|8D0021  |802100;
                        RTS                                  ;80905F|60      |      ;
+ 
+          CODE_809060:
                        LDA.L $7ED24A                        ;809060|AF4AD27E|7ED24A;
                        STA.W VTIMEL                         ;809064|8D0942  |804209;
                        LDA.W #$0090                         ;809067|A99000  |      ;
                        STA.W HTIMEL                         ;80906A|8D0742  |804207;
                        RTS                                  ;80906D|60      |      ;
+ 
+          CODE_80906E:
                        SEP #$20                             ;80906E|E220    |      ;
                        LDA.L $7ED230                        ;809070|AF30D27E|7ED230;
                        STA.W INIDISP                        ;809074|8D0021  |802100;
                        RTS                                  ;809077|60      |      ;
+ 
+          CODE_809078:
                        LDA.L $7ED24C                        ;809078|AF4CD27E|7ED24C;
                        STA.W VTIMEL                         ;80907C|8D0942  |804209;
                        LDA.W #$0090                         ;80907F|A99000  |      ;
@@ -1827,16 +1864,35 @@
                        STA.W $19A0,X                        ;8092CE|9DA019  |8019A0;
  
                      + RTS                                  ;8092D1|60      |      ;
- 
 Audio_CommandHandlers:
-                       db $E4,$92                           ;8092D2|        |      ;
-                       db $E8,$92,$EC,$92,$F0,$92,$F2,$92   ;8092D4|        |      ;
-                       db $F6,$92,$13,$93                   ;8092DC|        |      ;
-                       db $F6,$92,$EA,$60                   ;8092E0|        |000092;
+                       dw CODE_8092E4                       ;8092D2|        |8092E4;
+                       dw UNREACH_8092E8                    ;8092D4|        |8092E8;
+                       dw UNREACH_8092EC                    ;8092D6|        |8092EC;
+                       dw UNREACH_8092F0                    ;8092D8|        |8092F0;
+                       dw UNREACH_8092F2                    ;8092DA|        |8092F2;
+                       dw CODE_8092F6                       ;8092DC|        |8092F6;
+                       dw CODE_809313                       ;8092DE|        |809313;
+                       dw CODE_8092F6                       ;8092E0|        |8092F6;
+                       NOP                                  ;8092E2|EA      |      ;
+                       RTS                                  ;8092E3|60      |      ;
+ 
+          CODE_8092E4:
                        STA.W $1988                          ;8092E4|8D8819  |801988;
                        RTS                                  ;8092E7|60      |      ;
-                       db $8D,$8A,$19,$60,$8D,$8C,$19,$60   ;8092E8|        |00198A;
-                       db $EA,$60,$8D,$86,$19,$60           ;8092F0|        |      ;
+ 
+       UNREACH_8092E8:
+                       db $8D,$8A,$19,$60                   ;8092E8|        |00198A;
+ 
+       UNREACH_8092EC:
+                       db $8D,$8C,$19,$60                   ;8092EC|        |00198C;
+ 
+       UNREACH_8092F0:
+                       db $EA,$60                           ;8092F0|        |      ;
+ 
+       UNREACH_8092F2:
+                       db $8D,$86,$19,$60                   ;8092F2|        |001986;
+ 
+          CODE_8092F6:
                        PHY                                  ;8092F6|5A      |      ;
                        LDY.B $24                            ;8092F7|A424    |000024;
                        PHY                                  ;8092F9|5A      |      ;
@@ -1853,6 +1909,8 @@ Audio_CommandHandlers:
                        STY.B $24                            ;80930F|8424    |000024;
                        PLY                                  ;809311|7A      |      ;
                        RTS                                  ;809312|60      |      ;
+ 
+          CODE_809313:
                        STA.W $19B4                          ;809313|8DB419  |8019B4;
                        TYA                                  ;809316|98      |      ;
                        SEC                                  ;809317|38      |      ;
@@ -2186,15 +2244,18 @@ Audio_CommandHandlers:
                        LDA.W $1F21                          ;8095A1|AD211F  |831F21;
                        ASL A                                ;8095A4|0A      |      ;
                        TAX                                  ;8095A5|AA      |      ;
-                       JSR.W (DATA8_8095B0,X)               ;8095A6|FCB095  |8095B0;
+                       JSR.W (PTR16_8095B0,X)               ;8095A6|FCB095  |8095B0;
                        REP #$30                             ;8095A9|C230    |      ;
                        STZ.W $1F20                          ;8095AB|9C201F  |831F20;
                        PLD                                  ;8095AE|2B      |      ;
                        RTL                                  ;8095AF|6B      |      ;
+         PTR16_8095B0:
+                       dw CODE_8095B8                       ;8095B0|        |8095B8;
+                       dw CODE_8095D6                       ;8095B2|        |8095D6;
+                       dw UNREACH_80966C                    ;8095B4|        |80966C;
+                       dw UNREACH_80966C                    ;8095B6|        |80966C;
  
-         DATA8_8095B0:
-                       db $B8,$95,$D6,$95                   ;8095B0|        |      ;
-                       db $6C,$96,$6C,$96                   ;8095B4|        |006C96;
+          CODE_8095B8:
                        REP #$20                             ;8095B8|C220    |      ;
                        LDX.B #$F0                           ;8095BA|A2F0    |      ;
                        PHD                                  ;8095BC|0B      |      ;
@@ -2210,6 +2271,8 @@ Audio_CommandHandlers:
                        LDA.W #$1D00                         ;8095CF|A9001D  |      ;
                        TCD                                  ;8095D2|5B      |      ;
                        JMP.W ($004C)                        ;8095D3|6C4C00  |00004C;
+ 
+          CODE_8095D6:
                        REP #$20                             ;8095D6|C220    |      ;
                        LDX.B #$F0                           ;8095D8|A2F0    |      ;
                        LDA.W $1F20                          ;8095DA|AD201F  |821F20;
@@ -2287,6 +2350,8 @@ Audio_CommandHandlers:
                        STX.B $F9                            ;809667|86F9    |001DF9;
                        STX.B $FD                            ;809669|86FD    |001DFD;
                        RTS                                  ;80966B|60      |      ;
+ 
+       UNREACH_80966C:
                        db $C2,$30,$AD,$20,$1F,$C9,$00,$02   ;80966C|        |      ;
                        db $F0,$01,$00,$60                   ;809674|        |809677;
  
@@ -3510,7 +3575,7 @@ DMA_QueueCGRAMCommand:
                        db $38,$01,$00,$00,$00,$0E,$38,$01   ;80A414|        |      ;
                        db $00,$00,$00,$0F,$38               ;80A41C|        |      ;
  
-       CODE_FL_80A421:
+   DecompressResource:
                        PHP                                  ;80A421|08      |      ;
                        PHB                                  ;80A422|8B      |      ;
                        REP #$30                             ;80A423|C230    |      ;
@@ -3522,23 +3587,23 @@ DMA_QueueCGRAMCommand:
                        PHA                                  ;80A42F|48      |      ;
                        PLB                                  ;80A430|AB      |      ;
                        LDX.B $7F                            ;80A431|A67F    |00007F;
-                       JMP.W CODE_JP_80A5AC                 ;80A433|4CACA5  |80A5AC;
+                       JMP.W Decompression_GetNextCommand   ;80A433|4CACA5  |80A5AC;
  
-       CODE_FN_80A436:
+Decompression_ReadByte:
                        LDA.B [$7C],Y                        ;80A436|B77C    |00007C;
                        INY                                  ;80A438|C8      |      ;
                        BNE +                                ;80A439|D003    |80A43E;
-                       db $20,$54,$A4                       ;80A43B|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A43B|2054A4  |80A454;
  
                      + PHA                                  ;80A43E|48      |      ;
                        LDA.B $85                            ;80A43F|A585    |000085;
                        BEQ +                                ;80A441|F003    |80A446;
-                       JSR.W CODE_FN_80A448                 ;80A443|2048A4  |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A443|2048A4  |80A448;
  
                      + PLA                                  ;80A446|68      |      ;
                        RTS                                  ;80A447|60      |      ;
  
-       CODE_FN_80A448:
+Decompression_RestorePosition:
                        DEC A                                ;80A448|3A      |      ;
                        STA.B $85                            ;80A449|8585    |000085;
                        BNE +                                ;80A44B|D006    |80A453;
@@ -3548,12 +3613,13 @@ DMA_QueueCGRAMCommand:
  
                      + RTS                                  ;80A453|60      |      ;
  
-       CODE_FN_80A454:
+Decompression_MoveBank:
                        INC.B $7E                            ;80A454|E67E    |00007E;
                        LDY.W #$8000                         ;80A456|A00080  |      ;
                        RTS                                  ;80A459|60      |      ;
  
-                    -- STA.B $7F                            ;80A45A|857F    |00007F;
+ DecompressValueBlock:
+                       STA.B $7F                            ;80A45A|857F    |00007F;
                        ASL A                                ;80A45C|0A      |      ;
                        BPL +                                ;80A45D|1022    |80A481;
                        AND.B #$20                           ;80A45F|2920    |      ;
@@ -3596,19 +3662,20 @@ DMA_QueueCGRAMCommand:
                        LDA.B #$00                           ;80A49B|A900    |      ;
                        BRA +++                              ;80A49D|800C    |80A4AB;
  
-                     - AND.B #$0F                           ;80A49F|290F    |      ;
+DecompressVariableExpansion:
+                       AND.B #$0F                           ;80A49F|290F    |      ;
                        INC A                                ;80A4A1|1A      |      ;
                        STA.B $81                            ;80A4A2|8581    |000081;
-                       JSR.W CODE_FN_80A436                 ;80A4A4|2036A4  |80A436;
+                       JSR.W Decompression_ReadByte         ;80A4A4|2036A4  |80A436;
                        CMP.B #$80                           ;80A4A7|C980    |      ;
-                       BCS --                               ;80A4A9|B0AF    |80A45A;
+                       BCS DecompressValueBlock             ;80A4A9|B0AF    |80A45A;
  
                    +++ CMP.B #$10                           ;80A4AB|C910    |      ;
                        BCC +                                ;80A4AD|9028    |80A4D7;
                        AND.B #$0F                           ;80A4AF|290F    |      ;
                        STA.B $7F                            ;80A4B1|857F    |00007F;
  
-                    -- JSR.W CODE_FN_80A436                 ;80A4B3|2036A4  |80A436;
+                     - JSR.W Decompression_ReadByte         ;80A4B3|2036A4  |80A436;
                        STA.B $80                            ;80A4B6|8580    |000080;
                        AND.B #$F0                           ;80A4B8|29F0    |      ;
                        ORA.B $7F                            ;80A4BA|057F    |00007F;
@@ -3625,8 +3692,8 @@ DMA_QueueCGRAMCommand:
                        STA.W $0000,X                        ;80A4CC|9D0000  |7F0000;
                        INX                                  ;80A4CF|E8      |      ;
                        DEC.B $81                            ;80A4D0|C681    |000081;
-                       BPL --                               ;80A4D2|10DF    |80A4B3;
-                       JMP.W CODE_JP_80A5AC                 ;80A4D4|4CACA5  |80A5AC;
+                       BPL -                                ;80A4D2|10DF    |80A4B3;
+                       JMP.W Decompression_GetNextCommand   ;80A4D4|4CACA5  |80A5AC;
  
                      + ASL A                                ;80A4D7|0A      |      ;
                        ASL A                                ;80A4D8|0A      |      ;
@@ -3634,7 +3701,7 @@ DMA_QueueCGRAMCommand:
                        ASL A                                ;80A4DA|0A      |      ;
                        STA.B $7F                            ;80A4DB|857F    |00007F;
  
-                    -- JSR.W CODE_FN_80A436                 ;80A4DD|2036A4  |80A436;
+                     - JSR.W Decompression_ReadByte         ;80A4DD|2036A4  |80A436;
                        STA.B $80                            ;80A4E0|8580    |000080;
                        LSR A                                ;80A4E2|4A      |      ;
                        LSR A                                ;80A4E3|4A      |      ;
@@ -3651,24 +3718,25 @@ DMA_QueueCGRAMCommand:
                        STA.W $0000,X                        ;80A4F6|9D0000  |7F0000;
                        INX                                  ;80A4F9|E8      |      ;
                        DEC.B $81                            ;80A4FA|C681    |000081;
-                       BPL --                               ;80A4FC|10DF    |80A4DD;
+                       BPL -                                ;80A4FC|10DF    |80A4DD;
  
-                    ++ JMP.W CODE_JP_80A5AC                 ;80A4FE|4CACA5  |80A5AC;
+                    ++ JMP.W Decompression_GetNextCommand   ;80A4FE|4CACA5  |80A5AC;
  
-                    -- CMP.B #$50                           ;80A501|C950    |      ;
-                       BCC -                                ;80A503|909A    |80A49F;
+DecompressRepeatedByteBlock:
+                       CMP.B #$50                           ;80A501|C950    |      ;
+                       BCC DecompressVariableExpansion      ;80A503|909A    |80A49F;
                        AND.B #$0F                           ;80A505|290F    |      ;
                        STA.B $81                            ;80A507|8581    |000081;
  
                      - LDA.B [$7C],Y                        ;80A509|B77C    |00007C;
                        INY                                  ;80A50B|C8      |      ;
                        BNE +                                ;80A50C|D003    |80A511;
-                       JSR.W CODE_FN_80A454                 ;80A50E|2054A4  |80A454;
+                       JSR.W Decompression_MoveBank         ;80A50E|2054A4  |80A454;
  
                      + PHA                                  ;80A511|48      |      ;
                        LDA.B $85                            ;80A512|A585    |000085;
                        BEQ +                                ;80A514|F003    |80A519;
-                       db $20,$48,$A4                       ;80A516|        |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A516|2048A4  |80A448;
  
                      + PLA                                  ;80A519|68      |      ;
                        STA.W $0000,X                        ;80A51A|9D0000  |7F0000;
@@ -3677,21 +3745,22 @@ DMA_QueueCGRAMCommand:
                        INX                                  ;80A521|E8      |      ;
                        DEC.B $81                            ;80A522|C681    |000081;
                        BPL -                                ;80A524|10E3    |80A509;
-                       JMP.W CODE_JP_80A5AC                 ;80A526|4CACA5  |80A5AC;
+                       JMP.W Decompression_GetNextCommand   ;80A526|4CACA5  |80A5AC;
  
-                     - LSR A                                ;80A529|4A      |      ;
+DecompressPatternBlock:
+                       LSR A                                ;80A529|4A      |      ;
                        CMP.B #$60                           ;80A52A|C960    |      ;
-                       BCC --                               ;80A52C|90D3    |80A501;
+                       BCC DecompressRepeatedByteBlock      ;80A52C|90D3    |80A501;
                        XBA                                  ;80A52E|EB      |      ;
                        LDA.B [$7C],Y                        ;80A52F|B77C    |00007C;
                        INY                                  ;80A531|C8      |      ;
                        BNE +                                ;80A532|D003    |80A537;
-                       db $20,$54,$A4                       ;80A534|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A534|2054A4  |80A454;
  
                      + PHA                                  ;80A537|48      |      ;
                        LDA.B $85                            ;80A538|A585    |000085;
                        BEQ +                                ;80A53A|F003    |80A53F;
-                       JSR.W CODE_FN_80A448                 ;80A53C|2048A4  |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A53C|2048A4  |80A448;
  
                      + PLA                                  ;80A53F|68      |      ;
                        STA.B $7F                            ;80A540|857F    |00007F;
@@ -3700,38 +3769,38 @@ DMA_QueueCGRAMCommand:
                        AND.B #$0F                           ;80A545|290F    |      ;
                        INC A                                ;80A547|1A      |      ;
                        STA.B $81                            ;80A548|8581    |000081;
-                       BCS CODE_80A56D                      ;80A54A|B021    |80A56D;
+                       BCS DecompressRepeatedWordBlock      ;80A54A|B021    |80A56D;
  
-                    -- LDA.B $7F                            ;80A54C|A57F    |00007F;
+                     - LDA.B $7F                            ;80A54C|A57F    |00007F;
                        STA.W $0000,X                        ;80A54E|9D0000  |7F0000;
                        INX                                  ;80A551|E8      |      ;
                        LDA.B [$7C],Y                        ;80A552|B77C    |00007C;
                        INY                                  ;80A554|C8      |      ;
                        BNE +                                ;80A555|D003    |80A55A;
-                       db $20,$54,$A4                       ;80A557|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A557|2054A4  |80A454;
  
                      + PHA                                  ;80A55A|48      |      ;
                        LDA.B $85                            ;80A55B|A585    |000085;
                        BEQ +                                ;80A55D|F003    |80A562;
-                       db $20,$48,$A4                       ;80A55F|        |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A55F|2048A4  |80A448;
  
                      + PLA                                  ;80A562|68      |      ;
                        STA.W $0000,X                        ;80A563|9D0000  |7F0000;
                        INX                                  ;80A566|E8      |      ;
                        DEC.B $81                            ;80A567|C681    |000081;
-                       BPL --                               ;80A569|10E1    |80A54C;
-                       BRA CODE_JP_80A5AC                   ;80A56B|803F    |80A5AC;
+                       BPL -                                ;80A569|10E1    |80A54C;
+                       BRA Decompression_GetNextCommand     ;80A56B|803F    |80A5AC;
  
-          CODE_80A56D:
+DecompressRepeatedWordBlock:
                        LDA.B [$7C],Y                        ;80A56D|B77C    |00007C;
                        INY                                  ;80A56F|C8      |      ;
                        BNE +                                ;80A570|D003    |80A575;
-                       db $20,$54,$A4                       ;80A572|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A572|2054A4  |80A454;
  
                      + PHA                                  ;80A575|48      |      ;
                        LDA.B $85                            ;80A576|A585    |000085;
                        BEQ +                                ;80A578|F003    |80A57D;
-                       JSR.W CODE_FN_80A448                 ;80A57A|2048A4  |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A57A|2048A4  |80A448;
  
                      + PLA                                  ;80A57D|68      |      ;
                        STA.W $0000,X                        ;80A57E|9D0000  |7F0000;
@@ -3740,43 +3809,44 @@ DMA_QueueCGRAMCommand:
                        STA.W $0000,X                        ;80A584|9D0000  |7F0000;
                        INX                                  ;80A587|E8      |      ;
                        DEC.B $81                            ;80A588|C681    |000081;
-                       BPL CODE_80A56D                      ;80A58A|10E1    |80A56D;
-                       BRA CODE_JP_80A5AC                   ;80A58C|801E    |80A5AC;
+                       BPL DecompressRepeatedWordBlock      ;80A58A|10E1    |80A56D;
+                       BRA Decompression_GetNextCommand     ;80A58C|801E    |80A5AC;
  
-                     - BMI -                                ;80A58E|3099    |80A529;
+DecompressLiteralBlock:
+                       BMI DecompressPatternBlock           ;80A58E|3099    |80A529;
                        LSR A                                ;80A590|4A      |      ;
                        STA.B $81                            ;80A591|8581    |000081;
  
-                    -- LDA.B [$7C],Y                        ;80A593|B77C    |00007C;
+                     - LDA.B [$7C],Y                        ;80A593|B77C    |00007C;
                        INY                                  ;80A595|C8      |      ;
                        BNE +                                ;80A596|D003    |80A59B;
-                       JSR.W CODE_FN_80A454                 ;80A598|2054A4  |80A454;
+                       JSR.W Decompression_MoveBank         ;80A598|2054A4  |80A454;
  
                      + PHA                                  ;80A59B|48      |      ;
                        LDA.B $85                            ;80A59C|A585    |000085;
                        BEQ +                                ;80A59E|F003    |80A5A3;
-                       JSR.W CODE_FN_80A448                 ;80A5A0|2048A4  |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A5A0|2048A4  |80A448;
  
                      + PLA                                  ;80A5A3|68      |      ;
                        STA.W $0000,X                        ;80A5A4|9D0000  |7F0000;
                        INX                                  ;80A5A7|E8      |      ;
                        DEC.B $81                            ;80A5A8|C681    |000081;
-                       BPL --                               ;80A5AA|10E7    |80A593;
+                       BPL -                                ;80A5AA|10E7    |80A593;
  
-       CODE_JP_80A5AC:
+Decompression_GetNextCommand:
                        LDA.B [$7C],Y                        ;80A5AC|B77C    |00007C;
                        INY                                  ;80A5AE|C8      |      ;
                        BNE +                                ;80A5AF|D003    |80A5B4;
-                       JSR.W CODE_FN_80A454                 ;80A5B1|2054A4  |80A454;
+                       JSR.W Decompression_MoveBank         ;80A5B1|2054A4  |80A454;
  
                      + PHA                                  ;80A5B4|48      |      ;
                        LDA.B $85                            ;80A5B5|A585    |000085;
                        BEQ +                                ;80A5B7|F003    |80A5BC;
-                       JSR.W CODE_FN_80A448                 ;80A5B9|2048A4  |80A448;
+                       JSR.W Decompression_RestorePosition  ;80A5B9|2048A4  |80A448;
  
                      + PLA                                  ;80A5BC|68      |      ;
                        ASL A                                ;80A5BD|0A      |      ;
-                       BCC -                                ;80A5BE|90CE    |80A58E;
+                       BCC DecompressLiteralBlock           ;80A5BE|90CE    |80A58E;
                        BMI +                                ;80A5C0|3035    |80A5F7;
                        LSR A                                ;80A5C2|4A      |      ;
                        PHA                                  ;80A5C3|48      |      ;
@@ -3788,10 +3858,11 @@ DMA_QueueCGRAMCommand:
                        AND.B #$03                           ;80A5CA|2903    |      ;
                        XBA                                  ;80A5CC|EB      |      ;
  
-                     - LDA.B [$7C],Y                        ;80A5CD|B77C    |00007C;
+Decompression_BackReference:
+                       LDA.B [$7C],Y                        ;80A5CD|B77C    |00007C;
                        INY                                  ;80A5CF|C8      |      ;
                        BNE ++                               ;80A5D0|D003    |80A5D5;
-                       JSR.W CODE_FN_80A454                 ;80A5D2|2054A4  |80A454;
+                       JSR.W Decompression_MoveBank         ;80A5D2|2054A4  |80A454;
  
                     ++ PHY                                  ;80A5D5|5A      |      ;
                        REP #$20                             ;80A5D6|C220    |      ;
@@ -3802,36 +3873,36 @@ DMA_QueueCGRAMCommand:
                        TAY                                  ;80A5DE|A8      |      ;
                        SEP #$20                             ;80A5DF|E220    |      ;
  
-                    -- LDA.W $0000,Y                        ;80A5E1|B90000  |7F0000;
+                     - LDA.W $0000,Y                        ;80A5E1|B90000  |7F0000;
                        STA.W $0000,X                        ;80A5E4|9D0000  |7F0000;
                        INY                                  ;80A5E7|C8      |      ;
                        INX                                  ;80A5E8|E8      |      ;
                        DEC.B $81                            ;80A5E9|C681    |000081;
-                       BPL --                               ;80A5EB|10F4    |80A5E1;
+                       BPL -                                ;80A5EB|10F4    |80A5E1;
                        PLY                                  ;80A5ED|7A      |      ;
  
        CODE_JP_80A5EE:
                        LDA.B $85                            ;80A5EE|A585    |000085;
-                       BEQ CODE_JP_80A5AC                   ;80A5F0|F0BA    |80A5AC;
-                       JSR.W CODE_FN_80A448                 ;80A5F2|2048A4  |80A448;
-                       BRA CODE_JP_80A5AC                   ;80A5F5|80B5    |80A5AC;
+                       BEQ Decompression_GetNextCommand     ;80A5F0|F0BA    |80A5AC;
+                       JSR.W Decompression_RestorePosition  ;80A5F2|2048A4  |80A448;
+                       BRA Decompression_GetNextCommand     ;80A5F5|80B5    |80A5AC;
  
                      + ROR A                                ;80A5F7|6A      |      ;
                        CMP.B #$E0                           ;80A5F8|C9E0    |      ;
-                       BCS +                                ;80A5FA|B020    |80A61C;
+                       BCS DecompressWordFill               ;80A5FA|B020    |80A61C;
                        AND.B #$1F                           ;80A5FC|291F    |      ;
                        XBA                                  ;80A5FE|EB      |      ;
                        LDA.B [$7C],Y                        ;80A5FF|B77C    |00007C;
                        INY                                  ;80A601|C8      |      ;
-                       BNE ++                               ;80A602|D003    |80A607;
-                       db $20,$54,$A4                       ;80A604|        |80A454;
+                       BNE +                                ;80A602|D003    |80A607;
+                       JSR.W Decompression_MoveBank         ;80A604|2054A4  |80A454;
  
-                    ++ PHA                                  ;80A607|48      |      ;
+                     + PHA                                  ;80A607|48      |      ;
                        LDA.B $85                            ;80A608|A585    |000085;
-                       BEQ ++                               ;80A60A|F003    |80A60F;
-                       JSR.W CODE_FN_80A448                 ;80A60C|2048A4  |80A448;
+                       BEQ +                                ;80A60A|F003    |80A60F;
+                       JSR.W Decompression_RestorePosition  ;80A60C|2048A4  |80A448;
  
-                    ++ PLA                                  ;80A60F|68      |      ;
+                     + PLA                                  ;80A60F|68      |      ;
                        REP #$20                             ;80A610|C220    |      ;
                        ASL A                                ;80A612|0A      |      ;
                        SEP #$20                             ;80A613|E220    |      ;
@@ -3839,30 +3910,31 @@ DMA_QueueCGRAMCommand:
                        XBA                                  ;80A616|EB      |      ;
                        INC A                                ;80A617|1A      |      ;
                        STA.B $81                            ;80A618|8581    |000081;
-                       BRA -                                ;80A61A|80B1    |80A5CD;
+                       BRA Decompression_BackReference      ;80A61A|80B1    |80A5CD;
  
-                     + CMP.B #$F0                           ;80A61C|C9F0    |      ;
-                       BCS +                                ;80A61E|B040    |80A660;
+   DecompressWordFill:
+                       CMP.B #$F0                           ;80A61C|C9F0    |      ;
+                       BCS DecompressByteFill               ;80A61E|B040    |80A660;
                        AND.B #$0F                           ;80A620|290F    |      ;
                        STA.B $80                            ;80A622|8580    |000080;
                        LDA.B [$7C],Y                        ;80A624|B77C    |00007C;
                        INY                                  ;80A626|C8      |      ;
-                       BNE ++                               ;80A627|D003    |80A62C;
-                       db $20,$54,$A4                       ;80A629|        |80A454;
+                       BNE +                                ;80A627|D003    |80A62C;
+                       JSR.W Decompression_MoveBank         ;80A629|2054A4  |80A454;
  
-                    ++ PHA                                  ;80A62C|48      |      ;
+                     + PHA                                  ;80A62C|48      |      ;
                        LDA.B $85                            ;80A62D|A585    |000085;
-                       BEQ ++                               ;80A62F|F003    |80A634;
-                       JSR.W CODE_FN_80A448                 ;80A631|2048A4  |80A448;
+                       BEQ +                                ;80A62F|F003    |80A634;
+                       JSR.W Decompression_RestorePosition  ;80A631|2048A4  |80A448;
  
-                    ++ PLA                                  ;80A634|68      |      ;
+                     + PLA                                  ;80A634|68      |      ;
                        STA.B $7F                            ;80A635|857F    |00007F;
                        LDA.B [$7C],Y                        ;80A637|B77C    |00007C;
                        INY                                  ;80A639|C8      |      ;
-                       BNE ++                               ;80A63A|D003    |80A63F;
-                       db $20,$54,$A4                       ;80A63C|        |80A454;
+                       BNE +                                ;80A63A|D003    |80A63F;
+                       JSR.W Decompression_MoveBank         ;80A63C|2054A4  |80A454;
  
-                    ++ PHY                                  ;80A63F|5A      |      ;
+                     + PHY                                  ;80A63F|5A      |      ;
                        PHA                                  ;80A640|48      |      ;
                        PHA                                  ;80A641|48      |      ;
                        REP #$20                             ;80A642|C220    |      ;
@@ -3879,22 +3951,23 @@ DMA_QueueCGRAMCommand:
                        DEY                                  ;80A652|88      |      ;
                        BNE -                                ;80A653|D0F8    |80A64D;
                        SEP #$20                             ;80A655|E220    |      ;
-                       BCC ++                               ;80A657|9004    |80A65D;
+                       BCC +                                ;80A657|9004    |80A65D;
                        STA.W $0000,X                        ;80A659|9D0000  |7F0000;
                        INX                                  ;80A65C|E8      |      ;
  
-                    ++ PLY                                  ;80A65D|7A      |      ;
+                     + PLY                                  ;80A65D|7A      |      ;
                        BRA CODE_JP_80A5EE                   ;80A65E|808E    |80A5EE;
  
-                     + CMP.B #$F8                           ;80A660|C9F8    |      ;
-                       BCS +                                ;80A662|B019    |80A67D;
+   DecompressByteFill:
+                       CMP.B #$F8                           ;80A660|C9F8    |      ;
+                       BCS DecompressExtendedBackReference  ;80A662|B019    |80A67D;
                        AND.B #$07                           ;80A664|2907    |      ;
                        ADC.B #$02                           ;80A666|6902    |      ;
                        STA.B $81                            ;80A668|8581    |000081;
                        LDA.B [$7C],Y                        ;80A66A|B77C    |00007C;
                        INY                                  ;80A66C|C8      |      ;
                        BNE CODE_80A672                      ;80A66D|D003    |80A672;
-                       db $20,$54,$A4                       ;80A66F|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A66F|2054A4  |80A454;
  
           CODE_80A672:
                        STA.W $0000,X                        ;80A672|9D0000  |7E0000;
@@ -3903,16 +3976,17 @@ DMA_QueueCGRAMCommand:
                        BPL CODE_80A672                      ;80A678|10F8    |80A672;
                        JMP.W CODE_JP_80A5EE                 ;80A67A|4CEEA5  |80A5EE;
  
-                     + CMP.B #$FC                           ;80A67D|C9FC    |      ;
-                       BCS +                                ;80A67F|B049    |80A6CA;
+DecompressExtendedBackReference:
+                       CMP.B #$FC                           ;80A67D|C9FC    |      ;
+                       BCS Decompression_SourceWindowCommand;80A67F|B049    |80A6CA;
                        AND.B #$03                           ;80A681|2903    |      ;
                        XBA                                  ;80A683|EB      |      ;
                        LDA.B [$7C],Y                        ;80A684|B77C    |00007C;
                        INY                                  ;80A686|C8      |      ;
-                       BNE ++                               ;80A687|D003    |80A68C;
-                       db $20,$54,$A4                       ;80A689|        |80A454;
+                       BNE +                                ;80A687|D003    |80A68C;
+                       JSR.W Decompression_MoveBank         ;80A689|2054A4  |80A454;
  
-                    ++ REP #$20                             ;80A68C|C220    |      ;
+                     + REP #$20                             ;80A68C|C220    |      ;
                        ASL A                                ;80A68E|0A      |      ;
                        ASL A                                ;80A68F|0A      |      ;
                        ASL A                                ;80A690|0A      |      ;
@@ -3924,10 +3998,10 @@ DMA_QueueCGRAMCommand:
                        PHA                                  ;80A697|48      |      ;
                        LDA.B [$7C],Y                        ;80A698|B77C    |00007C;
                        INY                                  ;80A69A|C8      |      ;
-                       BNE ++                               ;80A69B|D003    |80A6A0;
-                       db $20,$54,$A4                       ;80A69D|        |80A454;
+                       BNE +                                ;80A69B|D003    |80A6A0;
+                       JSR.W Decompression_MoveBank         ;80A69D|2054A4  |80A454;
  
-                    ++ REP #$20                             ;80A6A0|C220    |      ;
+                     + REP #$20                             ;80A6A0|C220    |      ;
                        CLC                                  ;80A6A2|18      |      ;
                        ADC.W #$0003                         ;80A6A3|690300  |      ;
  
@@ -3940,27 +4014,28 @@ DMA_QueueCGRAMCommand:
                        TYA                                  ;80A6B2|98      |      ;
                        SEC                                  ;80A6B3|38      |      ;
                        SBC.B $7F                            ;80A6B4|E57F    |00007F;
-                       BMI ++                               ;80A6B6|3006    |80A6BE;
+                       BMI +                                ;80A6B6|3006    |80A6BE;
                        CLC                                  ;80A6B8|18      |      ;
                        ADC.W #$8000                         ;80A6B9|690080  |      ;
                        DEC.B $7E                            ;80A6BC|C67E    |00007E;
  
-                    ++ TAY                                  ;80A6BE|A8      |      ;
+                     + TAY                                  ;80A6BE|A8      |      ;
                        SEP #$20                             ;80A6BF|E220    |      ;
                        PLA                                  ;80A6C1|68      |      ;
                        CLC                                  ;80A6C2|18      |      ;
                        ADC.B #$03                           ;80A6C3|6903    |      ;
                        STA.B $85                            ;80A6C5|8585    |000085;
-                       JMP.W CODE_JP_80A5AC                 ;80A6C7|4CACA5  |80A5AC;
+                       JMP.W Decompression_GetNextCommand   ;80A6C7|4CACA5  |80A5AC;
  
-                     + CMP.B #$FE                           ;80A6CA|C9FE    |      ;
+Decompression_SourceWindowCommand:
+                       CMP.B #$FE                           ;80A6CA|C9FE    |      ;
                        BCS +                                ;80A6CC|B01F    |80A6ED;
                        AND.B #$01                           ;80A6CE|2901    |      ;
                        XBA                                  ;80A6D0|EB      |      ;
                        LDA.B [$7C],Y                        ;80A6D1|B77C    |00007C;
                        INY                                  ;80A6D3|C8      |      ;
                        BNE ++                               ;80A6D4|D003    |80A6D9;
-                       db $20,$54,$A4                       ;80A6D6|        |80A454;
+                       JSR.W Decompression_MoveBank         ;80A6D6|2054A4  |80A454;
  
                     ++ REP #$20                             ;80A6D9|C220    |      ;
                        ASL A                                ;80A6DB|0A      |      ;
@@ -4238,7 +4313,7 @@ DMA_QueueCGRAMCommand:
                        LDA.W Character_1P                   ;80A91F|ADBA02  |8002BA;
                        ASL A                                ;80A922|0A      |      ;
                        TAX                                  ;80A923|AA      |      ;
-                       JSR.W (DATA8_80A978,X)               ;80A924|FC78A9  |80A978;
+                       JSR.W (PTR16_80A978,X)               ;80A924|FC78A9  |80A978;
                        LDA.W Character_1P                   ;80A927|ADBA02  |8002BA;
                        CMP.W #$0006                         ;80A92A|C90600  |      ;
                        BNE +                                ;80A92D|D004    |80A933;
@@ -4274,14 +4349,24 @@ DMA_QueueCGRAMCommand:
                        TDC                                  ;80A971|7B      |      ;
                        STA.L $7E6397                        ;80A972|8F97637E|7E6397;
                        PLB                                  ;80A976|AB      |      ;
-                       RTS                                  ;80A977|60      |      ;
  
-         DATA8_80A978:
-                       db $86,$A9,$8F,$A9,$05,$AA,$12,$AA   ;80A978|        |      ;
-                       db $1F,$AA,$27,$AB,$77,$A9           ;80A980|        |      ;
+          CODE_80A977:
+                       RTS                                  ;80A977|60      |      ;
+         PTR16_80A978:
+                       dw CODE_80A986                       ;80A978|        |80A986;
+                       dw CODE_80A98F                       ;80A97A|        |80A98F;
+                       dw CODE_80AA05                       ;80A97C|        |80AA05;
+                       dw CODE_80AA12                       ;80A97E|        |80AA12;
+                       dw CODE_80AA1F                       ;80A980|        |80AA1F;
+                       dw CODE_80AB27                       ;80A982|        |80AB27;
+                       dw CODE_80A977                       ;80A984|        |80A977;
+ 
+          CODE_80A986:
                        JSL.L CODE_FL_8882CA                 ;80A986|22CA8288|8882CA;
                        JSL.L CODE_FL_888553                 ;80A98A|22538588|888553;
                        RTS                                  ;80A98E|60      |      ;
+ 
+          CODE_80A98F:
                        LDA.L $7E634D                        ;80A98F|AF4D637E|7E634D;
                        DEC A                                ;80A993|3A      |      ;
                        STA.L $7E634D                        ;80A994|8F4D637E|7E634D;
@@ -4331,14 +4416,20 @@ DMA_QueueCGRAMCommand:
  
                      + PLB                                  ;80AA03|AB      |      ;
                        RTS                                  ;80AA04|60      |      ;
+ 
+          CODE_80AA05:
                        JSL.L CODE_FL_888872                 ;80AA05|22728888|888872;
                        JSL.L CODE_FL_8882CA                 ;80AA09|22CA8288|8882CA;
                        JSL.L CODE_FL_88898B                 ;80AA0D|228B8988|88898B;
                        RTS                                  ;80AA11|60      |      ;
+ 
+          CODE_80AA12:
                        JSL.L CODE_FL_8889EE                 ;80AA12|22EE8988|8889EE;
                        JSL.L CODE_FL_8882CA                 ;80AA16|22CA8288|8882CA;
                        JSL.L CODE_FL_8583A1                 ;80AA1A|22A18385|8583A1;
                        RTS                                  ;80AA1E|60      |      ;
+ 
+          CODE_80AA1F:
                        LDA.L $7E634D                        ;80AA1F|AF4D637E|7E634D;
                        DEC A                                ;80AA23|3A      |      ;
                        STA.L $7E634D                        ;80AA24|8F4D637E|7E634D;
@@ -4431,6 +4522,8 @@ DMA_QueueCGRAMCommand:
                        db $B6,$00,$0D,$00,$5C,$03,$F9,$01   ;80AB0F|        |      ;
                        db $38,$01,$D7,$00,$0D,$00,$9C,$03   ;80AB17|        |      ;
                        db $19,$02,$58,$01,$F7,$00,$00,$80   ;80AB1F|        |      ;
+ 
+          CODE_80AB27:
                        JSL.L CODE_FL_889C4A                 ;80AB27|224A9C88|889C4A;
                        JSL.L CODE_FL_8882CA                 ;80AB2B|22CA8288|8882CA;
                        JSL.L CODE_FL_889BDE                 ;80AB2F|22DE9B88|889BDE;
@@ -4615,7 +4708,7 @@ DMA_QueueCGRAMCommand:
                        LDA.L $7E934B                        ;80AD41|AF4B937E|7E934B;
                        ASL A                                ;80AD45|0A      |      ;
                        TAX                                  ;80AD46|AA      |      ;
-                       JSR.W (DATA8_80AD56,X)               ;80AD47|FC56AD  |80AD56;
+                       JSR.W (PTR16_80AD56,X)               ;80AD47|FC56AD  |80AD56;
                        LDA.L $7E934B                        ;80AD4A|AF4B937E|7E934B;
                        INC A                                ;80AD4E|1A      |      ;
                        STA.L $7E934B                        ;80AD4F|8F4B937E|7E934B;
@@ -4623,35 +4716,48 @@ DMA_QueueCGRAMCommand:
                      + PLB                                  ;80AD53|AB      |      ;
                        PLP                                  ;80AD54|28      |      ;
                        RTL                                  ;80AD55|6B      |      ;
+         PTR16_80AD56:
+                       dw CODE_80AD68                       ;80AD56|        |80AD68;
+                       dw UNREACH_80AD8C                    ;80AD58|        |80AD8C;
+                       dw CODE_80AD71                       ;80AD5A|        |80AD71;
+                       dw UNREACH_80AD8C                    ;80AD5C|        |80AD8C;
+                       dw CODE_80AD7A                       ;80AD5E|        |80AD7A;
+                       dw UNREACH_80ADA0                    ;80AD60|        |80ADA0;
+                       dw CODE_80AD83                       ;80AD62|        |80AD83;
+                       dw UNREACH_80ADA0                    ;80AD64|        |80ADA0;
+                       dw CODE_80ADB7                       ;80AD66|        |80ADB7;
  
-         DATA8_80AD56:
-                       db $68,$AD                           ;80AD56|        |      ;
-                       db $8C,$AD                           ;80AD58|        |0071AD;
-                       db $71,$AD                           ;80AD5A|        |      ;
-                       db $8C,$AD                           ;80AD5C|        |007AAD;
-                       db $7A,$AD                           ;80AD5E|        |      ;
-                       db $A0,$AD                           ;80AD60|        |      ;
-                       db $83,$AD                           ;80AD62|        |      ;
-                       db $A0,$AD                           ;80AD64|        |      ;
-                       db $B7,$AD                           ;80AD66|        |      ;
+          CODE_80AD68:
                        JSL.L CODE_FL_8AAEA3                 ;80AD68|22A3AE8A|8AAEA3;
                        JSL.L CODE_FL_86D7D8                 ;80AD6C|22D8D786|86D7D8;
                        RTS                                  ;80AD70|60      |      ;
+ 
+          CODE_80AD71:
                        JSL.L CODE_FL_8AAEA9                 ;80AD71|22A9AE8A|8AAEA9;
                        JSL.L CODE_FL_86D7D8                 ;80AD75|22D8D786|86D7D8;
                        RTS                                  ;80AD79|60      |      ;
+ 
+          CODE_80AD7A:
                        JSL.L CODE_FL_8AAEAF                 ;80AD7A|22AFAE8A|8AAEAF;
                        JSL.L CODE_FL_86D7D8                 ;80AD7E|22D8D786|86D7D8;
                        RTS                                  ;80AD82|60      |      ;
+ 
+          CODE_80AD83:
                        JSL.L CODE_FL_8AAEB5                 ;80AD83|22B5AE8A|8AAEB5;
                        JSL.L CODE_FL_86D7D8                 ;80AD87|22D8D786|86D7D8;
                        RTS                                  ;80AD8B|60      |      ;
+ 
+       UNREACH_80AD8C:
                        db $A9,$09,$00,$8D,$A0,$02,$7B,$8F   ;80AD8C|        |      ;
                        db $57,$93,$7E,$8F,$51,$93,$7E,$22   ;80AD94|        |000093;
-                       db $D8,$D7,$86,$60,$A9,$09,$00,$8D   ;80AD9C|        |      ;
-                       db $A0,$02,$7B,$8F,$57,$93,$7E,$A9   ;80ADA4|        |      ;
-                       db $01,$00,$8F,$51,$93,$7E,$22,$D8   ;80ADAC|        |000000;
-                       db $D7,$86,$60                       ;80ADB4|        |000086;
+                       db $D8,$D7,$86,$60                   ;80AD9C|        |      ;
+ 
+       UNREACH_80ADA0:
+                       db $A9,$09,$00,$8D,$A0,$02,$7B,$8F   ;80ADA0|        |      ;
+                       db $57,$93,$7E,$A9,$01,$00,$8F,$51   ;80ADA8|        |000093;
+                       db $93,$7E,$22,$D8,$D7,$86,$60       ;80ADB0|        |00007E;
+ 
+          CODE_80ADB7:
                        LDA.W #$000A                         ;80ADB7|A90A00  |      ;
                        STA.W Game_State                     ;80ADBA|8DA002  |8002A0;
                        TDC                                  ;80ADBD|7B      |      ;
@@ -4710,13 +4816,17 @@ DMA_QueueCGRAMCommand:
                        LDA.L BALL_Counter                   ;80AE1B|AF02397E|7E3902;
                        ASL A                                ;80AE1F|0A      |      ;
                        TAX                                  ;80AE20|AA      |      ;
-                       JSR.W (DATA8_80AE27,X)               ;80AE21|FC27AE  |80AE27;
+                       JSR.W (BALL_Pointers,X)              ;80AE21|FC27AE  |80AE27;
                        PLB                                  ;80AE24|AB      |      ;
                        PLP                                  ;80AE25|28      |      ;
                        RTL                                  ;80AE26|6B      |      ;
+        BALL_Pointers:
+                       dw BALL_CheckB                       ;80AE27|        |80AE2F;
+                       dw BALL_CheckA                       ;80AE29|        |80AE43;
+                       dw BALL_CheckLFirst                  ;80AE2B|        |80AE57;
+                       dw BALL_CheckLSecond                 ;80AE2D|        |80AE6B;
  
-         DATA8_80AE27:
-                       db $2F,$AE,$43,$AE,$57,$AE,$6B,$AE   ;80AE27|        |      ;
+          BALL_CheckB:
                        LDA.B $B7                            ;80AE2F|A5B7    |0000B7;
                        AND.W #!JOY_B                        ;80AE31|290080  |      ; !!o !JOY_B ; check for B input
                        BEQ +                                ;80AE34|F00A    |80AE40;
@@ -4726,6 +4836,8 @@ DMA_QueueCGRAMCommand:
                        RTS                                  ;80AE3F|60      |      ;
  
                      + JMP.W BALL_InputCheck                ;80AE40|4C88AE  |80AE88;
+ 
+          BALL_CheckA:
                        LDA.B $B7                            ;80AE43|A5B7    |0000B7;
                        AND.W #!JOY_A                        ;80AE45|298000  |      ; !!o !JOY_A ; check for A input
                        BEQ +                                ;80AE48|F00A    |80AE54;
@@ -4735,6 +4847,8 @@ DMA_QueueCGRAMCommand:
                        RTS                                  ;80AE53|60      |      ;
  
                      + JMP.W BALL_InputCheck                ;80AE54|4C88AE  |80AE88;
+ 
+     BALL_CheckLFirst:
                        LDA.B $B7                            ;80AE57|A5B7    |0000B7;
                        AND.W #!JOY_L                        ;80AE59|292000  |      ; !!o !JOY_L ; check for L input
                        BEQ +                                ;80AE5C|F00A    |80AE68;
@@ -4744,6 +4858,8 @@ DMA_QueueCGRAMCommand:
                        RTS                                  ;80AE67|60      |      ;
  
                      + JMP.W BALL_InputCheck                ;80AE68|4C88AE  |80AE88;
+ 
+    BALL_CheckLSecond:
                        LDA.B $B7                            ;80AE6B|A5B7    |0000B7;
                        AND.W #!JOY_L                        ;80AE6D|292000  |      ; !!o !JOY_L ; check for L input
                        BEQ +                                ;80AE70|F013    |80AE85;
@@ -4795,7 +4911,7 @@ DMA_QueueCGRAMCommand:
                        PLP                                  ;80AEC9|28      |      ;
                        RTS                                  ;80AECA|60      |      ;
  
-       CODE_FL_80AECB:
+             DoFadeIn:
                        SEP #$20                             ;80AECB|E220    |      ;
                        TYA                                  ;80AECD|98      |      ;
                        STA.W $0277                          ;80AECE|8D7702  |830277;
@@ -5650,18 +5766,18 @@ NintendoLogo_Pointers:
                        dw CODE_80B96B                       ;80B66C|        |80B96B;
                        dw CODE_80B98C                       ;80B66E|        |80B98C;
                        dw CODE_80B997                       ;80B670|        |80B997;
-                       dw CODE_80B9BC                       ;80B672|        |80B9BC;
-                       dw CODE_80BA43                       ;80B674|        |80BA43;
-                       dw NintendoLogo_Dummy                ;80B676|        |80B678;
+                       dw ErrorMessage_Init                 ;80B672|        |80B9BC;
+                       dw ErrorMessage_FadeIn               ;80B674|        |80BA43;
+                       dw ErrorMessage_Loop                 ;80B676|        |80B678;
  
-   NintendoLogo_Dummy:
+    ErrorMessage_Loop:
                        RTS                                  ;80B678|60      |      ;
  
     NintendoLogo_Init:
                        JSL.L BlankScreen                    ;80B679|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B67D|228A9C80|809C8A;
                        JSR.W CODE_FN_80B7B7                 ;80B681|20B7B7  |80B7B7;
-                       JSL.L CODE_FL_80BB2D                 ;80B684|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;80B684|222DBB80|80BB2D;
                        dl CompGFX_NintendoLogo              ;80B688|        |94AF3B;
                        dl $7F5D00                           ;80B68B|        |7F5D00;
                        PHB                                  ;80B68E|8B      |      ;
@@ -5673,7 +5789,7 @@ NintendoLogo_Pointers:
                        BRA +                                ;80B699|8008    |80B6A3;
                        db $00,$5D,$7F,$00,$0E,$80,$00,$20   ;80B69B|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;80B6A3|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;80B6A3|222DBB80|80BB2D;
                        dl CompGFX_NintendoLogoQuote         ;80B6A7|        |94B4A4;
                        dl $7F5D00                           ;80B6AA|        |7F5D00;
                        PHB                                  ;80B6AD|8B      |      ;
@@ -5685,13 +5801,13 @@ NintendoLogo_Pointers:
                        BRA +                                ;80B6B8|8008    |80B6C2;
                        db $00,$5D,$7F,$00,$0C,$80,$00,$60   ;80B6BA|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;80B6C2|222DBB80|80BB2D;
+                     + JSL.L StartDecompression             ;80B6C2|222DBB80|80BB2D;
                        dl DATA8_94B98D                      ;80B6C6|        |94B98D;
                        dl $7E391C                           ;80B6C9|        |7E391C;
-                       JSL.L CODE_FL_80BB2D                 ;80B6CC|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;80B6CC|222DBB80|80BB2D;
                        dl DATA8_94B8C1                      ;80B6D0|        |94B8C1;
                        dl $7E3000                           ;80B6D3|        |7E3000;
-                       JSL.L CODE_FL_80BB2D                 ;80B6D6|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;80B6D6|222DBB80|80BB2D;
                        dl DATA8_94B7EC                      ;80B6DA|        |94B7EC;
                        dl $7F5D00                           ;80B6DD|        |7F5D00;
                        LDA.W #$0008                         ;80B6E0|A90800  |      ;
@@ -5854,7 +5970,7 @@ NintendoLogo_Pointers:
  
           CODE_80B8A2:
                        LDY.W #$0001                         ;80B8A2|A00100  |      ;
-                       JSL.L CODE_FL_80AECB                 ;80B8A5|22CBAE80|80AECB;
+                       JSL.L DoFadeIn                       ;80B8A5|22CBAE80|80AECB;
                        BCC +                                ;80B8A9|901A    |80B8C5;
                        REP #$20                             ;80B8AB|C220    |      ;
                        PHB                                  ;80B8AD|8B      |      ;
@@ -5883,7 +5999,7 @@ NintendoLogo_Pointers:
           CODE_80B8D8:
                        LDA.W #$00D1                         ;80B8D8|A9D100  |      ;
                        STA.W $1986                          ;80B8DB|8D8619  |801986;
-                       JSL.L CODE_FL_80BB2D                 ;80B8DE|222DBB80|80BB2D;
+                       JSL.L StartDecompression             ;80B8DE|222DBB80|80BB2D;
                        dl DATA8_94B7EC                      ;80B8E2|        |94B7EC;
                        dl $7F5D00                           ;80B8E5|        |7F5D00;
                        LDA.W #$0008                         ;80B8E8|A90800  |      ;
@@ -5993,14 +6109,14 @@ NintendoLogo_Pointers:
  
                      + RTS                                  ;80B9BB|60      |      ;
  
-          CODE_80B9BC:
+    ErrorMessage_Init:
                        JSL.L BlankScreen                    ;80B9BC|22F79C80|809CF7;
                        JSL.L CODE_FL_809C8A                 ;80B9C0|228A9C80|809C8A;
                        JSR.W CODE_FN_80BA48                 ;80B9C4|2048BA  |80BA48;
                        LDA.W #$FFFF                         ;80B9C7|A9FFFF  |      ;
                        STA.W $029E                          ;80B9CA|8D9E02  |80029E;
-                       JSL.L CODE_FL_80BB2D                 ;80B9CD|222DBB80|80BB2D;
-                       dl UNREACH_94B9CB                    ;80B9D1|        |94B9CB;
+                       JSL.L StartDecompression             ;80B9CD|222DBB80|80BB2D;
+                       dl CompGFX_ErrorMessageFont          ;80B9D1|        |94B9CB;
                        dl $7F5D00                           ;80B9D4|        |7F5D00;
                        PHB                                  ;80B9D7|8B      |      ;
                        PHK                                  ;80B9D8|4B      |      ;
@@ -6011,8 +6127,8 @@ NintendoLogo_Pointers:
                        BRA +                                ;80B9E2|8008    |80B9EC;
                        db $00,$5D,$7F,$80,$08,$80,$00,$20   ;80B9E4|        |      ;
  
-                     + JSL.L CODE_FL_80BB2D                 ;80B9EC|222DBB80|80BB2D;
-                       dl UNREACH_94BE6E                    ;80B9F0|        |94BE6E;
+                     + JSL.L StartDecompression             ;80B9EC|222DBB80|80BB2D;
+                       dl DATA8_94BE6E                      ;80B9F0|        |94BE6E;
                        dl $7E86F6                           ;80B9F3|        |7E86F6;
                        PHB                                  ;80B9F6|8B      |      ;
                        PHK                                  ;80B9F7|4B      |      ;
@@ -6026,13 +6142,17 @@ NintendoLogo_Pointers:
                      + LDA.L $7E3900                        ;80BA09|AF00397E|7E3900;
                        DEC A                                ;80BA0D|3A      |      ;
                        BNE +                                ;80BA0E|D00C    |80BA1C;
-                       db $22,$2D,$BB,$80,$7B,$BE,$94,$00   ;80BA10|        |80BB2D;
-                       db $20,$7E,$80,$0A                   ;80BA18|        |80807E;
+                       JSL.L StartDecompression             ;80BA10|222DBB80|80BB2D;
+                       dl DATA8_94BE7B                      ;80BA14|        |94BE7B;
+                       dl $7E2000                           ;80BA17|        |7E2000;
+                       BRA ++                               ;80BA1A|800A    |80BA26;
  
-                     + JSL.L CODE_FL_80BB2D                 ;80BA1C|222DBB80|80BB2D;
-                       dl UNREACH_94BFAD                    ;80BA20|        |94BFAD;
+ 
+                     + JSL.L StartDecompression             ;80BA1C|222DBB80|80BB2D;
+                       dl DATA8_94BFAD                      ;80BA20|        |94BFAD;
                        dl $7E2000                           ;80BA23|        |7E2000;
-                       PHB                                  ;80BA26|8B      |      ;
+ 
+                    ++ PHB                                  ;80BA26|8B      |      ;
                        PHK                                  ;80BA27|4B      |      ;
                        PLB                                  ;80BA28|AB      |      ;
                        LDY.W #$BA33                         ;80BA29|A033BA  |      ;
@@ -6045,8 +6165,8 @@ NintendoLogo_Pointers:
                        JSL.L CODE_FL_809D0B                 ;80BA3E|220B9D80|809D0B;
                        RTS                                  ;80BA42|60      |      ;
  
-          CODE_80BA43:
-                       JSL.L CODE_FL_86D67D                 ;80BA43|227DD686|86D67D;
+  ErrorMessage_FadeIn:
+                       JSL.L Common_FadeIn                  ;80BA43|227DD686|86D67D;
                        RTS                                  ;80BA47|60      |      ;
  
        CODE_FN_80BA48:
@@ -6130,7 +6250,7 @@ NintendoLogo_Pointers:
                        REP #$30                             ;80BB2A|C230    |      ;
                        RTS                                  ;80BB2C|60      |      ;
  
-       CODE_FL_80BB2D:
+   StartDecompression:
                        PHP                                  ;80BB2D|08      |      ;
                        REP #$30                             ;80BB2E|C230    |      ;
                        PHB                                  ;80BB30|8B      |      ;
@@ -6154,14 +6274,14 @@ NintendoLogo_Pointers:
                        STA.B $7F                            ;80BB51|857F    |00007F;
                        LDA.W $0005,X                        ;80BB53|BD0500  |830005;
                        STA.B $80                            ;80BB56|8580    |000080;
-                       JSL.L CODE_FL_80A421                 ;80BB58|2221A480|80A421;
+                       JSL.L DecompressResource             ;80BB58|2221A480|80A421;
                        PLY                                  ;80BB5C|7A      |      ;
                        PLX                                  ;80BB5D|FA      |      ;
                        PLB                                  ;80BB5E|AB      |      ;
                        PLP                                  ;80BB5F|28      |      ;
                        RTL                                  ;80BB60|6B      |      ;
  
-       CODE_FL_80BB61:
+StartDecompressionAlternate:
                        PHP                                  ;80BB61|08      |      ;
                        REP #$30                             ;80BB62|C230    |      ;
                        PHB                                  ;80BB64|8B      |      ;
@@ -6199,7 +6319,7 @@ NintendoLogo_Pointers:
                        STA.B $7F                            ;80BB9F|857F    |00007F;
                        LDA.W $0008,X                        ;80BBA1|BD0800  |850008;
                        STA.B $80                            ;80BBA4|8580    |000080;
-                       JSL.L CODE_FL_80A421                 ;80BBA6|2221A480|80A421;
+                       JSL.L DecompressResource             ;80BBA6|2221A480|80A421;
                        PLY                                  ;80BBAA|7A      |      ;
                        PLX                                  ;80BBAB|FA      |      ;
                        PLB                                  ;80BBAC|AB      |      ;
@@ -9877,67 +9997,93 @@ NintendoLogo_Pointers:
                        LDA.L $7E8E3E,X                      ;80EEBF|BF3E8E7E|7E8E3E;
                        ASL A                                ;80EEC3|0A      |      ;
                        TAX                                  ;80EEC4|AA      |      ;
-                       JSR.W (DATA8_80EEC9,X)               ;80EEC5|FCC9EE  |80EEC9;
+                       JSR.W (PTR16_80EEC9,X)               ;80EEC5|FCC9EE  |80EEC9;
                        RTS                                  ;80EEC8|60      |      ;
+         PTR16_80EEC9:
+                       dw CODE_80EEDD                       ;80EEC9|        |80EEDD;
+                       dw CODE_80EEEB                       ;80EECB|        |80EEEB;
+                       dw CODE_80EEF9                       ;80EECD|        |80EEF9;
+                       dw CODE_80EF07                       ;80EECF|        |80EF07;
+                       dw CODE_80EF15                       ;80EED1|        |80EF15;
+                       dw CODE_80EF23                       ;80EED3|        |80EF23;
+                       dw CODE_80EF31                       ;80EED5|        |80EF31;
+                       dw CODE_80EF3F                       ;80EED7|        |80EF3F;
+                       dw CODE_80EF4D                       ;80EED9|        |80EF4D;
+                       dw CODE_80EF5B                       ;80EEDB|        |80EF5B;
  
-         DATA8_80EEC9:
-                       db $DD,$EE,$EB,$EE,$F9,$EE,$07,$EF   ;80EEC9|        |      ;
-                       db $15,$EF,$23,$EF,$31,$EF,$3F,$EF   ;80EED1|        |      ;
-                       db $4D,$EF,$5B,$EF                   ;80EED9|        |      ;
+          CODE_80EEDD:
                        LDX.W $075E                          ;80EEDD|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EEE0|BD9C0B  |800B9C;
                        CLC                                  ;80EEE3|18      |      ;
                        ADC.W #$0003                         ;80EEE4|690300  |      ;
                        STA.W $0B9C,X                        ;80EEE7|9D9C0B  |800B9C;
                        RTS                                  ;80EEEA|60      |      ;
+ 
+          CODE_80EEEB:
                        LDX.W $075E                          ;80EEEB|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EEEE|BD9C0B  |800B9C;
                        CLC                                  ;80EEF1|18      |      ;
                        ADC.W #$0006                         ;80EEF2|690600  |      ;
                        STA.W $0B9C,X                        ;80EEF5|9D9C0B  |800B9C;
                        RTS                                  ;80EEF8|60      |      ;
+ 
+          CODE_80EEF9:
                        LDX.W $075E                          ;80EEF9|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EEFC|BD9C0B  |800B9C;
                        CLC                                  ;80EEFF|18      |      ;
                        ADC.W #$0003                         ;80EF00|690300  |      ;
                        STA.W $0B9C,X                        ;80EF03|9D9C0B  |800B9C;
                        RTS                                  ;80EF06|60      |      ;
+ 
+          CODE_80EF07:
                        LDX.W $075E                          ;80EF07|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF0A|BD9C0B  |800B9C;
                        CLC                                  ;80EF0D|18      |      ;
                        ADC.W #$0006                         ;80EF0E|690600  |      ;
                        STA.W $0B9C,X                        ;80EF11|9D9C0B  |800B9C;
                        RTS                                  ;80EF14|60      |      ;
+ 
+          CODE_80EF15:
                        LDX.W $075E                          ;80EF15|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF18|BD9C0B  |800B9C;
                        CLC                                  ;80EF1B|18      |      ;
                        ADC.W #$0005                         ;80EF1C|690500  |      ;
                        STA.W $0B9C,X                        ;80EF1F|9D9C0B  |800B9C;
                        RTS                                  ;80EF22|60      |      ;
+ 
+          CODE_80EF23:
                        LDX.W $075E                          ;80EF23|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF26|BD9C0B  |800B9C;
                        CLC                                  ;80EF29|18      |      ;
                        ADC.W #$0002                         ;80EF2A|690200  |      ;
                        STA.W $0B9C,X                        ;80EF2D|9D9C0B  |800B9C;
                        RTS                                  ;80EF30|60      |      ;
+ 
+          CODE_80EF31:
                        LDX.W $075E                          ;80EF31|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF34|BD9C0B  |800B9C;
                        CLC                                  ;80EF37|18      |      ;
                        ADC.W #$0003                         ;80EF38|690300  |      ;
                        STA.W $0B9C,X                        ;80EF3B|9D9C0B  |800B9C;
                        RTS                                  ;80EF3E|60      |      ;
+ 
+          CODE_80EF3F:
                        LDX.W $075E                          ;80EF3F|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF42|BD9C0B  |800B9C;
                        CLC                                  ;80EF45|18      |      ;
                        ADC.W #$0002                         ;80EF46|690200  |      ;
                        STA.W $0B9C,X                        ;80EF49|9D9C0B  |800B9C;
                        RTS                                  ;80EF4C|60      |      ;
+ 
+          CODE_80EF4D:
                        LDX.W $075E                          ;80EF4D|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF50|BD9C0B  |800B9C;
                        CLC                                  ;80EF53|18      |      ;
                        ADC.W #$0004                         ;80EF54|690400  |      ;
                        STA.W $0B9C,X                        ;80EF57|9D9C0B  |800B9C;
                        RTS                                  ;80EF5A|60      |      ;
+ 
+          CODE_80EF5B:
                        LDX.W $075E                          ;80EF5B|AE5E07  |80075E;
                        LDA.W $0B9C,X                        ;80EF5E|BD9C0B  |800B9C;
                        CLC                                  ;80EF61|18      |      ;
